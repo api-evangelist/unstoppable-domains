@@ -1,0 +1,141 @@
+name: Unstoppable Domains FinOps Framework
+description: FOCUS-aligned FinOps reference for teams consuming Unstoppable Domains APIs. Covers cost drivers from domain registration fees, marketplace transaction fees, DNS domain renewal costs, and Partner API usage-based billing, along with optimization strategies for minimizing domain acquisition and operational costs.
+specificationVersion: '1.0'
+url: https://support.unstoppabledomains.com/support/solutions/articles/48001184253-pricing-tiers-for-regular-domains
+costDimensions:
+  - name: Web3 Domain Registration Fees
+    description: One-time fees for minting NFT domains on blockchain. No recurring renewal fees apply to Web3 domains after initial purchase. Costs vary by TLD category and character length tier.
+    billingModel: one-time
+    currency: USD
+    costDrivers:
+      - name: Premium TLD Registration (.x, .crypto)
+        rateRange: '$40–$2,000'
+        notes: Higher cost for shorter character-length domains; two-character names at top of range
+      - name: Mid-Tier TLD Registration (.polygon, .bitcoin, .wallet, .nft, .888, .dao, .go)
+        rateRange: '$20–$1,000'
+      - name: Standard TLD Registration (.blockchain, .zil, .pudgy)
+        rateRange: '$10–$500'
+      - name: Budget TLD Registration (.unstoppable, .raiin, .tball, .dfz)
+        rateRange: '$2–$100'
+      - name: Solana-Minted Domain Registration
+        rateRange: '$5–$100'
+  - name: Traditional DNS Domain Registration and Renewal
+    description: Costs for registering and renewing traditional DNS domains (.com, .net, etc.) through the Reseller API. Standard registrar pricing applies with at-cost and below-cost options available.
+    billingModel: annual-renewal
+    currency: USD
+    costDrivers:
+      - name: .com Registration
+        rate: 'from $7.67'
+        notes: At-cost pricing available for registered resellers
+      - name: Annual Renewal
+        notes: Standard renewal fees per TLD; varies by extension
+  - name: Marketplace Transaction Fees
+    description: Fees applied when domains are sold through the Unstoppable Domains marketplace via the User API or partner integrations.
+    billingModel: percentage-of-sale
+    currency: USD
+    costDrivers:
+      - name: Self-Brokerage Listing Fee
+        rate: '3%'
+        notes: Applied to final sale price for marketplace-listed domains; BIN and make-offer pricing supported
+      - name: Afternic / Sedo Listing
+        notes: Additional platform fees may apply when cross-listing on Afternic or Sedo via API
+  - name: Partner API Usage
+    description: Usage-based billing for domain registration and management operations through the Partner API v3. Unstoppable Domains tracks a running balance and invoices partners periodically rather than charging per-request API access fees.
+    billingModel: usage-based-invoicing
+    currency: USD
+    costDrivers:
+      - name: Domain Registration via Partner API
+        notes: Costs mirror standard domain pricing per TLD/tier; partner receives periodic invoice for accumulated registrations
+      - name: Custody Wallet Operations
+        notes: Blockchain operations on Polygon and Base networks may incur gas-equivalent charges embedded in partner billing
+  - name: API Access Fees
+    description: Direct API access fees across all Unstoppable Domains API products.
+    billingModel: free
+    currency: USD
+    costDrivers:
+      - name: Resolution API
+        rate: Free
+        notes: Free API key for open-source projects and partner integrations; no per-call charges
+      - name: User API / MCP
+        rate: Free
+        notes: No subscription fee; costs arise from domain purchases and marketplace transactions only
+      - name: Partner API Access
+        rate: Free (by application)
+        notes: API key access is free after partner approval; domain registration costs drive billing
+optimizationStrategies:
+  - name: Prioritize Budget and Standard TLDs for High-Volume Registration
+    description: When registering large numbers of domains for a portfolio or reseller offering, choose Budget TLDs (.unstoppable, .raiin) or Standard TLDs (.blockchain) to minimize per-domain cost while maintaining Web3 functionality.
+    impact: high
+    effort: low
+    url: https://support.unstoppabledomains.com/support/solutions/articles/48001184253-pricing-tiers-for-regular-domains
+  - name: Use Sandbox Environment for All Development and Testing
+    description: All Partner API, Resolution API, and Reseller API development should be conducted against the sandbox environment (api.ud-sandbox.com) which incurs no cost and has no rate limits, avoiding accidental production charges during integration work.
+    impact: high
+    effort: low
+    url: https://api.ud-sandbox.com
+  - name: Leverage One-Time Web3 Domain Pricing
+    description: Web3 NFT domains (non-ICANN) carry no renewal fees after initial purchase. For long-term domain holdings, the total cost of ownership is capped at the initial registration price, unlike traditional DNS domains with annual renewals.
+    impact: high
+    effort: low
+  - name: Use Resolution API Instead of On-Chain Queries
+    description: The Resolution Service API abstracts direct blockchain queries for domain resolution. Using the API avoids paying gas fees for on-chain smart contract calls, significantly reducing resolution costs at scale.
+    impact: medium
+    effort: low
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - name: Batch Reverse Lookups
+    description: Use the POST /reverse/query batch endpoint for reverse address resolution instead of individual GET /reverse/{address} calls to reduce API call count and stay within rate limits more efficiently.
+    impact: medium
+    effort: low
+    endpoint: POST https://api.unstoppabledomains.com/resolve/reverse/query
+  - name: Monitor Partner API Balance Regularly
+    description: Track the running partner API balance via GET /account to avoid unexpected invoice amounts. Implement alerting when domain registration volume exceeds expected thresholds.
+    impact: medium
+    effort: medium
+    endpoint: GET https://api.unstoppabledomains.com/partner/v3/account
+  - name: Use Pending Operations Endpoint to Avoid Duplicate Registrations
+    description: Query GET /domains/{name}/pending-operations before initiating new registrations to prevent duplicate billing from redundant registration attempts on domains already in-flight on the blockchain.
+    impact: medium
+    effort: low
+    endpoint: GET https://api.unstoppabledomains.com/partner/v3/domains/{name}/pending-operations
+costAllocation:
+  - dimension: TLDCategory
+    values:
+      - Premium (.x, .crypto)
+      - Mid-Tier (.polygon, .bitcoin, .wallet, .nft, .888, .dao, .go)
+      - Standard (.blockchain, .zil, .pudgy)
+      - Budget (.unstoppable, .raiin, .tball, .dfz)
+      - Solana-Minted
+  - dimension: DomainType
+    values:
+      - Web3 NFT Domain (one-time)
+      - Traditional DNS Domain (annual renewal)
+  - dimension: APIProduct
+    values:
+      - Resolution API
+      - Partner API v3
+      - Reseller API
+      - User API
+  - dimension: Environment
+    values:
+      - Production
+      - Sandbox (no cost)
+  - dimension: OperationType
+    values:
+      - Domain Registration
+      - Domain Renewal
+      - DNS Management
+      - Marketplace Listing
+      - Domain Transfer
+monitoring:
+  - name: Partner Account Balance
+    endpoint: GET https://api.unstoppabledomains.com/partner/v3/account
+    description: Check current running balance for partner billing to monitor accumulated domain registration charges
+  - name: Pending Domain Operations
+    endpoint: GET https://api.unstoppabledomains.com/partner/v3/operations
+    description: Monitor all pending blockchain operations to track registrations in-flight and avoid duplicate charges
+  - name: Domain Operation Status
+    endpoint: GET https://api.unstoppabledomains.com/partner/v3/operations/{id}
+    description: Check status of individual domain operations to confirm successful registration before billing reconciliation
+  - name: Webhook Event Monitoring
+    endpoint: GET https://api.unstoppabledomains.com/partner/v3/account/webhooks
+    description: Configure webhooks to receive real-time notifications for domain events, sales, and transaction completions to enable timely cost attribution

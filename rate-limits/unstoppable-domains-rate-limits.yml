@@ -1,0 +1,60 @@
+name: Unstoppable Domains API Rate Limits
+description: Unstoppable Domains enforces rate limits on its Resolution API and Partner API to ensure platform stability. The Resolution API is free for open-source integrations with a general guideline of 20 calls per second. Partner and User API limits are defined per application key and enforced on production endpoints. A sandbox environment is provided for unlimited development testing without rate limit concerns.
+specificationVersion: '0.1'
+url: https://docs.unstoppabledomains.com/resolution/overview
+rateLimits:
+  - name: Resolution API General Limit
+    description: Soft rate limit for the Resolution Service API across all resolution endpoints. Applicable to free API key holders and partner integrations querying domain records and addresses.
+    scope: per-api-key
+    limit: 20
+    period: 1s
+    type: request
+    endpoints:
+      - https://api.unstoppabledomains.com/resolve/domains/{domainName}
+      - https://api.unstoppabledomains.com/resolve/domains
+      - https://api.unstoppabledomains.com/resolve/reverse/{address}
+      - https://api.unstoppabledomains.com/resolve/reverse/query
+      - https://api.unstoppabledomains.com/resolve/records
+      - https://api.unstoppabledomains.com/resolve/owners/{address}/domains
+  - name: Resolution API RPC Proxy
+    description: Rate limit for Ethereum and Polygon RPC proxy endpoints exposed through the Resolution API. Used for on-chain data queries.
+    scope: per-api-key
+    limit: 20
+    period: 1s
+    type: request
+    endpoints:
+      - https://api.unstoppabledomains.com/resolve/chains/eth/rpc
+      - https://api.unstoppabledomains.com/resolve/chains/matic/rpc
+  - name: Partner API v3 (Production)
+    description: Rate limits for the Web3 Partner API covering domain registration, custody wallet management, and domain operations. Exact limits are defined per partner agreement; contact partnerengineering@unstoppabledomains.com for specifics.
+    scope: per-api-key
+    type: request
+    notes: Limits defined per partner agreement; sandbox environment has no rate limits
+    endpoints:
+      - https://api.unstoppabledomains.com/partner/v3/domains
+      - https://api.unstoppabledomains.com/partner/v3/account/wallets
+      - https://api.unstoppabledomains.com/partner/v3/operations
+  - name: User API / MCP Endpoints
+    description: Rate limits for User API MCP action endpoints covering domain search, portfolio, DNS, cart, and marketplace operations. Bearer token authentication required for all authenticated endpoints.
+    scope: per-api-key
+    type: request
+    notes: Limits not publicly specified; contact support for production usage thresholds
+    endpoints:
+      - https://api.unstoppabledomains.com/mcp/v1/actions/ud_domains_search
+      - https://api.unstoppabledomains.com/mcp/v1/actions/ud_portfolio_list
+      - https://api.unstoppabledomains.com/mcp/v1/actions/ud_dns_records_list
+environments:
+  - name: Production
+    baseURL: https://api.unstoppabledomains.com
+    rateLimited: true
+    notes: All rate limits apply in production
+  - name: Sandbox
+    baseURL: https://api.ud-sandbox.com
+    rateLimited: false
+    notes: Sandbox environment has no cost and no rate limits; recommended for development and integration testing
+authentication:
+  - type: BearerToken
+    description: All API endpoints require an API key passed as a Bearer token in the Authorization header. Keys are environment-scoped — sandbox keys cannot be used in production and vice versa.
+    header: 'Authorization: Bearer {api_key}'
+    keyFormat: ud_mcp_* (User API keys)
+    obtainedFrom: https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key

@@ -1,0 +1,120 @@
+name: Unstoppable Domains
+description: Web3 domain name service providing REST APIs for resolving crypto domain names, managing NFT domains, reverse lookups, cross-chain address resolution, domain registration, and DNS management across 150+ TLDs on multiple blockchains.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/unstoppable-domains/refs/heads/main/apis.yml
+created: '2026-06-14'
+modified: '2026-06-14'
+specificationVersion: '0.19'
+aid: unstoppable-domains
+type: Index
+tags:
+  - Web3
+  - Blockchain
+  - Domain Names
+  - NFT Domains
+  - Crypto
+  - Resolution
+  - DNS
+  - Decentralized
+  - Ethereum
+  - Polygon
+apis:
+  - name: Unstoppable Domains Resolution API
+    description: HTTP-based REST API for resolving Web3 domain names to cryptocurrency addresses and records. Supports 310+ cryptocurrencies, reverse lookups, batch queries, TLD enumeration, and RPC proxy for Ethereum and Polygon. Covers UNS, CNS, and ENS naming services with TLDs including .crypto, .x, .nft, .wallet, .polygon, .bitcoin, .dao, .888, .blockchain, .zil, and .eth.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.unstoppabledomains.com/resolution/overview
+    baseURL: https://api.unstoppabledomains.com/resolve
+    tags:
+      - Resolution
+      - Domain
+      - Crypto Addresses
+      - Reverse Lookup
+      - Web3
+      - ENS
+    properties:
+      - type: Documentation
+        url: https://docs.unstoppabledomains.com/resolution/overview
+      - type: APIReference
+        url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - name: Unstoppable Domains Partner API
+    description: RESTful Partner API v3 for Web3 domain distribution and management. Enables searching, registering, and managing domains in custody wallets and self-custody wallets on Polygon and Base blockchains. Covers domain lifecycle operations, custody wallet creation, pending operation tracking, webhooks, and domain suggestions. Usage-based billing with periodic invoicing.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+    baseURL: https://api.unstoppabledomains.com/partner/v3
+    tags:
+      - Partner
+      - Domain Registration
+      - Custody Wallet
+      - Web3
+      - NFT Domains
+      - Blockchain
+    properties:
+      - type: Documentation
+        url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+      - type: APIReference
+        url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - name: Unstoppable Domains Reseller API
+    description: RESTful API for resellers offering traditional DNS domain registration and management alongside Web3 domains. Supports domain search with pricing and availability, registration workflows, DNS record management, and lifecycle operations through a single unified interface.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+    baseURL: https://api.unstoppabledomains.com/partner/v3
+    tags:
+      - Reseller
+      - DNS
+      - Domain Registration
+      - Traditional Domains
+      - White-label
+    properties:
+      - type: Documentation
+        url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+      - type: APIReference
+        url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - name: Unstoppable Domains User API
+    description: MCP-compatible REST API for programmatic user account operations including domain search and purchase, portfolio management, DNS record configuration (A, AAAA, CNAME, MX, TXT, NS, SRV, CAA), marketplace listing creation and management, cart and checkout workflows, offer handling, and real-time webhook notifications for domain events.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.unstoppabledomains.com/user-api/overview
+    baseURL: https://api.unstoppabledomains.com
+    tags:
+      - User API
+      - Portfolio
+      - DNS Management
+      - Marketplace
+      - Cart
+      - Webhooks
+    properties:
+      - type: Documentation
+        url: https://docs.unstoppabledomains.com/user-api/overview
+      - type: APIReference
+        url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+common:
+  - type: Website
+    url: https://unstoppabledomains.com
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/overview
+  - type: GitHubOrg
+    url: https://github.com/unstoppabledomains
+  - type: Sandbox
+    url: https://api.ud-sandbox.com
+  - type: Authentication
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key
+  - type: Pricing
+    url: https://support.unstoppabledomains.com/support/solutions/articles/48001184253-pricing-tiers-for-regular-domains
+  - type: Blog
+    url: https://unstoppabledomains.com/blog
+  - type: Developers
+    url: https://unstoppabledomains.com/developers
+  - type: Plans
+    url: plans/unstoppable-domains-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/unstoppable-domains-rate-limits.yml
+  - type: FinOps
+    url: finops/unstoppable-domains-finops.yml
+  - type: X
+    url: https://x.com/unstoppableweb
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/unstoppable-domains
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

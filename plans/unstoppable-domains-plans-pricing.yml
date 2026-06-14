@@ -1,0 +1,71 @@
+name: Unstoppable Domains Plans and Pricing
+description: Unstoppable Domains API access is free to acquire for open-source and partner integrations. Domain purchases carry one-time registration fees tiered by TLD prestige and domain character length. The Partner API uses usage-based billing with periodic invoicing. The User API has no API access fees; costs arise solely from domain registrations, renewals, and marketplace transactions.
+specificationVersion: '0.1'
+url: https://support.unstoppabledomains.com/support/solutions/articles/48001184253-pricing-tiers-for-regular-domains
+plans:
+  - name: Resolution API (Free)
+    description: Free API key access to the Resolution Service for resolving Web3 domain names, reverse lookups, and batch queries. Targeted at developers building crypto wallet integrations and Web3 applications. Free for open-source projects; partner key required for production use.
+    url: https://docs.unstoppabledomains.com/resolution/quickstart/retrieve-an-api-key/
+    price: Free
+    pricingModel: free
+    features:
+      - Domain resolution (300+ cryptocurrencies)
+      - Reverse address lookup
+      - Batch reverse queries
+      - RPC proxy for Ethereum and Polygon
+      - Supported TLD enumeration
+      - Service health endpoint
+      - ENS (.eth) support
+  - name: Partner API (Usage-Based)
+    description: Partner API v3 for domain distributors and resellers. Requires application approval and company information submission. Billing is usage-based with Unstoppable Domains invoicing periodically for accumulated domain registration and management charges.
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key
+    price: Usage-based (by application)
+    pricingModel: usage-based
+    features:
+      - Domain search and registration
+      - Custody wallet creation and management
+      - Self-custody domain management
+      - Blockchain domain operations (Polygon, Base)
+      - Domain transfer and pending operation tracking
+      - Webhooks for domain events
+      - Domain suggestions endpoint
+      - Sandbox environment (no-cost testing)
+  - name: User API (Free Access)
+    description: No API subscription fee. Domain search is free; costs arise when purchasing domains (registration and renewal fees apply). Marketplace transactions carry a 3% fee for self-brokerage listings.
+    url: https://docs.unstoppabledomains.com/user-api/overview
+    price: Free (domain costs apply)
+    pricingModel: transaction-fees
+    fees:
+      marketplaceSelfBrokerage: '3% per sale'
+      dotComRegistration: 'from $7.67 (at-cost)'
+    features:
+      - Domain search and availability
+      - Portfolio management
+      - DNS record management (A, AAAA, CNAME, MX, TXT, NS, SRV, CAA)
+      - Cart and checkout workflows
+      - Marketplace listing and offer management
+      - Backorder functionality
+      - Lease-to-own (up to 10 years)
+      - Webhooks for real-time events
+  - name: Web3 Domain Pricing (by Tier and TLD)
+    description: One-time registration fees for Web3 NFT domains. No renewal fees. Pricing is tiered by character length (Tier 2 through Tier 8+) and TLD category. Premium and hand-picked domains are priced separately.
+    url: https://support.unstoppabledomains.com/support/solutions/articles/48001184253-pricing-tiers-for-regular-domains
+    price: From $2 (one-time)
+    pricingModel: one-time
+    tiers:
+      - category: Premium TLDs (.x, .crypto)
+        range: '$40–$2,000'
+        notes: Two-character domains command highest prices
+      - category: Mid-Tier TLDs (.polygon, .bitcoin, .wallet, .nft, .888, .dao, .go)
+        range: '$20–$1,000'
+      - category: Standard TLDs (.blockchain, .zil, .pudgy)
+        range: '$10–$500'
+      - category: Budget TLDs (.unstoppable, .raiin, .tball, .dfz)
+        range: '$2–$100'
+      - category: Solana-Minted Domains
+        range: '$5–$100'
+    features:
+      - One-time payment (no renewals for Web3 domains)
+      - 150+ supported TLDs
+      - NFT ownership on blockchain
+      - Cryptocurrency address records included
