@@ -36,6 +36,8 @@ apis:
         url: https://docs.unstoppabledomains.com/resolution/overview
       - type: APIReference
         url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+      - type: OpenAPI
+        url: openapi/unstoppable-domains-resolution-api-openapi.yaml
   - name: Unstoppable Domains Partner API
     description: RESTful Partner API v3 for Web3 domain distribution and management. Enables searching, registering, and managing domains in custody wallets and self-custody wallets on Polygon and Base blockchains. Covers domain lifecycle operations, custody wallet creation, pending operation tracking, webhooks, and domain suggestions. Usage-based billing with periodic invoicing.
     image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
@@ -53,6 +55,8 @@ apis:
         url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
       - type: APIReference
         url: https://docs.unstoppabledomains.com/apis/partner/openapi
+      - type: OpenAPI
+        url: openapi/unstoppable-domains-partner-api-openapi.yaml
   - name: Unstoppable Domains Reseller API
     description: RESTful API for resellers offering traditional DNS domain registration and management alongside Web3 domains. Supports domain search with pricing and availability, registration workflows, DNS record management, and lifecycle operations through a single unified interface.
     image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
@@ -69,6 +73,8 @@ apis:
         url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
       - type: APIReference
         url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+      - type: OpenAPI
+        url: openapi/unstoppable-domains-reseller-api-openapi.yaml
   - name: Unstoppable Domains User API
     description: MCP-compatible REST API for programmatic user account operations including domain search and purchase, portfolio management, DNS record configuration (A, AAAA, CNAME, MX, TXT, NS, SRV, CAA), marketplace listing creation and management, cart and checkout workflows, offer handling, and real-time webhook notifications for domain events.
     image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
@@ -86,6 +92,8 @@ apis:
         url: https://docs.unstoppabledomains.com/user-api/overview
       - type: APIReference
         url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+      - type: OpenAPI
+        url: openapi/unstoppable-domains-user-api-openapi.json
 common:
   - type: Website
     url: https://unstoppabledomains.com
