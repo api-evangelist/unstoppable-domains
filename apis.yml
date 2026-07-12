@@ -95,6 +95,12 @@ apis:
       - type: OpenAPI
         url: openapi/unstoppable-domains-user-api-openapi.json
 common:
+  - type: VulnerabilityDisclosure
+    url: security/unstoppable-domains-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/unstoppable-domains-domain-security.yml
+  - type: Authentication
+    url: authentication/unstoppable-domains-authentication.yml
   - type: Website
     url: https://unstoppabledomains.com
   - type: Documentation

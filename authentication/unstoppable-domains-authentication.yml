@@ -1,0 +1,17 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/unstoppable-domains-partner-api-openapi.yaml, openapi/unstoppable-domains-reseller-api-openapi.yaml,
+  openapi/unstoppable-domains-resolution-api-openapi.yaml, openapi/unstoppable-domains-user-api-openapi.json
+summary:
+  types:
+  - http
+schemes:
+- name: bearer
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  sources:
+  - openapi/unstoppable-domains-partner-api-openapi.yaml
+  - openapi/unstoppable-domains-reseller-api-openapi.yaml
+  - openapi/unstoppable-domains-resolution-api-openapi.yaml
+  - openapi/unstoppable-domains-user-api-openapi.json
