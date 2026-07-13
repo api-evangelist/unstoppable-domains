@@ -2,13 +2,11 @@
   "repo": "unstoppable-domains",
   "feeds": [
     {
-      "source": "https://unstoppabledomains.com/blog",
-      "feed_url": "",
-      "saved": 3,
-      "method": "agent-scrape"
+      "source": "https://support.unstoppabledomains.com/support/solutions/articles/48001184253-pricing-tiers-for-regular-domains",
+      "error": "HTTPError"
     }
   ],
-  "post_count": 3,
-  "fetched": "2026-06-27T13:18:59Z",
-  "agent_pulled": "2026-06-27"
+  "post_count": 6,
+  "fetched": "2026-07-11T11:50:51Z",
+  "agent_pulled": "2026-07-04"
 }
