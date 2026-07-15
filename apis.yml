@@ -95,6 +95,8 @@ apis:
       - type: OpenAPI
         url: openapi/unstoppable-domains-user-api-openapi.json
 common:
+  - type: AgenticAccess
+    url: agentic-access/unstoppable-domains-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/unstoppable-domains-vulnerability-disclosure.yml
   - type: DomainSecurity
