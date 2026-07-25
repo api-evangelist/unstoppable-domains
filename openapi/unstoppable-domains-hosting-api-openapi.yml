@@ -1,0 +1,1116 @@
+openapi: 3.1.0
+info:
+  title: Web3 Partner API v3 account hosting API
+  version: 3.0.0
+  contact:
+    name: Unstoppable Domains (Partner Engineering)
+    email: partnerengineering@unstoppabledomains.com
+  description: "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n"
+servers:
+- url: https://api.unstoppabledomains.com/partner/v3
+  description: Production
+- url: https://api.ud-sandbox.com/partner/v3
+  description: Sandbox
+security:
+- bearer: []
+tags:
+- name: hosting
+  description: 'Configure how your domains serve content on the web. Hosting configurations control what happens when someone visits your domain — whether it redirects to another URL or proxies content from another server.
+
+
+    Available hosting types:
+
+    - `REDIRECT_301` — Permanent redirect to another URL
+
+    - `REDIRECT_302` — Temporary redirect to another URL
+
+    - `REVERSE_PROXY` — Proxy requests to a backend server
+
+
+    All hosting configurations require SSL certificate provisioning. When a configuration is created or updated, the `certificateStatus` field will be `PENDING` until the certificate is issued and active. This process typically completes within a few minutes but may take longer in some cases.
+
+    '
+  x-displayName: Hosting
+paths:
+  /domains/{name}/dns/hosting:
+    get:
+      operationId: getDomainDnsHosting
+      summary: List hosting configurations
+      description: 'Retrieve all hosting configurations for the specified domain. Each configuration represents how a domain or subdomain serves content (e.g., redirect, reverse proxy).
+
+
+        Use the `subName` parameter to filter results to specific subdomains. Results are paginated — use the `$cursor` parameter to retrieve subsequent pages.
+
+        '
+      parameters:
+      - name: name
+        required: true
+        in: path
+        schema:
+          type: string
+        description: Domain name
+      - name: $cursor
+        required: false
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for retrieving the next page of results.
+      - name: subName
+        required: false
+        in: query
+        schema:
+          maxItems: 50
+          type: array
+          items:
+            type: string
+        description: Filter results by subdomain name(s).
+      responses:
+        '200':
+          description: List of hosting configurations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainHostingDetailsResponses'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+      - hosting
+    put:
+      operationId: putDomainDnsHosting
+      summary: Create or update hosting configuration
+      description: 'Set or update the hosting configuration for a domain or subdomain. This controls how the domain serves content — whether via redirect or reverse proxy.
+
+
+        Use the `subName` field in the request body to target a specific subdomain. If omitted, the configuration applies to the root domain.
+
+
+        All hosting configurations require an SSL certificate. After creating or updating a configuration, the `certificateStatus` will initially be `PENDING` while the certificate is provisioned. This typically completes within a few minutes.
+
+
+        Use `$preview=true` to validate the request and see the expected result without applying changes.
+
+        '
+      parameters:
+      - name: name
+        required: true
+        in: path
+        schema:
+          type: string
+        description: Domain name
+      - name: $preview
+        required: true
+        in: query
+        schema:
+          default: false
+          type: boolean
+        description: Preview mode — validate the request without executing changes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DomainHostingUpdateRequestBody'
+      responses:
+        '200':
+          description: Hosting update operation created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainHostingUpdateOperationResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+      - hosting
+    delete:
+      operationId: deleteDomainDnsHosting
+      summary: Delete hosting configuration
+      description: 'Remove the hosting configuration for a domain or subdomain. This stops the domain from serving content through the configured hosting type and releases the associated SSL certificate.
+
+
+        Use the `subName` field in the request body to target a specific subdomain''s configuration. If omitted, the root domain configuration is removed.
+
+
+        Use `$preview=true` to validate the request without applying changes.
+
+        '
+      parameters:
+      - name: name
+        required: true
+        in: path
+        schema:
+          type: string
+        description: Domain name
+      - name: $preview
+        required: true
+        in: query
+        schema:
+          default: false
+          type: boolean
+        description: Preview mode — validate the request without executing changes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DomainHostingDeleteRequestBody'
+      responses:
+        '200':
+          description: Hosting delete operation created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainHostingDeleteOperationResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+      - hosting
+components:
+  schemas:
+    PlatformOperationDnsRecordDelete:
+      type: object
+      description: Deletes a DNS record
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DNS_RECORD_DELETE
+        parameters:
+          type: object
+          properties:
+            id:
+              type: string
+              description: DNS record ID to delete
+          required:
+          - id
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    DomainHostingDetailsResponses:
+      type: object
+      description: Paginated list of hosting configurations for a domain.
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.CursorList
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainHostingDetailsItemResponse'
+        next:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/CursorListResponseNext'
+      required:
+      - '@type'
+      - items
+      - next
+    ContactAssignment:
+      type: object
+      description: Reference to an existing or newly created contact
+      properties:
+        new:
+          type: boolean
+          description: Whether this contact is being newly created as part of this operation
+        id:
+          type: string
+          description: Contact ID (present when new is false)
+          example: con_abc12345-1234-1234-1234-abc123456789
+      required:
+      - new
+    PlatformOperationDnsRecordUpdate:
+      type: object
+      description: Updates an existing DNS record
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DNS_RECORD_UPDATE
+        parameters:
+          type: object
+          properties:
+            id:
+              type: string
+              description: DNS record ID to update
+            values:
+              type: array
+              items:
+                type: string
+            ttl:
+              type: integer
+              description: Time-to-live in seconds
+          required:
+          - id
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    PlatformOperationContactCreate:
+      type: object
+      description: Creates a new contact for use in domain registration or management
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - CONTACT_CREATE
+        parameters:
+          type: object
+          properties:
+            purposes:
+              type: array
+              items:
+                $ref: '#/components/schemas/ContactPurpose'
+              description: Intended roles for this contact
+              example:
+              - OWNER
+              - ADMIN
+          required:
+          - purposes
+        result:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the created contact
+              example: ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          required:
+          - id
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    PlatformOperationDomainDnsContactSet:
+      type: object
+      description: Updates contact role assignments for the domain
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_DNS_CONTACT_SET
+        parameters:
+          type: object
+          properties:
+            owner:
+              $ref: '#/components/schemas/ContactAssignment'
+            admin:
+              $ref: '#/components/schemas/ContactAssignment'
+            billing:
+              $ref: '#/components/schemas/ContactAssignment'
+            tech:
+              $ref: '#/components/schemas/ContactAssignment'
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    PlatformOperationDomainDnsSecurityDeleteDnssec:
+      type: object
+      description: Removes DNSSEC DS records from the registry for a domain
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_DNS_SECURITY_DELETE_DNSSEC
+        parameters:
+          type: object
+          properties:
+            domain:
+              type: string
+              description: Domain name
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    NonRegistrantContacts:
+      type: object
+      description: Non-registrant contact role assignments (admin, billing, tech)
+      properties:
+        admin:
+          $ref: '#/components/schemas/ContactAssignment'
+        billing:
+          $ref: '#/components/schemas/ContactAssignment'
+        tech:
+          $ref: '#/components/schemas/ContactAssignment'
+    PlatformOperationDomainFlagLockUpdate:
+      type: object
+      description: Updates domain flag lock settings (e.g., transfer lock, delete lock)
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_FLAG_LOCK_UPDATE
+        parameters:
+          type: object
+          properties:
+            locks:
+              $ref: '#/components/schemas/DomainFlagLocks'
+            policyLocks:
+              $ref: '#/components/schemas/DomainFlagLocks'
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    DomainHostingUpdateOperationResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainHostingOperationResult
+        operation:
+          $ref: '#/components/schemas/OperationCheckResponse'
+      required:
+      - '@type'
+      - operation
+    DomainHostingType:
+      type: string
+      enum:
+      - REDIRECT_301
+      - REDIRECT_302
+      - REVERSE_PROXY
+    ErrorResponse:
+      type: object
+      description: Standard error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: VALIDATION
+        message:
+          type: string
+          description: Human-readable error description
+        errors:
+          type: array
+          description: Individual errors when code is MULTIPLE_ERRORS
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+            required:
+            - code
+      required:
+      - code
+    DomainHostingDetailsItemResponse:
+      type: object
+      description: Represents a single hosting configuration for a domain or subdomain.
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainHostingDetails
+        type:
+          nullable: true
+          $ref: '#/components/schemas/DomainHostingType'
+        targetUrl:
+          type: string
+          nullable: true
+          description: The target URL for redirect or reverse proxy configurations.
+        subName:
+          type: string
+          description: The subdomain this configuration applies to. Empty string for root domain.
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - PENDING
+          description: Current status of the hosting configuration.
+        certificateStatus:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - PENDING
+          description: Status of the SSL certificate. Will be `PENDING` while the certificate is being provisioned.
+      required:
+      - '@type'
+      - type
+      - targetUrl
+      - status
+      - certificateStatus
+    DomainHostingDeleteRequestBody:
+      type: object
+      description: Request body for deleting a hosting configuration.
+      properties:
+        subName:
+          type: string
+          description: The subdomain whose hosting configuration should be removed. Omit or leave empty for the root domain.
+    ContactPurpose:
+      type: string
+      enum:
+      - OWNER
+      - ADMIN
+      - TECH
+      - BILLING
+    PlatformOperationDomainRegister:
+      type: object
+      description: Registers a new domain with the specified owner contact and optional role contacts
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_REGISTER
+        parameters:
+          type: object
+          properties:
+            owner:
+              $ref: '#/components/schemas/ContactAssignment'
+            contacts:
+              $ref: '#/components/schemas/NonRegistrantContacts'
+            period:
+              type: integer
+              description: Registration period in years
+              example: 1
+          required:
+          - owner
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    PlatformOperationStatus:
+      type: string
+      enum:
+      - PREVIEW
+      - QUEUED
+      - PROCESSING
+      - FAILED
+      - COMPLETED
+      - CANCELLED
+      - AWAITING_UPDATES
+      description: Status of a platform operation dependency
+    PlatformOperationDomainDnsSecurityUpdateZone:
+      type: object
+      description: Updates the DNS zone configuration for DNSSEC signing
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_DNS_SECURITY_UPDATE_ZONE
+        parameters:
+          type: object
+          properties:
+            domain:
+              type: string
+              description: Domain name
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    DomainHostingUpdateRequestBody:
+      type: object
+      description: Request body for creating or updating a hosting configuration.
+      properties:
+        subName:
+          type: string
+          description: The subdomain to configure. Omit or leave empty for the root domain.
+        targetUrl:
+          type: string
+          description: The target URL for redirect or reverse proxy configurations.
+        type:
+          $ref: '#/components/schemas/DomainHostingType'
+        $forceCompatibility:
+          type: boolean
+          default: false
+          description: Force the update even if it may conflict with existing DNS records.
+      required:
+      - type
+      - $forceCompatibility
+    PlatformOperationDnsRecordCreate:
+      type: object
+      description: Creates a new DNS record for the domain
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DNS_RECORD_CREATE
+        parameters:
+          type: object
+          properties:
+            subName:
+              type: string
+              description: Subdomain name (empty for apex domain)
+              example: www
+            type:
+              $ref: '#/components/schemas/DnsRecordType'
+            values:
+              type: array
+              items:
+                type: string
+              example:
+              - 192.0.2.1
+            ttl:
+              type: integer
+              description: Time-to-live in seconds
+              example: 300
+          required:
+          - type
+          - values
+          - ttl
+        result:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the created DNS record
+          required:
+          - id
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    OperationDependencyError:
+      type: object
+      description: Error details for a failed operation dependency
+      properties:
+        code:
+          type: string
+          description: Error code identifying the failure type
+        message:
+          type: string
+          description: Human-readable error description
+      required:
+      - code
+      - message
+    PlatformOperationWebhookDelete:
+      type: object
+      description: Deletes a webhook subscription
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - WEBHOOK_DELETE
+        parameters:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Webhook ID to delete
+          required:
+          - id
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    PlatformOperationWebhookCreate:
+      type: object
+      description: Creates a webhook subscription
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - WEBHOOK_CREATE
+        parameters:
+          type: object
+          properties:
+            url:
+              type: string
+              description: Webhook callback URL
+              example: https://example.com/webhooks
+            type:
+              $ref: '#/components/schemas/WebhookType'
+          required:
+          - url
+          - type
+        result:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the created webhook
+          required:
+          - id
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    DomainHostingDeleteOperationResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainHostingOperationResult
+        operation:
+          $ref: '#/components/schemas/OperationCheckResponse'
+      required:
+      - '@type'
+      - operation
+    OperationCheckResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.Operation
+        id:
+          type: string
+          description: Operation ID
+          pattern: ^op-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+          example: op-a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        status:
+          enum:
+          - PREVIEW
+          - QUEUED
+          - PROCESSING
+          - FAILED
+          - COMPLETED
+          - CANCELLED
+          - AWAITING_UPDATES
+          type: string
+        type:
+          type: string
+          enum:
+          - ADMIN_GENERIC
+          - DOMAIN_ADMIN_UPDATE
+          - DOMAIN_RENEW
+          - ACCOUNT_UPDATE
+          - DOMAIN_DNS_RECORD_CREATE
+          - DOMAIN_DNS_RECORD_UPDATE
+          - DOMAIN_DNS_RECORD_DELETE
+          - DOMAIN_DNS_RECORD_BATCH
+          - DOMAIN_DNS_SECURITY_ENABLE
+          - DOMAIN_DNS_SECURITY_DELETE
+          - DOMAIN_DNS_NAME_SERVER_UPDATE
+          - DOMAIN_HOSTING_UPDATE
+          - DOMAIN_HOSTING_DISABLE
+          - DOMAIN_TRANSFER_OUT
+          - DOMAIN_TRANSFER_OUT_TOGGLE
+          - DOMAIN_FLAGS_UPDATE
+          - DOMAIN_CONTACTS_UPDATE
+          - CONTACT_CREATE
+          - DOMAIN_SUGGESTION_CREATE
+          - DOMAIN_SUGGESTION_REFRESH
+          - DOMAIN_ADMIN_DNS_ZONE_MIGRATE
+        domain:
+          type: string
+        createdAtTimestamp:
+          type: number
+        lastUpdatedTimestamp:
+          type: number
+        validUntilTimestamp:
+          type: number
+        dependencies:
+          type: array
+          description: List of platform operation dependencies that make up this operation
+          items:
+            $ref: '#/components/schemas/PlatformOperationDependency'
+      required:
+      - '@type'
+      - id
+      - status
+      - type
+      - createdAtTimestamp
+      - lastUpdatedTimestamp
+      - dependencies
+    DomainFlagLocks:
+      type: object
+      description: Map of domain flag names to boolean lock values. Keys are DomainFlagType values.
+      additionalProperties:
+        type: boolean
+      example:
+        DNS_TRANSFER_OUT: true
+        DNS_DELETE: false
+    CursorListResponseNext:
+      type: object
+      properties:
+        $cursor:
+          type: string
+    DnsRecordType:
+      type: string
+      enum:
+      - A
+      - AAAA
+      - ALIAS
+      - CAA
+      - CNAME
+      - DNSKEY
+      - DS
+      - HTTPS
+      - IPSECKEY
+      - MX
+      - NAPTR
+      - NS
+      - PTR
+      - SOA
+      - SPF
+      - SRV
+      - SSHFP
+      - SVCB
+      - TLSA
+      - TXT
+    PlatformOperationDomainSetNameServers:
+      type: object
+      description: Sets the nameservers for a domain (external nameservers or revert to UD-managed)
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_SET_NAMESERVERS
+        parameters:
+          type: object
+          properties:
+            items:
+              type: array
+              items:
+                type: string
+              description: Nameserver hostnames
+              example:
+              - ns1.example.com
+              - ns2.example.com
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    PlatformOperationDomainDnsSecuritySetDnssec:
+      type: object
+      description: Configures DNSSEC DS records at the registry for a domain
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_DNS_SECURITY_SET_DNSSEC
+        parameters:
+          type: object
+          properties:
+            domain:
+              type: string
+              description: Domain name
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    PlatformOperationDependency:
+      description: A platform operation dependency. Discriminated by the `type` field — each type has its own `parameters` and `result` shape.
+      oneOf:
+      - $ref: '#/components/schemas/PlatformOperationDomainRegister'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsRenew'
+      - $ref: '#/components/schemas/PlatformOperationDnsRecordCreate'
+      - $ref: '#/components/schemas/PlatformOperationDnsRecordUpdate'
+      - $ref: '#/components/schemas/PlatformOperationDnsRecordDelete'
+      - $ref: '#/components/schemas/PlatformOperationDomainSetNameServers'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecuritySetDnssec'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecurityDeleteDnssec'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecurityUpdateZone'
+      - $ref: '#/components/schemas/PlatformOperationDomainFlagLockUpdate'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsContactSet'
+      - $ref: '#/components/schemas/PlatformOperationContactCreate'
+      - $ref: '#/components/schemas/PlatformOperationWebhookCreate'
+      - $ref: '#/components/schemas/PlatformOperationWebhookDelete'
+      discriminator:
+        propertyName: type
+        mapping:
+          DOMAIN_REGISTER: '#/components/schemas/PlatformOperationDomainRegister'
+          DOMAIN_DNS_RENEW: '#/components/schemas/PlatformOperationDomainDnsRenew'
+          DNS_RECORD_CREATE: '#/components/schemas/PlatformOperationDnsRecordCreate'
+          DNS_RECORD_UPDATE: '#/components/schemas/PlatformOperationDnsRecordUpdate'
+          DNS_RECORD_DELETE: '#/components/schemas/PlatformOperationDnsRecordDelete'
+          DOMAIN_SET_NAMESERVERS: '#/components/schemas/PlatformOperationDomainSetNameServers'
+          DOMAIN_DNS_SECURITY_SET_DNSSEC: '#/components/schemas/PlatformOperationDomainDnsSecuritySetDnssec'
+          DOMAIN_DNS_SECURITY_DELETE_DNSSEC: '#/components/schemas/PlatformOperationDomainDnsSecurityDeleteDnssec'
+          DOMAIN_DNS_SECURITY_UPDATE_ZONE: '#/components/schemas/PlatformOperationDomainDnsSecurityUpdateZone'
+          DOMAIN_FLAG_LOCK_UPDATE: '#/components/schemas/PlatformOperationDomainFlagLockUpdate'
+          DOMAIN_DNS_CONTACT_SET: '#/components/schemas/PlatformOperationDomainDnsContactSet'
+          CONTACT_CREATE: '#/components/schemas/PlatformOperationContactCreate'
+          WEBHOOK_CREATE: '#/components/schemas/PlatformOperationWebhookCreate'
+          WEBHOOK_DELETE: '#/components/schemas/PlatformOperationWebhookDelete'
+    PlatformOperationDomainDnsRenew:
+      type: object
+      description: Renews a domain for the specified period
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_DNS_RENEW
+        parameters:
+          type: object
+          properties:
+            period:
+              type: integer
+              description: Renewal period in years
+              example: 1
+          required:
+          - period
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    WebhookType:
+      type: string
+      enum:
+      - OPERATION_FINISHED
+      - OPERATION_ACTION_REQUIRED
+      - OPERATION_CREATED
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

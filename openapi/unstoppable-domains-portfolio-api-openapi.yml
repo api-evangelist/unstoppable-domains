@@ -1,0 +1,586 @@
+openapi: 3.1.0
+info:
+  title: Web3 Partner API v3 account Portfolio API
+  version: 3.0.0
+  contact:
+    name: Unstoppable Domains (Partner Engineering)
+    email: partnerengineering@unstoppabledomains.com
+  description: "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n"
+servers:
+- url: https://api.unstoppabledomains.com/partner/v3
+  description: Production
+- url: https://api.ud-sandbox.com/partner/v3
+  description: Sandbox
+security:
+- bearer: []
+tags:
+- name: Portfolio
+  description: Manage owned domains (requires authentication)
+paths:
+  /mcp/v1/actions/ud_portfolio_list:
+    post:
+      operationId: portfolioList
+      summary: List portfolio domains
+      description: List domains in the authenticated user's portfolio with filtering, sorting, and pagination. By default, only ICANN (DNS) domains are returned. Returns 50 domains per page by default. If hasMore is true in the pagination response, increment the page parameter to fetch additional results.
+      tags:
+      - Portfolio
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                page:
+                  type: number
+                  minimum: 1
+                  description: 'Page number, 1-indexed (default: 1)'
+                  example: 1
+                pageSize:
+                  type: number
+                  minimum: 1
+                  maximum: 100
+                  description: 'Number of domains per page, 1-100 (default: 50)'
+                  example: 50
+                searchTerm:
+                  type: string
+                  description: Optional search term to filter domains by name
+                status:
+                  type: string
+                  enum:
+                  - all
+                  - for-sale
+                  - unlisted
+                  description: 'Filter by listing status: "all" (default), "for-sale", or "unlisted"'
+                registryType:
+                  type: string
+                  enum:
+                  - dns
+                  - web3
+                  description: 'Filter by registry type: "dns" (ICANN/Web2 domains, default) or "web3" (blockchain domains only)'
+                expiringWithinDays:
+                  type: number
+                  minimum: 1
+                  maximum: 365
+                  description: Filter domains expiring within the specified number of days (1-365)
+                  example: 30
+                expired:
+                  type: boolean
+                  description: Filter for domains that have already expired
+                minLength:
+                  type: number
+                  minimum: 1
+                  description: Filter domains with label length >= this value
+                maxLength:
+                  type: number
+                  minimum: 1
+                  description: Filter domains with label length <= this value
+                autoRenewal:
+                  type: string
+                  enum:
+                  - 'true'
+                  - 'false'
+                  description: Filter by auto-renewal status
+                tagFilters:
+                  type: array
+                  items:
+                    type: string
+                  description: Filter domains by tag names (e.g., ["personal", "business"])
+                orderBy:
+                  type: string
+                  enum:
+                  - name
+                  - length
+                  - purchasedAt
+                  - expiresAt
+                  - listingPrice
+                  - offers
+                  - leads
+                  - watchlistCount
+                  description: 'Sort by: "name", "length", "purchasedAt", "expiresAt", "listingPrice", "offers", "leads", or "watchlistCount"'
+                orderDirection:
+                  type: string
+                  enum:
+                  - asc
+                  - desc
+                  description: 'Sort direction: "asc" (ascending, default) or "desc" (descending)'
+      responses:
+        '200':
+          description: Portfolio domains list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDomainsResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_domain_get:
+    post:
+      operationId: domainGet
+      summary: Get comprehensive portfolio domain info
+      description: 'Get comprehensive information for specific domains in your portfolio. Returns all data from ud_portfolio_list plus additional detail: renewal pricing, flags, DNS configuration (nameservers, hosting, DNSSEC), marketplace metrics, and pending operations. Supports bulk lookups for up to 50 domains.'
+      tags:
+      - Portfolio
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - domains
+              properties:
+                domains:
+                  type: array
+                  items:
+                    type: string
+                    minLength: 1
+                  minItems: 1
+                  maxItems: 50
+                  description: Array of domain names to get info for (e.g., ["example.com", "mysite.io"])
+                  example:
+                  - example.com
+                  - mysite.io
+      responses:
+        '200':
+          description: Portfolio domain details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPortfolioDomainsResponse'
+        '401':
+          description: Authentication required
+components:
+  schemas:
+    PortfolioDomain:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Full domain name (e.g., "example.com")
+        extension:
+          type: string
+          description: TLD (e.g., "com")
+        label:
+          type: string
+          description: Domain label without TLD
+        sld:
+          type:
+          - string
+          - 'null'
+          description: Second-level domain
+        punycode:
+          type: boolean
+          description: Whether domain uses punycode
+        purchasedAt:
+          type:
+          - string
+          - 'null'
+          description: Purchase date (ISO string)
+        expiresAt:
+          type:
+          - string
+          - 'null'
+          description: Expiration date for DNS domains (ISO string)
+        transferStatus:
+          type: string
+          description: 'Domain transfer status:
+
+            • "none" - No active transfer
+
+            • "pending" - Transfer in progress'
+        isExternallyOwned:
+          type: boolean
+          description: Whether domain is externally owned
+        tags:
+          type: array
+          items:
+            type: string
+          description: User-defined tags
+        reverse:
+          type: boolean
+          description: Whether this is set as reverse resolution
+        offersCount:
+          type: number
+          description: Number of active offers on this domain
+        leadsCount:
+          type: number
+          description: Number of buyer inquiries/messages about this domain
+        watchlistCount:
+          type: number
+          description: Number of users watching this domain
+        listing:
+          type:
+          - object
+          - 'null'
+          description: Listing details if domain is for sale
+          properties:
+            id:
+              type: number
+              description: Listing ID
+            price:
+              type: number
+              description: Listing price in cents
+            status:
+              type: string
+              description: 'Listing status:
+
+                • "open" - Live on marketplace, ready for purchase (user-custodied domains)
+
+                • "open-not-signed" - Live on marketplace, ready for purchase (UD-custodied domains, no user action needed)
+
+                • "open-on-request" - Accepting offers only, no fixed price
+
+                • "draft" - Not yet published
+
+                • "waiting-for-approval" - Pending wallet signature from owner
+
+                • "pending-admin-approval" - Under review (high-value listings)
+
+                • "pending" - Sale in progress
+
+                • "canceled" - Listing was canceled
+
+                Note: Both "open" and "open-not-signed" mean the listing is active and purchasable.'
+            createdAt:
+              type: string
+              description: ISO date string
+            updatedAt:
+              type: string
+              description: ISO date string
+            views:
+              type: number
+              description: Number of page views
+        autoRenewal:
+          type:
+          - object
+          - 'null'
+          description: Auto-renewal subscription details if enabled
+          properties:
+            status:
+              type: string
+              description: 'Auto-renewal subscription status:
+
+                • "active" - Subscription active, will auto-renew
+
+                • "pending" - Payment collected, waiting for domain registration
+
+                • "update_required" - Payment method needs updating (card expired/declined)
+
+                • "expired" - Subscription expired, domain renewal overdue
+
+                • "cancelled" - Subscription cancelled, will not auto-renew'
+            expiresAt:
+              type:
+              - string
+              - 'null'
+              description: Subscription expiration date (ISO string)
+    ListDomainsResponse:
+      type: object
+      properties:
+        domains:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioDomain'
+        pagination:
+          type: object
+          properties:
+            page:
+              type: number
+              description: Current page number
+            pageSize:
+              type: number
+              description: Items per page
+            totalPages:
+              type: number
+              description: Total number of pages
+            total:
+              type: number
+              description: Total number of domains
+            hasMore:
+              type: boolean
+              description: Whether more pages exist
+            nextPage:
+              type:
+              - number
+              - 'null'
+              description: Next page number if more results exist, null otherwise
+        truncated:
+          type: boolean
+          description: Whether results were truncated due to size limits
+        truncationMessage:
+          type: string
+    GetPortfolioDomainsResponse:
+      type: object
+      properties:
+        domains:
+          type: array
+          description: Comprehensive info for each requested domain
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: The domain name
+              found:
+                type: boolean
+                description: Whether the domain was found in your portfolio
+              extension:
+                type: string
+                description: TLD (e.g., "com")
+              label:
+                type: string
+                description: Domain label without TLD
+              sld:
+                type:
+                - string
+                - 'null'
+                description: Second-level domain
+              punycode:
+                type: boolean
+                description: Whether domain uses punycode encoding
+              lifecycle:
+                type: object
+                description: 'Domain lifecycle: dates, ownership, renewal, auto-renewal'
+                properties:
+                  purchasedAt:
+                    type:
+                    - string
+                    - 'null'
+                    description: Purchase date (ISO 8601)
+                  expiresAt:
+                    type:
+                    - string
+                    - 'null'
+                    description: Expiration date (ISO 8601)
+                  transferStatus:
+                    type: string
+                    description: 'Transfer status: "none" or "pending"'
+                  isExternallyOwned:
+                    type: boolean
+                    description: Whether domain is in registrar custody (externally owned)
+                  reverse:
+                    type: boolean
+                    description: Whether reverse resolution is enabled
+                  renewal:
+                    type:
+                    - object
+                    - 'null'
+                    description: Renewal eligibility and pricing
+                    properties:
+                      isEligible:
+                        type: boolean
+                        description: Whether domain is eligible for renewal
+                      period:
+                        type: object
+                        properties:
+                          min:
+                            type: number
+                            description: Minimum renewal years
+                          max:
+                            type: number
+                            description: Maximum renewal years
+                          increments:
+                            type: number
+                            description: Renewal year increments
+                      pricePerYear:
+                        type: number
+                        description: Renewal price per year in cents (USD)
+                      pricePerYearFormatted:
+                        type: string
+                        description: Formatted price (e.g., "$12.99")
+                  autoRenewal:
+                    type:
+                    - object
+                    - 'null'
+                    description: Auto-renewal subscription status
+                    properties:
+                      status:
+                        type: string
+                        description: Subscription status
+                      expiresAt:
+                        type:
+                        - string
+                        - 'null'
+                        description: Next renewal date (ISO 8601)
+              flags:
+                type:
+                - object
+                - 'null'
+                description: Domain-level flags (WHOIS privacy, transfer lock, etc.)
+                properties:
+                  DNS_TRANSFER_OUT:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - ENABLED
+                        - DISABLED
+                    description: Transfer lock status
+                  DNS_WHOIS_PROXY:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - ENABLED
+                        - DISABLED
+                    description: WHOIS privacy status
+                  DNS_RESOLUTION:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - ENABLED
+                        - DISABLED
+                  DNS_DELETE:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - ENABLED
+                        - DISABLED
+                  DNS_UPDATE:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - ENABLED
+                        - DISABLED
+                  DNS_UNS_TOKENIZATION:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - ENABLED
+                        - DISABLED
+              dns:
+                type: object
+                description: DNS configuration from cache (nameservers, hosting, DNSSEC)
+                properties:
+                  nameservers:
+                    type:
+                    - object
+                    - 'null'
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - default
+                        - custom
+                        - none
+                        description: 'Nameserver status: default (UD-managed), custom (external), none'
+                      nameservers:
+                        type: array
+                        items:
+                          type: string
+                        description: Nameserver hostnames
+                  hosting:
+                    type:
+                    - array
+                    - 'null'
+                    items:
+                      type: object
+                      properties:
+                        subName:
+                          type: string
+                          description: Subdomain name
+                        type:
+                          type: string
+                          description: Hosting type (REDIRECT_301, REDIRECT_302, UD_PROFILE)
+                        targetUrl:
+                          type:
+                          - string
+                          - 'null'
+                          description: Target URL for redirect
+                        status:
+                          type: string
+                          description: Hosting status (ACTIVE, INACTIVE, PENDING)
+                    description: URL redirects and hosting rules
+                  dnssec:
+                    type:
+                    - object
+                    - 'null'
+                    properties:
+                      enabled:
+                        type: boolean
+                        description: Whether DNSSEC is enabled
+                      valid:
+                        type: boolean
+                        description: Whether DNSSEC validation passes
+              marketplace:
+                type: object
+                description: Marketplace listing and engagement metrics
+                properties:
+                  listing:
+                    type:
+                    - object
+                    - 'null'
+                    description: Active listing details
+                    properties:
+                      id:
+                        type: number
+                      price:
+                        type: number
+                        description: Listing price in cents
+                      status:
+                        type: string
+                      createdAt:
+                        type: string
+                      updatedAt:
+                        type: string
+                      views:
+                        type: number
+                      listingSettings:
+                        type:
+                        - object
+                        - 'null'
+                  offersCount:
+                    type: number
+                    description: Number of active offers
+                  leadsCount:
+                    type: number
+                    description: Number of buyer leads
+                  watchlistCount:
+                    type: number
+                    description: Number of users watching this domain
+              tags:
+                type: array
+                items:
+                  type: string
+                description: Tags applied to this domain
+              pendingOperations:
+                type: array
+                description: Pending DNS/domain operations
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    status:
+                      type: string
+                    createdAt:
+                      type: string
+              error:
+                type: string
+                description: Error message if retrieval failed
+        availableTags:
+          type: array
+          items:
+            type: string
+          description: All tags you've created (useful for adding tags to other domains)
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

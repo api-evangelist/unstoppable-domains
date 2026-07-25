@@ -1,0 +1,648 @@
+openapi: 3.1.0
+info:
+  title: Web3 Partner API v3 account marketplace API
+  version: 3.0.0
+  contact:
+    name: Unstoppable Domains (Partner Engineering)
+    email: partnerengineering@unstoppabledomains.com
+  description: "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n"
+servers:
+- url: https://api.unstoppabledomains.com/partner/v3
+  description: Production
+- url: https://api.ud-sandbox.com/partner/v3
+  description: Sandbox
+security:
+- bearer: []
+tags:
+- name: marketplace
+  description: 'Browse and search the Unstoppable Domains secondary marketplace. Retrieve paginated listings of domains available for purchase from existing owners, with filtering by TLD and sorting options.
+
+    '
+  x-displayName: Marketplace
+paths:
+  /marketplace/domains/listings:
+    get:
+      operationId: getMarketplaceDomainsListings
+      parameters:
+      - name: q
+        required: false
+        in: query
+        description: Search query to filter listings by domain name. Supports partial matching.
+        schema:
+          type: string
+      - name: tlds
+        required: true
+        in: query
+        description: One or more TLD extensions to filter listings (e.g., `com`, `xyz`). At least one TLD must be provided.
+        schema:
+          uniqueItems: true
+          default: []
+          type: array
+          items:
+            type: string
+      - name: orderBy
+        required: false
+        in: query
+        description: Field to sort results by.
+        schema:
+          type: string
+          enum:
+          - price
+          - name
+          - listedAt
+      - name: orderDirection
+        required: false
+        in: query
+        description: Sort direction. Defaults to ascending.
+        schema:
+          type: string
+          enum:
+          - ASC
+          - DESC
+      - name: perPage
+        required: false
+        in: query
+        description: Number of results per page (1–100).
+        schema:
+          minimum: 1
+          maximum: 100
+          type: number
+      - name: $page
+        required: false
+        in: query
+        description: Page number for pagination (1-indexed).
+        schema:
+          minimum: 1
+          type: number
+      responses:
+        '200':
+          description: Paginated list of marketplace domain listings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketplaceDomainsListingsResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+      - marketplace
+      summary: List marketplace domain listings
+      description: 'Retrieve a paginated list of domains currently listed for sale on the Unstoppable Domains secondary marketplace. Use this endpoint to browse available domains, filter by TLD, and sort by price, name, or listing date.
+
+
+        Results are paginated — use the `$page` and `perPage` parameters to navigate through results.
+
+        '
+  /mcp/v1/actions/ud_listing_create:
+    post:
+      operationId: listingCreate
+      summary: Create marketplace listings
+      description: List one or more domains for sale on the marketplace. Supports buy-now pricing, offers, and lease-to-own options.
+      tags:
+      - marketplace
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - domains
+              properties:
+                domains:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - domainName
+                    properties:
+                      domainName:
+                        type: string
+                        description: The domain name to list
+                      priceInCents:
+                        type: number
+                        description: Buy-now price in cents (0 for offers-only)
+                      expiresAt:
+                        type: string
+                        description: 'Listing expiration date as ISO 8601 string (e.g., "2025-12-31"). Must be 1-36500 days from now. Default: 90 days.'
+                      isEmailAliasUsed:
+                        type: boolean
+                        description: Enable message seller feature
+                      listingSettings:
+                        type: object
+                        properties:
+                          isOfferFeatureEnabled:
+                            type: boolean
+                          minOfferAmountInCents:
+                            type: number
+                          domainDisplayName:
+                            type: string
+                            description: Optional human-readable domain display name used in listings
+                      leaseToOwnOptions:
+                        type: object
+                        description: Optional lease-to-own configuration for the domain listing
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                            - equal_installments
+                            - down_payment_plus_equal_installments
+                          maxTermLength:
+                            type: integer
+                            minimum: 2
+                            maximum: 120
+                            description: Maximum term length in months (2-120)
+                          downPaymentPercentage:
+                            type: number
+                            description: Down payment percentage (10-90), required for down_payment type
+                  minItems: 1
+                  maxItems: 50
+      responses:
+        '200':
+          description: Listing creation results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateListingResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_listing_update:
+    post:
+      operationId: listingUpdate
+      summary: Update marketplace listings
+      description: Update price, settings, or options for existing listings.
+      tags:
+      - marketplace
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - listings
+              properties:
+                listings:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - id
+                    properties:
+                      id:
+                        type: number
+                        description: Listing ID
+                      priceInCents:
+                        type: number
+                      expiresAt:
+                        type: string
+                        description: New listing expiration date as ISO 8601 string (e.g., "2025-12-31"). Must be 1-36500 days from now.
+                      isEmailAliasUsed:
+                        type: boolean
+                      listingSettings:
+                        type: object
+                        description: Listing-level settings such as offers and display preferences.
+                        properties:
+                          minOfferAmountInCents:
+                            type: number
+                            description: Minimum offer amount (in cents) accepted for this listing.
+                          isOfferFeatureEnabled:
+                            type: boolean
+                            description: Indicates whether the offer feature is enabled for this listing.
+                          domainDisplayName:
+                            type: string
+                            description: Custom display name to use for this domain in marketplace contexts.
+                      leaseToOwnOptions:
+                        type: object
+                        description: Lease-to-own configuration options for the listing.
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                            - equal_installments
+                            - down_payment_plus_equal_installments
+                          maxTermLength:
+                            type: integer
+                            minimum: 2
+                            maximum: 120
+                            description: Maximum term length in months (2-120)
+                          downPaymentPercentage:
+                            type: number
+                            description: Down payment percentage (10-90), required for down_payment type
+                  minItems: 1
+                  maxItems: 50
+      responses:
+        '200':
+          description: Listing update results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateListingResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_listing_cancel:
+    post:
+      operationId: listingCancel
+      summary: Cancel marketplace listings
+      description: Cancel one or more active marketplace listings.
+      tags:
+      - marketplace
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - listingIds
+              properties:
+                listingIds:
+                  type: array
+                  items:
+                    type: number
+                  description: Array of listing IDs to cancel
+                  minItems: 1
+                  maxItems: 50
+      responses:
+        '200':
+          description: Cancellation results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelListingResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_offers_list:
+    post:
+      operationId: offersList
+      summary: List marketplace offers
+      description: List incoming offers on domains you own. Filter by domain or status.
+      tags:
+      - marketplace
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                domainName:
+                  type: string
+                  description: Filter by specific domain name
+                group:
+                  type: string
+                  enum:
+                  - active
+                  - sold
+                  description: 'Filter by group: "active" (pending) or "sold" (completed)'
+                page:
+                  type: number
+                  description: Page number (1-indexed)
+      responses:
+        '200':
+          description: List of offers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOffersResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_offer_respond:
+    post:
+      operationId: offerRespond
+      summary: Respond to marketplace offers
+      description: Accept or reject incoming offers on your domains.
+      tags:
+      - marketplace
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - offers
+              properties:
+                offers:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - id
+                    - action
+                    properties:
+                      id:
+                        type: number
+                        description: Offer ID
+                      action:
+                        type: string
+                        enum:
+                        - accept
+                        - reject
+                  minItems: 1
+                  maxItems: 50
+      responses:
+        '200':
+          description: Offer response results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespondToOfferResponse'
+        '401':
+          description: Authentication required
+components:
+  schemas:
+    MarketplaceDomainsListingItemResponse:
+      type: object
+      properties:
+        domain:
+          type: string
+          description: The domain name listed for sale
+        status:
+          type: string
+          description: Current listing status
+        listPrice:
+          $ref: '#/components/schemas/MarketplaceDomainsListingListPriceResponse'
+        payout:
+          $ref: '#/components/schemas/MarketplaceDomainsListingPayoutResponse'
+        owner:
+          $ref: '#/components/schemas/MarketplaceDomainsListingOwnerResponse'
+        expiresAt:
+          type: number
+          description: Unix timestamp when the listing expires (if applicable)
+      required:
+      - domain
+      - status
+      - listPrice
+      - payout
+      - owner
+    MarketplaceDomainsListingListPriceResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+          description: Listing price in USD cents
+      required:
+      - usdCents
+    MarketplaceDomainsListingsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketplaceDomainsListingItemResponse'
+        next:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/PaginatedListResponseNext'
+      required:
+      - items
+      - next
+    MarketplaceDomainsListingPayoutResponse:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Wallet address designated to receive the payout
+      required:
+      - address
+    CreateListingResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              domainName:
+                type: string
+              success:
+                type: boolean
+              listingId:
+                type: number
+              status:
+                type: string
+              isLazy:
+                type: boolean
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        message:
+          type: string
+        signatureRequired:
+          type: boolean
+        signatureNote:
+          type: string
+    UpdateListingResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              listingId:
+                type: number
+              domainName:
+                type: string
+              success:
+                type: boolean
+              status:
+                type: string
+              isLazy:
+                type: boolean
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        message:
+          type: string
+        signatureRequired:
+          type: boolean
+        signatureNote:
+          type: string
+    ErrorResponse:
+      type: object
+      description: Standard error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: VALIDATION
+        message:
+          type: string
+          description: Human-readable error description
+        errors:
+          type: array
+          description: Individual errors when code is MULTIPLE_ERRORS
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+            required:
+            - code
+      required:
+      - code
+    ListOffersResponse:
+      type: object
+      properties:
+        offers:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                description: Offer ID
+              domainName:
+                type: string
+              priceInCents:
+                type: number
+              priceFormatted:
+                type: string
+              buyerUserId:
+                type: string
+              buyerStatus:
+                type: string
+              sellerStatus:
+                type: string
+              expiresAt:
+                type: string
+              createdAt:
+                type: string
+              updatedAt:
+                type: string
+        pagination:
+          type: object
+          properties:
+            page:
+              type: number
+            pageSize:
+              type: number
+            totalPages:
+              type: number
+            total:
+              type: number
+            hasMore:
+              type: boolean
+        truncated:
+          type: boolean
+          description: Indicates if the offers list was truncated to meet response size limits
+        truncationMessage:
+          type: string
+          description: Optional message providing details about the truncation
+    RespondToOfferResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              offerId:
+                type: number
+              domainName:
+                type: string
+              action:
+                type: string
+              success:
+                type: boolean
+              priceInCents:
+                type: number
+              priceFormatted:
+                type: string
+              newStatus:
+                type: string
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        message:
+          type: string
+        signatureRequired:
+          type: boolean
+        signatureNote:
+          type: string
+    PaginatedListResponseNext:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+    CancelListingResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              listingId:
+                type: number
+              domainName:
+                type: string
+              success:
+                type: boolean
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        message:
+          type: string
+    MarketplaceDomainsListingOwnerResponse:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Wallet address of the domain owner
+      required:
+      - address
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

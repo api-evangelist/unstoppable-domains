@@ -1,0 +1,679 @@
+openapi: 3.1.0
+info:
+  title: Web3 Partner API v3 account wallets API
+  version: 3.0.0
+  contact:
+    name: Unstoppable Domains (Partner Engineering)
+    email: partnerengineering@unstoppabledomains.com
+  description: "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n"
+servers:
+- url: https://api.unstoppabledomains.com/partner/v3
+  description: Production
+- url: https://api.ud-sandbox.com/partner/v3
+  description: Sandbox
+security:
+- bearer: []
+tags:
+- name: wallets
+  x-displayName: Custody Wallets
+  description: 'Manage custody wallets used for storing and managing domains without any signature collection.
+
+
+    These wallets provide the most streamlined way to interact with domains since the initial management request is the only step needed to make changes.
+
+    '
+paths:
+  /account/wallets:
+    get:
+      operationId: getWallets
+      summary: Get list of account wallets
+      description: 'Any domains held in the wallets of type `SELF` can be managed by your account without any signature collection. You can use these `SELF` wallets to distribute domains in whatever way works best for you.
+
+
+        This route will return both custody (`SELF`) and self-custody (`EXTERNAL`) wallets associated with your account. To only list custody wallets, simply include the `?type=SELF` query string parameter.
+
+        '
+      parameters:
+      - name: $cursor
+        required: false
+        description: The `next.$cursor` value from the previous page response
+        in: query
+        schema:
+          type: string
+      - name: type
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - SELF
+            - EXTERNAL
+      responses:
+        '200':
+          description: Paginated list of wallets associated with your account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletListResponse'
+      tags:
+      - wallets
+    post:
+      operationId: createWallet
+      summary: Create a new custody wallet
+      description: 'Create an additional custodial wallet in your account.
+
+        '
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletCreateResponse'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                WalletLimitReached:
+                  $ref: '#/components/examples/WalletLimitReached'
+      tags:
+      - wallets
+  /account/wallets/{address}:
+    get:
+      operationId: getWallet
+      summary: Get wallet details
+      description: 'Get details for a wallet associated with your account. This route supports both custody (`SELF`) and self-custody (`EXTERNAL`) wallets.
+
+
+        Include the `?$expand=primaryDomain` to include the wallet''s Primary Domain (also known as the Reverse Resolution) in the response.
+
+        '
+      parameters:
+      - name: address
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: $expand
+        in: query
+        schema:
+          enum:
+          - primaryDomain
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MinimalWalletResponse'
+        404:
+          description: Wallet does not exist in your account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+      - wallets
+    patch:
+      operationId: updateWallet
+      summary: Update custody wallet
+      description: 'Update details for a specific custody wallet in your account.
+
+
+        This can be used to set (or clear) the Primary Domain (also known as the Reverse Resolution) for a custody wallet.
+
+
+        To clear the Primary Domain for a wallet, pass a `null` value for the `primaryDomain` property within the request body.
+
+        '
+      parameters:
+      - name: address
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: $preview
+        in: query
+        schema:
+          $ref: '#/components/schemas/OperationPreviewParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalletUpdateRequestBody'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletUpdateResponse'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                ValidationError:
+                  $ref: '#/components/examples/ValidationError'
+                NoChange:
+                  $ref: '#/components/examples/NoChange'
+                CustodyRequired:
+                  $ref: '#/components/examples/CustodyRequired'
+                BadRequest:
+                  $ref: '#/components/examples/BadRequest'
+        404:
+          description: Wallet does not exist in your account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+      - wallets
+components:
+  schemas:
+    UpdateRecordsParametersResponse:
+      type: object
+      properties:
+        recordUpdates:
+          $ref: '#/components/schemas/DomainRecords'
+        resetRecords:
+          type: boolean
+      required:
+      - recordUpdates
+      - resetRecords
+    WebhookCreateParametersResponse:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        url:
+          type: string
+          format: uri
+      required:
+      - type
+      - url
+    WebhookDeleteParametersResponse:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+      - id
+    WalletUpdateRequestBody:
+      type: object
+      properties:
+        primaryDomain:
+          oneOf:
+          - $ref: '#/components/schemas/DomainName'
+          - type: 'null'
+      required:
+      - primaryDomain
+    WalletCreateResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.InternalWalletCreateResult
+        operation:
+          $ref: '#/components/schemas/OperationCheckResponse'
+      required:
+      - '@type'
+      - operation
+    WalletCreateSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          result:
+            $ref: '#/components/schemas/WalletCreateResultResponse'
+          type:
+            type: string
+            enum:
+            - WALLET_CREATE
+        required:
+        - type
+    OperationType:
+      type: string
+      enum:
+      - DOMAIN_CLAIM
+      - DOMAIN_UPDATE
+      - DOMAIN_RETURN
+      - WALLET_CREATE
+      - WALLET_UPDATE
+      - WALLET_VERIFY
+      - ACCOUNT_UPDATE
+    SubOperationTransactionResponse:
+      type: object
+      properties:
+        hash:
+          type: string
+        blockchain:
+          $ref: '#/components/schemas/BlockchainType'
+      required:
+      - blockchain
+    PlatformSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/SubOperationResponse'
+      - type: object
+        properties:
+          '@type':
+            type: string
+            enum:
+            - unstoppabledomains.com/partner.v3.PlatformOperation
+        required:
+        - '@type'
+    TransferSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - TRANSFER
+          parameters:
+            $ref: '#/components/schemas/TransferParametersResponse'
+        required:
+        - type
+        - parameters
+    EvmOwnerAddress:
+      type: string
+      example: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+      pattern: ^0x[a-fA-F0-9]{40}$
+    SubOperationResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: bc-2db427bd-5613-40c7-85b1-ab38beed0ed0
+        status:
+          $ref: '#/components/schemas/OperationStatus'
+      required:
+      - status
+      - id
+    MintParametersResponse:
+      type: object
+      properties:
+        initialRecords:
+          $ref: '#/components/schemas/DomainRecords'
+        toAddress:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - toAddress
+    WebhookCreateSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WebhookCreateParametersResponse'
+          result:
+            $ref: '#/components/schemas/WebhookCreateResultResponse'
+          type:
+            type: string
+            enum:
+            - WEBHOOK_CREATE
+        required:
+        - parameters
+        - type
+    OwnerAddress:
+      oneOf:
+      - $ref: '#/components/schemas/EvmOwnerAddress'
+    MinimalWalletResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.WalletMinimal
+        address:
+          $ref: '#/components/schemas/OwnerAddress'
+        type:
+          type: string
+          enum:
+          - SELF
+          - EXTERNAL
+        primaryDomain:
+          oneOf:
+          - $ref: '#/components/schemas/DomainName'
+          - type: 'null'
+      required:
+      - '@type'
+      - address
+      - type
+    ErrorResponse:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseSingle'
+      - $ref: '#/components/schemas/ErrorResponseMulti'
+    ErrorResponseContextEntityMulti:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MULTI_VALUE
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      required:
+      - type
+      - values
+    OperationStatus:
+      type: string
+      enum:
+      - QUEUED
+      - SIGNATURE_REQUIRED
+      - PROCESSING
+      - COMPLETED
+      - FAILED
+      - CANCELLED
+    WalletSetDefaultSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WalletSetDefaultParametersResponse'
+          type:
+            type: string
+            enum:
+            - WALLET_SET_DEFAULT
+        required:
+        - parameters
+        - type
+    UpdateRecordsSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - UPDATE_RECORDS
+          parameters:
+            $ref: '#/components/schemas/UpdateRecordsParametersResponse'
+        required:
+        - type
+        - parameters
+    WalletUpdateResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.WalletUpdateResult
+        operation:
+          $ref: '#/components/schemas/OperationCheckResponse'
+      required:
+      - '@type'
+      - operation
+    BlockchainSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/SubOperationResponse'
+      - type: object
+        properties:
+          '@type':
+            type: string
+            enum:
+            - unstoppabledomains.com/partner.v3.BlockchainOperation
+          transaction:
+            $ref: '#/components/schemas/SubOperationTransactionResponse'
+        required:
+        - '@type'
+    ErrorResponseSingle:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
+    DomainName:
+      type: string
+      example: matt.crypto
+    ErrorResponseContextEntitySingle:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+      required:
+      - type
+      - value
+    DomainRecords:
+      type: object
+      additionalProperties:
+        type: string
+      example:
+        crypto.ETH.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+        crypto.MATIC.version.MATIC.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e5678'
+        crypto.MATIC.version.ERC20.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e0921'
+    ErrorResponseContext:
+      type: object
+      properties:
+        entities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntity'
+      required:
+      - entities
+    OperationCheckResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: op-4abb409c-9283-4589-bd36-d27a757a2165
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.Operation
+        status:
+          $ref: '#/components/schemas/OperationStatus'
+        type:
+          $ref: '#/components/schemas/OperationType'
+        domain:
+          $ref: '#/components/schemas/DomainName'
+        lastUpdatedTimestamp:
+          type: number
+          example: 1684356429790
+        dependencies:
+          type: array
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/MintSubOperationResponse'
+            - $ref: '#/components/schemas/UpdateRecordsSubOperationResponse'
+            - $ref: '#/components/schemas/TransferSubOperationResponse'
+            - $ref: '#/components/schemas/ReturnSubOperationResponse'
+            - $ref: '#/components/schemas/WalletCreateSubOperationResponse'
+            - $ref: '#/components/schemas/WalletSetDefaultSubOperationResponse'
+            - $ref: '#/components/schemas/WebhookCreateSubOperationResponse'
+            - $ref: '#/components/schemas/WebhookDeleteSubOperationResponse'
+      required:
+      - id
+      - status
+      - type
+      - dependencies
+      - '@type'
+      - lastUpdatedTimestamp
+    WalletListResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.CursorList
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MinimalWalletResponse'
+        next:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/CursorListResponseNext'
+      required:
+      - '@type'
+      - items
+      - next
+    CursorListResponseNext:
+      type: object
+      properties:
+        $cursor:
+          oneOf:
+          - type: string
+          - type: 'null'
+      required:
+      - $cursor
+    OperationPreviewParameter:
+      type: boolean
+      default: false
+      description: 'Allows simulating the operation creation (when set to `true`), without actually starting any processing. This can be used to validate the operation will be permitted and get a preview of the initial outcome.
+
+
+        When used, the operation in the response will have `PREVIEW` for all `id` and `status` values.
+
+        '
+    TransferParametersResponse:
+      type: object
+      properties:
+        fromAddress:
+          $ref: '#/components/schemas/OwnerAddress'
+        toAddress:
+          $ref: '#/components/schemas/OwnerAddress'
+        resetRecords:
+          type: boolean
+      required:
+      - fromAddress
+      - toAddress
+      - resetRecords
+    WalletCreateResultResponse:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - address
+    WalletSetDefaultParametersResponse:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - address
+    BlockchainType:
+      type: string
+      enum:
+      - MATIC
+      - ETH
+      - BASE
+    WebhookCreateResultResponse:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+      - id
+    ErrorResponseMulti:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - MULTIPLE_ERRORS
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseSingle'
+      required:
+      - code
+      - errors
+    WebhookDeleteSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WebhookDeleteParametersResponse'
+          type:
+            type: string
+            enum:
+            - WEBHOOK_DELETE
+        required:
+        - parameters
+        - type
+    MintSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - MINT
+          parameters:
+            $ref: '#/components/schemas/MintParametersResponse'
+        required:
+        - type
+        - parameters
+    ErrorResponseContextEntity:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
+    WebhookType:
+      type: string
+      enum:
+      - OPERATION_FINISHED
+      - OPERATION_ACTION_REQUIRED
+    ReturnSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - RETURN
+        required:
+        - type
+  examples:
+    WalletLimitReached:
+      description: Maximum number of wallets for your account has been reached
+      value:
+        code: WALLET_LIMIT_REACHED
+    BadRequest:
+      description: Request is malformed or invalid.
+      value:
+        code: BAD_REQUEST
+    ValidationError:
+      description: Validation error due to incorrect parameters.
+      value:
+        code: VALIDATION
+    NoChange:
+      description: No change would occur by the requested operation.
+      value:
+        code: NO_CHANGE
+    CustodyRequired:
+      description: The domain or wallet is not in your custody.
+      value:
+        code: CUSTODY_REQUIRED
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

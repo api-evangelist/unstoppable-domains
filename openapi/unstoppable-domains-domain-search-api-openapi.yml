@@ -1,0 +1,728 @@
+openapi: 3.1.0
+info:
+  title: Web3 Partner API v3 account domain-search API
+  version: 3.0.0
+  contact:
+    name: Unstoppable Domains (Partner Engineering)
+    email: partnerengineering@unstoppabledomains.com
+  description: "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n"
+servers:
+- url: https://api.unstoppabledomains.com/partner/v3
+  description: Production
+- url: https://api.ud-sandbox.com/partner/v3
+  description: Sandbox
+security:
+- bearer: []
+tags:
+- name: domain-search
+  description: 'Search for domain availability and retrieve details for one or more domains. Use the `$expand` parameter to include registration details and flags in the response.
+
+    '
+  x-displayName: Search & Lookup
+paths:
+  /domains:
+    get:
+      operationId: getMultipleDomains
+      parameters:
+      - name: $expand
+        required: false
+        in: query
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainExpandField'
+      - name: ending
+        required: false
+        in: query
+        schema:
+          default: []
+          type: array
+          items:
+            type: string
+        description: TLD or domain endings to combine with unqualified query labels (e.g. `com`, `net`). Required when any `query` value is an unqualified label.
+      - name: query
+        required: true
+        in: query
+        schema:
+          maxItems: 50
+          type: array
+          items:
+            type: string
+        description: Domain names or labels to search. Fully qualified names (e.g. `example.com`) are looked up directly. Unqualified labels (e.g. `example`) are combined with each `ending` value to produce domain names.
+      responses:
+        '200':
+          description: List of domains matching search query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MultipleDomainSearchResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+      - domain-search
+      summary: Lookup multiple domains
+      description: 'Get domain availability and details for multiple domains. Optionally, use the `$expand` query parameter to include additional data in the response (e.g. `?$expand=registration&$expand=flags`).
+
+
+        If a domain is available for registration it will have an `availability.status` of `AVAILABLE` and will include an `availability.price` object.
+
+
+        **Search constraints:**
+
+        - Each `query` value must be a fully qualified domain name (e.g. `example.com`), OR at least one `ending` parameter must be provided.
+
+        - The total number of domains resolved (queries × endings) must not exceed **50**.
+
+        - If a `query` value already contains a valid TLD (e.g. `example.com`), it is looked up directly and is not combined with `ending` values.
+
+        '
+  /domains/{name}:
+    get:
+      operationId: getSingleDomain
+      parameters:
+      - name: name
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: $expand
+        required: false
+        in: query
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainExpandField'
+      responses:
+        '200':
+          description: Domain details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainSearchResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+      - domain-search
+      summary: Lookup a single domain
+      description: 'Get availability and details for a single domain. Optionally, use the `$expand` query parameter to include additional data such as registration details and flags.
+
+        '
+  /mcp/v1/actions/ud_domains_search:
+    post:
+      operationId: domainsSearch
+      summary: Search for available domains or check specific domain availability
+      description: 'Search for domain availability and pricing. Can check a specific domain (e.g., "example.com") or search terms across multiple TLDs. Supports multiple queries in a single request for efficient batch lookups. Returns a list of matching domains with their availability status, prices, and other details. IMPORTANT: Not all ICANN TLDs are supported. Use ud_tld_list to verify TLD support before searching with specific TLDs.'
+      tags:
+      - domain-search
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - query
+              properties:
+                query:
+                  oneOf:
+                  - type: string
+                    minLength: 1
+                  - type: array
+                    items:
+                      type: string
+                      minLength: 1
+                    minItems: 1
+                    maxItems: 10
+                  description: Domain name(s) to search - can be a full domain name like "example.com" (TLD is inferred) or a search term like "mybusiness" (searches across TLDs). Supports array of up to 10 terms for batch operations.
+                  example: example.com
+                tlds:
+                  type: array
+                  items:
+                    type: string
+                  description: Optional list of up to 5 ICANN TLDs to search (e.g., ["com", "org", "io"]). Must be supported TLDs - use ud_tld_list to verify. Defaults to popular TLDs (com, net, org, ai, io) or inferred from query.
+                  example:
+                  - com
+                  - org
+                  - io
+                limit:
+                  type: number
+                  minimum: 1
+                  maximum: 100
+                  description: 'Maximum number of results to return (1-100, default: 20)'
+                  example: 20
+                offset:
+                  type: number
+                  minimum: 0
+                  description: 'Number of results to skip for pagination (default: 0)'
+                  example: 0
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchDomainsResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_tld_list:
+    post:
+      operationId: tldList
+      summary: List available TLDs
+      description: List all available ICANN TLDs (top-level domains) supported by our registrar.
+      tags:
+      - domain-search
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+      responses:
+        '200':
+          description: List of available TLDs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TldListResponse'
+        '401':
+          description: Authentication required
+components:
+  schemas:
+    DomainFlagStatus:
+      type: string
+      enum:
+      - ENABLED
+      - DISABLED
+    DomainPriceResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - STANDARD
+          - PREMIUM
+          - DEFERRED
+        listPrice:
+          $ref: '#/components/schemas/PriceItemResponse'
+        adjustments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainPriceAdjustmentResponse'
+        subTotal:
+          $ref: '#/components/schemas/PriceItemResponse'
+        validUntilTimestamp:
+          type: number
+      required:
+      - type
+      - listPrice
+      - subTotal
+    IcannDomainRenewalInfoPeriodResponse:
+      type: object
+      properties:
+        min:
+          type: number
+        max:
+          type: number
+        increments:
+          type: number
+      required:
+      - min
+      - max
+      - increments
+    DomainFlagConfigurationResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainFlag
+        status:
+          $ref: '#/components/schemas/DomainFlagStatus'
+        readonly:
+          $ref: '#/components/schemas/DomainFlagConfigurationReadonlyResponse'
+      required:
+      - '@type'
+      - status
+    DomainAvailabilityConstraintsResponse:
+      type: object
+      properties:
+        registration:
+          $ref: '#/components/schemas/DomainAvailabilityRegistrationConstraintsResponse'
+    DomainResult:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Full domain name
+        extension:
+          type: string
+          description: TLD (e.g., com, org, io)
+        label:
+          type: string
+          description: Domain label without TLD
+        available:
+          type: boolean
+          description: Whether the domain can be purchased through Unstoppable Domains. True for fresh registrations AND secondary market listings. False for registered domains not for sale, protected domains, invalid names, etc.
+        status:
+          type: string
+        marketplace:
+          type: object
+          description: Marketplace information including acquisition status and listing source.
+          properties:
+            status:
+              type: string
+              enum:
+              - available
+              - registered-listed-for-sale
+              - registered-listed-for-offers
+              - registered-not-for-sale
+              - unavailable
+              - invalid
+              description: 'Indicates how this domain can be acquired: "available" = fresh registration at standard/promo price; "registered-listed-for-sale" = already registered, listed on secondary market with fixed buy-now price; "registered-listed-for-offers" = already registered, listed on secondary market accepting offers (no fixed price); "registered-not-for-sale" = already registered, not listed for sale; "unavailable" = not available (protected, restricted, etc.); "invalid" = invalid domain name'
+            source:
+              type: string
+              enum:
+              - unstoppable_domains
+              - sedo
+              - afternic
+              description: Marketplace where the domain can be purchased. Present for all purchasable domains. "unstoppable_domains" = purchase through Unstoppable Domains (fresh registrations and UD marketplace listings); "sedo" = purchase through Sedo (external secondary market); "afternic" = purchase through Afternic (external secondary market).
+          required:
+          - status
+        searchQuery:
+          type: string
+          description: The search term that produced this result (present in search results)
+        pricing:
+          type: object
+          description: Pricing info. Present for purchasable domains except "registered-listed-for-offers" which have no fixed price.
+          properties:
+            amount:
+              type: number
+              description: Price in cents. For fresh registrations, may include promo discount. For secondary market listings, shows the marketplace list price.
+            currency:
+              type: string
+              example: USD
+            formatted:
+              type: string
+              example: $9.99
+            listAmount:
+              type: number
+              description: List price before promo in cents (only for fresh registrations with active promo)
+            listFormatted:
+              type: string
+              description: Formatted list price (only for fresh registrations with active promo)
+        product:
+          type: object
+          description: Product info (only present when available)
+          properties:
+            type:
+              type: string
+            code:
+              type: string
+            id:
+              type: number
+        purchaseUrl:
+          type: string
+          description: Direct purchase URL (only for available domains)
+    DomainRegistrationIcannRegistrarResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - SELF
+          - EXTERNAL
+          - NONE
+      required:
+      - type
+    DomainExpandField:
+      type: string
+      enum:
+      - registration
+      - flags
+    DomainRegistrationResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/DomainRegistrationStatus'
+        tokenId:
+          type: string
+        tokenType:
+          type: string
+          enum:
+          - ERC721
+          - ERC1155
+          - ENSRecord
+          - TOKEN2022
+        pricing:
+          $ref: '#/components/schemas/DomainPostRegistrationPricingResponse'
+        registryCreatedDate:
+          type: string
+        expirationDate:
+          type: string
+        expirationGracePeriodDate:
+          type: string
+        deletionAtTimestamp:
+          type: number
+        icann:
+          $ref: '#/components/schemas/DomainRegistrationIcannResponse'
+    ErrorResponse:
+      type: object
+      description: Standard error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: VALIDATION
+        message:
+          type: string
+          description: Human-readable error description
+        errors:
+          type: array
+          description: Individual errors when code is MULTIPLE_ERRORS
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+            required:
+            - code
+      required:
+      - code
+    SingleDomainAvailabilityResponse:
+      type: object
+      properties:
+        source:
+          type: string
+          enum:
+          - UD
+          - SEDO
+          - AFTERNIC
+        status:
+          type: string
+          enum:
+          - AVAILABLE
+          - AVAILABLE_BACKORDER
+          - REGISTERED
+          - PROTECTED
+          - COMING_SOON
+          - DISALLOWED
+          - RESERVED
+          - AVAILABLE_FROM_ISSUER
+          - AVAILABLE_FROM_SELLER
+          - EXCEEDS_PRICE_LIMIT
+          - REGISTRATION_PENDING
+          - UNKNOWN_MAINTENANCE
+        issuer:
+          $ref: '#/components/schemas/DomainOwnerResponse'
+        price:
+          $ref: '#/components/schemas/DomainPriceResponse'
+        offer:
+          $ref: '#/components/schemas/DomainOfferPriceResponse'
+        additionalPricing:
+          $ref: '#/components/schemas/DomainAvailabilityAdditionalPricingResponse'
+        constraints:
+          $ref: '#/components/schemas/DomainAvailabilityConstraintsResponse'
+        availableAfterTimestamp:
+          type: number
+      required:
+      - source
+      - status
+    DomainOfferPriceResponse:
+      type: object
+      properties:
+        min:
+          $ref: '#/components/schemas/DomainPriceResponse'
+      required:
+      - min
+    TldListResponse:
+      type: object
+      properties:
+        tlds:
+          type: array
+          items:
+            type: string
+          description: Array of supported TLD extensions (e.g., ["com", "io", "org"])
+        count:
+          type: number
+          description: Total number of supported TLDs
+    DomainFlagConfigurationReadonlyResponse:
+      type: object
+      properties:
+        state:
+          type: boolean
+        reasons:
+          type: array
+          items:
+            type: object
+      required:
+      - state
+      - reasons
+    DomainRegistrationIcannResponse:
+      type: object
+      properties:
+        registrar:
+          $ref: '#/components/schemas/DomainRegistrationIcannRegistrarResponse'
+        ownershipVerification:
+          type: string
+          enum:
+          - COMPLETED
+          - REVERIFICATION_REQUIRED
+      required:
+      - registrar
+    MultipleDomainSearchResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.List
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainSearchResponse'
+      required:
+      - '@type'
+      - items
+    DomainSearchResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.Domain
+        name:
+          type: string
+        owner:
+          $ref: '#/components/schemas/DomainOwnerResponse'
+        availability:
+          $ref: '#/components/schemas/SingleDomainAvailabilityResponse'
+        registration:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/DomainRegistrationResponse'
+        flags:
+          $ref: '#/components/schemas/DomainFlagsSubResponse'
+      required:
+      - '@type'
+      - name
+      - owner
+      - availability
+    DomainFlagsSubResponse:
+      type: object
+      properties:
+        DNS_RESOLUTION:
+          $ref: '#/components/schemas/DomainFlagConfigurationResponse'
+        DNS_TRANSFER_OUT:
+          $ref: '#/components/schemas/DomainFlagConfigurationResponse'
+        DNS_DELETE:
+          $ref: '#/components/schemas/DomainFlagConfigurationResponse'
+        DNS_UPDATE:
+          $ref: '#/components/schemas/DomainFlagConfigurationResponse'
+        DNS_RENEW:
+          $ref: '#/components/schemas/DomainFlagConfigurationResponse'
+        DNS_WHOIS_PROXY:
+          $ref: '#/components/schemas/DomainFlagConfigurationResponse'
+        DNS_UNS_TOKENIZATION:
+          $ref: '#/components/schemas/DomainFlagConfigurationResponse'
+      required:
+      - DNS_RESOLUTION
+      - DNS_TRANSFER_OUT
+      - DNS_DELETE
+      - DNS_UPDATE
+      - DNS_RENEW
+      - DNS_WHOIS_PROXY
+      - DNS_UNS_TOKENIZATION
+    DomainAvailabilityAdditionalPricingResponse:
+      type: object
+      properties:
+        extendedRegistration:
+          $ref: '#/components/schemas/DomainPriceResponse'
+        transfer:
+          $ref: '#/components/schemas/DomainPriceResponse'
+    PriceItemResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+      required:
+      - usdCents
+    DomainOwnerResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - NONE
+          - UD
+          - UNKNOWN
+        contactId:
+          type: string
+      required:
+      - type
+    SearchDomainsResponse:
+      type: object
+      properties:
+        searchQuery:
+          type: string
+          description: Sanitized search term (present for single query requests)
+        searchQueries:
+          type: array
+          items:
+            type: object
+            properties:
+              query:
+                type: string
+              invalidReason:
+                type:
+                - string
+                - 'null'
+              invalidCharacters:
+                type: array
+                items:
+                  type: string
+          description: Array of search queries with metadata (present for multiple query requests)
+        searchedTlds:
+          type: array
+          items:
+            type: string
+          description: TLDs that were searched
+        invalidReason:
+          type:
+          - string
+          - 'null'
+          description: Validation error reason (present for single query requests)
+        invalidCharacters:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Invalid characters found (present for single query requests)
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainResult'
+        pagination:
+          type: object
+          properties:
+            total:
+              type: number
+              description: Total number of results
+            count:
+              type: number
+              description: Number of results in this response
+            offset:
+              type: number
+              description: Current offset
+            limit:
+              type: number
+              description: Max results per page
+            hasMore:
+              type: boolean
+              description: Whether more results are available
+            nextOffset:
+              type:
+              - number
+              - 'null'
+              description: Offset for next page, null if no more pages
+        truncated:
+          type: boolean
+          description: Whether results were truncated due to size limits
+        truncationMessage:
+          type: string
+          description: Message explaining truncation
+    DomainPostRegistrationPricingResponse:
+      type: object
+      properties:
+        renewal:
+          $ref: '#/components/schemas/DomainPriceResponse'
+    DomainPriceAdjustmentResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+        type:
+          type: string
+          enum: []
+      required:
+      - usdCents
+      - type
+    DomainAvailabilityRegistrationConstraintsResponse:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/IcannDomainRenewalInfoPeriodResponse'
+      required:
+      - period
+    DomainRegistrationStatus:
+      type: string
+      enum:
+      - REGISTERED
+      - REGISTERED_EXTERNAL
+      - PENDING
+      - EXPIRED_GRACE_PERIOD
+      - EXPIRED_REDEMPTION_PERIOD
+      - EXPIRED_PENDING_DELETE
+      - INACTIVE
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

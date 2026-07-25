@@ -1,0 +1,233 @@
+openapi: 3.1.0
+info:
+  title: Web3 Partner API v3 account search API
+  version: 3.0.0
+  contact:
+    name: Unstoppable Domains (Partner Engineering)
+    email: partnerengineering@unstoppabledomains.com
+  description: "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n"
+servers:
+- url: https://api.unstoppabledomains.com/partner/v3
+  description: Production
+- url: https://api.ud-sandbox.com/partner/v3
+  description: Sandbox
+security:
+- bearer: []
+tags:
+- name: search
+  x-displayName: Search
+  description: Search for owned entities
+paths:
+  /search/owners/domains:
+    get:
+      operationId: getOwnersDomains
+      summary: Search for owned domains by one or more addresses
+      parameters:
+      - name: $expand
+        required: false
+        in: query
+        schema:
+          type: array
+          description: Use `$expand` options to conditionally include portions of the response
+          items:
+            type: string
+            enum:
+            - records
+            - registration
+            - owner
+            - availability
+      - name: owner.address
+        required: true
+        in: query
+        description: Addresses to search by
+        schema:
+          type: array
+          items:
+            type: string
+      - name: $cursor
+        required: false
+        description: The `next.$cursor` value from the previous page response
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainSearchListResponse'
+      tags:
+      - search
+components:
+  schemas:
+    DomainPriceResponse:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/DomainPriceType'
+        listPrice:
+          $ref: '#/components/schemas/DomainPriceItemResponse'
+        subTotal:
+          $ref: '#/components/schemas/DomainPriceItemResponse'
+      required:
+      - type
+      - listPrice
+      - subTotal
+    EvmOwnerAddress:
+      type: string
+      example: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+      pattern: ^0x[a-fA-F0-9]{40}$
+    MinimalDomainSearchResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainMinimal
+        name:
+          type: string
+        blockchain:
+          type: string
+          enum:
+          - MATIC
+          - ETH
+          - ZIL
+        owner:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/DomainOwnerResponse'
+        availability:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/DomainAvailabilityResponse'
+        registration:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/DomainRegistrationResponse'
+        records:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/DomainRecords'
+      required:
+      - '@type'
+      - name
+    DomainAvailabilityResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/DomainAvailabilityStatus'
+        price:
+          $ref: '#/components/schemas/DomainPriceResponse'
+        issuer:
+          $ref: '#/components/schemas/DomainOwnerResponse'
+      required:
+      - status
+    DomainPriceType:
+      type: string
+      enum:
+      - STANDARD
+      - PREMIUM
+      - DEFERRED
+      description: "- `STANDARD`: Domain is priced using the default, standard pricing algorithm\n- `PREMIUM`: Domain is considered premium by the registry and pricing may differ from the standard pricing\n- `DEFERRED`: Domain pricing is not available and an additional request is needed to determine pricing. \n  - This can be a limitation of the bulk domain searches due to constraints with checking prices for some registries\n  - When requesting a single domain the price will always be included (if available) and this status will not be returned\n"
+    OwnerAddress:
+      oneOf:
+      - $ref: '#/components/schemas/EvmOwnerAddress'
+    DomainRecords:
+      type: object
+      additionalProperties:
+        type: string
+      example:
+        crypto.ETH.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+        crypto.MATIC.version.MATIC.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e5678'
+        crypto.MATIC.version.ERC20.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e0921'
+    DomainPriceItemResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+          example: 1000
+      required:
+      - usdCents
+    DomainAvailabilityStatus:
+      type: string
+      enum:
+      - AVAILABLE
+      - AVAILABLE_FROM_ISSUER
+      - REGISTERED
+      - PROTECTED
+      - COMING_SOON
+      - DISALLOWED
+      - RESERVED
+      - EXCEEDS_PRICE_LIMIT
+      description: "- `AVAILABLE`: Domain is available for registering\n- `AVAILABLE_FROM_ISSUER`: Domain is available for registering from an external issuer. \n  - This status is deprecated as it is only relevant to subdomains that have a verified, self-custodied parent domain\n- `EXCEEDS_PRICE_LIMIT`: Domain is available for registering, but exceeds the price limit on your account.\n  - In this situation you can contact your AM to facilitate a private sale or use our [Affiliate Program](https://unstoppabledomains.com/affiliate-registration) to refer users to our website for checkout  \n- `REGISTERED`: Domain belongs to an owner and is not available for registering\n- `PROTECTED`: Domain is being protected by Unstoppable Domains and is not available for general registering\n- `RESERVED`: Domain is being reserved by Unstoppable Domains and is not available for general registering\n- `COMING_SOON`: Domain is temporarily unavailable but will be available in the future\n- `DISALLOWED`: Domain is currently not allowed to be registered\n"
+    DomainRegistrationResponse:
+      type: object
+      properties:
+        tokenId:
+          type: string
+        tokenType:
+          type: string
+          enum:
+          - ERC721
+          - ERC1155
+      required:
+      - tokenId
+    CursorListResponseNext:
+      type: object
+      properties:
+        $cursor:
+          oneOf:
+          - type: string
+          - type: 'null'
+      required:
+      - $cursor
+    DomainOwnerResponse:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/OwnerType'
+        address:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - type
+    OwnerType:
+      type: string
+      enum:
+      - NONE
+      - UD
+      - SELF
+      - EXTERNAL
+      description: '- `NONE`: Domain is not currently owned by anyone
+
+        - `UD`: Domain is owned by a wallet/contract that belongs to Unstoppable Domains
+
+        - `SELF`: Domain is owned by your account. You can manage this domains through the API
+
+        - `EXTERNAL`: Owner doesn''t qualify as any of the above.
+
+        '
+    DomainSearchListResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.CursorList
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MinimalDomainSearchResponse'
+        next:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/CursorListResponseNext'
+      required:
+      - '@type'
+      - items
+      - next
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

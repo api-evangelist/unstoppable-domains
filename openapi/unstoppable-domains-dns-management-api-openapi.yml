@@ -1,0 +1,858 @@
+openapi: 3.1.0
+info:
+  title: Web3 Partner API v3 account DNS Management API
+  version: 3.0.0
+  contact:
+    name: Unstoppable Domains (Partner Engineering)
+    email: partnerengineering@unstoppabledomains.com
+  description: "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n"
+servers:
+- url: https://api.unstoppabledomains.com/partner/v3
+  description: Production
+- url: https://api.ud-sandbox.com/partner/v3
+  description: Sandbox
+security:
+- bearer: []
+tags:
+- name: DNS Management
+  description: Manage DNS records, nameservers, and hosting configurations for owned domains (requires authentication)
+paths:
+  /mcp/v1/actions/ud_dns_records_list:
+    post:
+      operationId: dnsRecordsList
+      summary: List DNS records for a domain
+      description: List all DNS records for a domain in your portfolio. Supports filtering by record type and subdomain, with pagination.
+      tags:
+      - DNS Management
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - domain
+              properties:
+                domain:
+                  type: string
+                  description: Domain name (e.g., "example.com")
+                type:
+                  type: string
+                  description: Filter by record type (A, AAAA, CNAME, MX, TXT, NS)
+                subName:
+                  type: string
+                  description: Filter by subdomain ("@" for root, "www", "*" for wildcard)
+                cursor:
+                  type: string
+                  description: Pagination cursor
+      responses:
+        '200':
+          description: DNS records list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DnsRecordsListResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_dns_record_add:
+    post:
+      operationId: dnsRecordAdd
+      summary: Add DNS records (bulk)
+      description: Add DNS records to one or more domains. Supports A, AAAA, CNAME, MX, TXT, NS, SRV, and CAA record types. Bulk operations up to 50 records.
+      tags:
+      - DNS Management
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - records
+              properties:
+                records:
+                  type: array
+                  minItems: 1
+                  maxItems: 50
+                  description: Array of DNS record configurations (1-50)
+                  items:
+                    type: object
+                    required:
+                    - domain
+                    - type
+                    - values
+                    properties:
+                      domain:
+                        type: string
+                        description: Domain name (e.g., "example.com")
+                      type:
+                        type: string
+                        description: Record type (A, AAAA, CNAME, MX, TXT, NS, SRV, CAA)
+                      subName:
+                        type: string
+                        default: '@'
+                        description: Subdomain ("@" for root, "www", "*" for wildcard)
+                      values:
+                        type: array
+                        items:
+                          type: string
+                        description: Record values
+                      ttl:
+                        type: number
+                        default: 3600
+                        description: Time-to-live in seconds (60-86400)
+                upsertMode:
+                  type: string
+                  enum:
+                  - append
+                  - replace
+                  - disallowed
+                  description: Global setting for how to handle existing records
+      responses:
+        '200':
+          description: Bulk operation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkDnsOperationResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_dns_record_update:
+    post:
+      operationId: dnsRecordUpdate
+      summary: Update DNS records (bulk)
+      description: Update existing DNS records on one or more domains. Bulk operations up to 50 records.
+      tags:
+      - DNS Management
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - records
+              properties:
+                records:
+                  type: array
+                  minItems: 1
+                  maxItems: 50
+                  description: Array of record update configurations (1-50)
+                  items:
+                    type: object
+                    required:
+                    - domain
+                    - recordId
+                    - values
+                    properties:
+                      domain:
+                        type: string
+                        description: Domain name
+                      recordId:
+                        type: string
+                        description: Record ID from ud_dns_records_list
+                      values:
+                        type: array
+                        items:
+                          type: string
+                        description: New record values
+                      ttl:
+                        type: number
+                        default: 3600
+                        description: 'Time-to-live in seconds (60-86400). Default: 3600'
+      responses:
+        '200':
+          description: Bulk operation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkDnsOperationResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_dns_record_remove:
+    post:
+      operationId: dnsRecordRemove
+      summary: Remove DNS records (bulk)
+      description: Remove specific DNS records by ID from one or more domains. Bulk operations up to 50 records.
+      tags:
+      - DNS Management
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - records
+              properties:
+                records:
+                  type: array
+                  minItems: 1
+                  maxItems: 50
+                  description: Array of record removal configurations (1-50)
+                  items:
+                    type: object
+                    required:
+                    - domain
+                    - recordId
+                    properties:
+                      domain:
+                        type: string
+                        description: Domain name
+                      recordId:
+                        type: string
+                        description: Record ID to remove
+      responses:
+        '200':
+          description: Bulk operation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkDnsOperationResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_dns_records_remove_all:
+    post:
+      operationId: dnsRecordsRemoveAll
+      summary: Remove all DNS records (bulk)
+      description: Remove ALL user-created DNS records from one or more domains. Requires explicit confirmation. Bulk operations up to 50 domains.
+      tags:
+      - DNS Management
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - domains
+              - confirmDeleteAll
+              properties:
+                domains:
+                  type: array
+                  minItems: 1
+                  maxItems: 50
+                  description: Array of domains to remove all records from (1-50)
+                  items:
+                    type: object
+                    required:
+                    - name
+                    properties:
+                      name:
+                        type: string
+                        description: Domain name
+                confirmDeleteAll:
+                  type: boolean
+                  const: true
+                  description: Must be exactly true to confirm this destructive operation
+      responses:
+        '200':
+          description: Bulk operation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkDnsOperationResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_dns_nameservers_list:
+    post:
+      operationId: dnsNameserversList
+      summary: List nameservers for a domain
+      description: List current nameservers and check if using UD defaults or custom nameservers.
+      tags:
+      - DNS Management
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - domain
+              properties:
+                domain:
+                  type: string
+                  description: Domain name
+                includeDnssec:
+                  type: boolean
+                  description: Include DNSSEC info
+      responses:
+        '200':
+          description: Nameservers list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DnsNameserversListResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_dns_nameservers_set_custom:
+    post:
+      operationId: dnsNameserversSetCustom
+      summary: Set custom nameservers (bulk)
+      description: Configure external nameservers (e.g., Cloudflare, Route 53) for one or more domains. Supports up to 50 domains per request.
+      tags:
+      - DNS Management
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - domains
+              properties:
+                domains:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - name
+                    - nameservers
+                    properties:
+                      name:
+                        type: string
+                        description: Domain name
+                      nameservers:
+                        type: array
+                        items:
+                          type: string
+                        minItems: 2
+                        maxItems: 12
+                        description: Nameserver hostnames
+                      dnssec:
+                        type: object
+                        description: Optional DNSSEC DS records
+                  minItems: 1
+                  maxItems: 50
+                  description: Array of domain configurations
+      responses:
+        '200':
+          description: Bulk operation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkDnsOperationResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_dns_nameservers_set_default:
+    post:
+      operationId: dnsNameserversSetDefault
+      summary: Reset to UD default nameservers (bulk)
+      description: Switch back to Unstoppable Domains default nameservers for one or more domains. Supports up to 50 domains per request.
+      tags:
+      - DNS Management
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - domains
+              properties:
+                domains:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - name
+                    properties:
+                      name:
+                        type: string
+                        description: Domain name
+                  minItems: 1
+                  maxItems: 50
+                  description: Array of domains
+      responses:
+        '200':
+          description: Bulk operation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkDnsOperationResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_dns_hosting_list:
+    post:
+      operationId: dnsHostingList
+      summary: List hosting configurations
+      description: List hosting/forwarding configurations (redirects, reverse proxy, hosted sites, UD Profile).
+      tags:
+      - DNS Management
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - domain
+              properties:
+                domain:
+                  type: string
+                  description: Domain name
+                cursor:
+                  type: string
+                  description: Pagination cursor
+      responses:
+        '200':
+          description: Hosting configurations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DnsHostingListResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_dns_hosting_add:
+    post:
+      operationId: dnsHostingAdd
+      summary: Add hosting configuration (bulk)
+      description: 'Configure hosting for one or more domains: for-sale listing page, permanent redirect (301), temporary redirect (302), or reverse proxy. Supports up to 50 domains per request.'
+      tags:
+      - DNS Management
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - domains
+              properties:
+                domains:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - name
+                    - type
+                    properties:
+                      name:
+                        type: string
+                        description: Domain name
+                      type:
+                        type: string
+                        enum:
+                        - LISTING_PAGE
+                        - REDIRECT_301
+                        - REDIRECT_302
+                        - REVERSE_PROXY
+                        description: Hosting type
+                      targetUrl:
+                        type: string
+                        description: Destination URL (required for REDIRECT_301, REDIRECT_302, REVERSE_PROXY)
+                      subName:
+                        type: string
+                        description: Subdomain to configure
+                      forceCompatibility:
+                        type: boolean
+                        description: Auto-configure UD nameservers if needed
+                  minItems: 1
+                  maxItems: 50
+                  description: Array of domain hosting configurations
+      responses:
+        '200':
+          description: Bulk operation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkDnsOperationResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_dns_hosting_remove:
+    post:
+      operationId: dnsHostingRemove
+      summary: Remove hosting configuration (bulk)
+      description: Remove hosting/forwarding configuration from one or more domains. Supports up to 50 domains per request.
+      tags:
+      - DNS Management
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - domains
+              properties:
+                domains:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - name
+                    properties:
+                      name:
+                        type: string
+                        description: Domain name
+                      subName:
+                        type: string
+                        description: Subdomain to remove
+                      deleteAll:
+                        type: boolean
+                        description: Remove ALL hosting configs for this domain
+                  minItems: 1
+                  maxItems: 50
+                  description: Array of domains to remove hosting from
+                confirmDeleteAll:
+                  type: boolean
+                  enum:
+                  - true
+                  description: 'Must be true when any domain has deleteAll: true'
+      responses:
+        '200':
+          description: Bulk operation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkDnsOperationResponse'
+        '401':
+          description: Authentication required
+  /mcp/v1/actions/ud_domain_pending_operations:
+    post:
+      operationId: domainPendingOperations
+      summary: Get pending operations for multiple domains
+      description: Check status of DNS operations across multiple domains. Use to track changes and verify completion after bulk operations.
+      tags:
+      - DNS Management
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - domains
+              properties:
+                domains:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - name
+                    properties:
+                      name:
+                        type: string
+                        description: Domain name
+                  minItems: 1
+                  maxItems: 50
+                  description: Array of domains to check for pending operations
+                includeCompleted:
+                  type: boolean
+                  description: Include completed operations (last 24h)
+      responses:
+        '200':
+          description: Pending operations for all domains
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PendingOperationsResponse'
+        '401':
+          description: Authentication required
+components:
+  schemas:
+    DnsRecordsListResponse:
+      type: object
+      properties:
+        domain:
+          type: string
+        records:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type:
+                - string
+                - 'null'
+                description: Record ID (may be undefined for system records)
+              type:
+                type: string
+                enum:
+                - A
+                - AAAA
+                - CNAME
+                - MX
+                - TXT
+                - NS
+                - SRV
+                - CAA
+              subName:
+                type:
+                - string
+                - 'null'
+                description: Record subdomain (relative name)
+              values:
+                type: array
+                items:
+                  type: string
+                description: Record values
+              ttl:
+                type: number
+                description: Time to live in seconds
+              readonly:
+                type: boolean
+                description: Whether this record is read-only and cannot be modified
+              readonlyReasons:
+                type: array
+                items:
+                  type: string
+                description: Reasons why the record is read-only
+        pagination:
+          type: object
+          properties:
+            hasMore:
+              type: boolean
+            nextCursor:
+              type:
+              - string
+              - 'null'
+        dnsStatus:
+          type:
+          - object
+          - 'null'
+          description: Present when DNS is not managed by UD. Explains the current DNS configuration state.
+          properties:
+            configured:
+              type: boolean
+              description: Whether nameservers are set up for this domain
+            provider:
+              type:
+              - string
+              - 'null'
+              enum:
+              - ud
+              - external
+              description: 'DNS provider: "ud" for UD-managed, "external" for third-party'
+            message:
+              type: string
+              description: Human-readable explanation and suggested next steps
+    PendingOperationsResponse:
+      type: object
+      description: Bulk response for pending operations across multiple domains
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+                description: Whether the lookup succeeded
+              hasPendingOperations:
+                type: boolean
+                description: Whether any operations are still in progress
+              operations:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Operation ID
+                    type:
+                      type: string
+                      description: Operation type
+                    status:
+                      type: string
+                      description: UserOperationStatus string, e.g. PENDING, PENDING_SIGNATURE, COMPLETED, FAILED
+                    createdAt:
+                      type: string
+                    updatedAt:
+                      type: string
+                    originOperationId:
+                      type:
+                      - string
+                      - 'null'
+                      description: ID of the originating operation, if any
+                    errorCode:
+                      type:
+                      - string
+                      - 'null'
+                      description: Error code if the operation failed, otherwise null
+              error:
+                type: string
+                description: Error message (if lookup failed)
+        successCount:
+          type: number
+          description: Number of domains successfully queried
+        failureCount:
+          type: number
+          description: Number of domains that failed lookup
+        summary:
+          type: object
+          description: Aggregate summary across all domains
+          properties:
+            totalPendingCount:
+              type: number
+              description: Total pending operations across all domains
+            domainsWithPending:
+              type: array
+              items:
+                type: string
+              description: List of domain names with pending operations
+    BulkDnsOperationResponse:
+      type: object
+      description: Response for bulk DNS operations (nameservers, hosting). Contains results per domain with success/failure tracking.
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+                description: Whether the operation succeeded
+              operationId:
+                type: string
+                description: Track with ud_domain_pending_operations (if successful)
+              nameservers:
+                type: array
+                items:
+                  type: string
+                description: Configured nameservers (for nameserver operations)
+              hasDnssec:
+                type: boolean
+                description: Whether DNSSEC is configured (for nameserver operations)
+              config:
+                type: object
+                description: Hosting config (for hosting operations)
+                properties:
+                  type:
+                    type: string
+                  subName:
+                    type:
+                    - string
+                    - 'null'
+                  targetUrl:
+                    type:
+                    - string
+                    - 'null'
+              subName:
+                type: string
+                description: Subdomain removed (for hosting remove operations)
+              deletedAll:
+                type: boolean
+                description: Whether all configs were removed (for hosting remove)
+              error:
+                type: string
+                description: Error message (if failed)
+        successCount:
+          type: number
+          description: Number of successful operations
+        failureCount:
+          type: number
+          description: Number of failed operations
+    DnsNameserversListResponse:
+      type: object
+      properties:
+        domain:
+          type: string
+        nameservers:
+          type: array
+          items:
+            type: string
+          description: List of nameserver hostnames
+        isUsingDefaultNameservers:
+          type: boolean
+          description: True if using UD default nameservers
+        dnssec:
+          type:
+          - object
+          - 'null'
+          properties:
+            enabled:
+              type: boolean
+            records:
+              type: array
+              items:
+                type: object
+                properties:
+                  keyTag:
+                    type: number
+                  algorithm:
+                    type: number
+                  digestType:
+                    type: number
+                  digest:
+                    type: string
+    DnsHostingListResponse:
+      type: object
+      properties:
+        domain:
+          type: string
+        configs:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - GCS_HOSTED
+                - LISTING_PAGE
+                - REDIRECT_301
+                - REDIRECT_302
+                - REVERSE_PROXY
+                - UD_PROFILE
+                - STOREFRONT
+              subName:
+                type:
+                - string
+                - 'null'
+                description: Subdomain (null for root)
+              targetUrl:
+                type:
+                - string
+                - 'null'
+                description: Destination URL (for redirects and reverse proxy)
+              status:
+                type: string
+              certificateStatus:
+                type:
+                - string
+                - 'null'
+        pagination:
+          type: object
+          properties:
+            hasMore:
+              type: boolean
+            nextCursor:
+              type:
+              - string
+              - 'null'
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

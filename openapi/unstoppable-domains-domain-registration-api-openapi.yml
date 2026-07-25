@@ -1,0 +1,1008 @@
+openapi: 3.1.0
+info:
+  title: Web3 Partner API v3 account domain_registration API
+  version: 3.0.0
+  contact:
+    name: Unstoppable Domains (Partner Engineering)
+    email: partnerengineering@unstoppabledomains.com
+  description: "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n"
+servers:
+- url: https://api.unstoppabledomains.com/partner/v3
+  description: Production
+- url: https://api.ud-sandbox.com/partner/v3
+  description: Sandbox
+security:
+- bearer: []
+tags:
+- name: domain_registration
+  x-displayName: Domain Lookup & Registration
+  description: 'Domain details/availability lookups and registration.
+
+    '
+paths:
+  /domains:
+    get:
+      operationId: getMultipleDomains
+      summary: Lookup multiple domain details and availability
+      description: 'Get domain availability and owner details for multiple domains using the query string search options. Optionally, use the `$expand` query string to include additional data in the response (ie. `?$expand=records&$expand=registration`).
+
+
+        If the domain is available to be registered it will have a `availability.status` of `AVAILABLE` and will include an `availability.price` object.
+
+        '
+      parameters:
+      - name: $expand
+        required: false
+        in: query
+        schema:
+          type: array
+          description: Use `$expand` options to conditionally include portions of the response
+          items:
+            type: string
+            enum:
+            - records
+            - registration
+      - name: tlds
+        required: false
+        deprecated: true
+        description: Use `ending` instead
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            example: crypto
+      - name: ending
+        required: false
+        in: query
+        description: TLD or Parent Domain to apply to your `query` base names
+        schema:
+          type: array
+          items:
+            anyOf:
+            - type: string
+              example: example-name
+            - $ref: '#/components/schemas/DomainName'
+      - name: query
+        required: true
+        in: query
+        schema:
+          type: array
+          items:
+            anyOf:
+            - type: string
+              example: example-name
+            - $ref: '#/components/schemas/DomainName'
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MultipleDomainSearchResponse'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                ValidationError:
+                  $ref: '#/components/examples/ValidationError'
+      tags:
+      - domain_registration
+    post:
+      operationId: mintSingleDomain
+      summary: Register a domain
+      description: 'If a domain is available, use this route to register it to your account. The domain will be minted or transfered to your custodial wallet where only Unstoppable Domains, on your behalf, will be able to make changes to it.
+
+
+        The price of the domain will be automatically added to your running balance with Unstoppable Domains. The pending balance of your account will be invoiced periodically.
+
+
+        ### Register to specific owner
+
+        If you do not provide an `owner` in your request, your account''s default wallet address will be used as the owner. Use `GET /account` to confirm your default wallet address.
+
+
+        When providing an `owner` object in your request, be sure the `type` aligns with the `address`. To register to one of your own wallets, the `type` must be `SELF`. Use `GET /account/wallets` to see your list of available wallets.
+
+        '
+      parameters:
+      - name: $preview
+        in: query
+        schema:
+          $ref: '#/components/schemas/OperationPreviewParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DomainMintRequestBody'
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainOperationResponse'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                ValidationError:
+                  $ref: '#/components/examples/ValidationError'
+                NotAvailable:
+                  $ref: '#/components/examples/DomainNotAvailable'
+                ExceedsLimit:
+                  $ref: '#/components/examples/DomainExceedsLimit'
+                InsufficientBalance:
+                  $ref: '#/components/examples/InsufficientBalance'
+      tags:
+      - domain_registration
+  /domains/{name}:
+    get:
+      operationId: getSingleDomain
+      summary: Get domain details and availability
+      description: 'Get information about the domain''s current owner and availability status. Optionally, use the `$expand` query string to include additional data in the response (ie. `?$expand=records&$expand=registration`).
+
+
+        If the domain is available to be registered it will have a `availability.status` of `AVAILABLE` and will include an `availability.price` object.
+
+        '
+      parameters:
+      - name: name
+        required: true
+        in: path
+        schema:
+          $ref: '#/components/schemas/DomainName'
+      - name: $expand
+        required: false
+        description: Use `$expand` options to conditionally include portions of the response
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - records
+            - registration
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainSearchResponse'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                ValidationError:
+                  $ref: '#/components/examples/ValidationError'
+      tags:
+      - domain_registration
+  /domains/{name}/renewals:
+    get:
+      operationId: getDomainRenewalInfo
+      parameters:
+      - name: name
+        required: true
+        in: path
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Domain renewal pricing and eligibility
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IcannDomainRenewalInfoResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_2'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_2'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_2'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_2'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_2'
+      tags:
+      - domain_registration
+      summary: Get domain renewal info
+      description: 'Retrieve renewal eligibility and pricing for the specified domain, including the current expiration date, grace period expiration, and available renewal periods.
+
+        '
+    post:
+      operationId: postDomainRenewal
+      parameters:
+      - name: name
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: $preview
+        required: true
+        in: query
+        schema:
+          default: false
+          type: boolean
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DomainRenewalRequestBody'
+      responses:
+        '201':
+          description: Domain renewal operation created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainOperationResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_2'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_2'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_2'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_2'
+        '409':
+          description: Resource conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_2'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_2'
+      tags:
+      - domain_registration
+      summary: Renew a domain
+      description: 'Renew the specified domain for a given period (in years). Use `$preview=true` to get a renewal price quote without executing the renewal.
+
+        '
+components:
+  schemas:
+    UpdateRecordsParametersResponse:
+      type: object
+      properties:
+        recordUpdates:
+          $ref: '#/components/schemas/DomainRecords'
+        resetRecords:
+          type: boolean
+      required:
+      - recordUpdates
+      - resetRecords
+    WebhookCreateParametersResponse:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        url:
+          type: string
+          format: uri
+      required:
+      - type
+      - url
+    DomainMintRequestBody:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/DomainName'
+        records:
+          $ref: '#/components/schemas/UpdateDomainRecords'
+        owner:
+          $ref: '#/components/schemas/DomainMintRequestBodyOwner'
+      required:
+      - name
+    DomainPriceResponse:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/DomainPriceType'
+        listPrice:
+          $ref: '#/components/schemas/DomainPriceItemResponse'
+        subTotal:
+          $ref: '#/components/schemas/DomainPriceItemResponse'
+      required:
+      - type
+      - listPrice
+      - subTotal
+    ErrorResponse_2:
+      type: object
+      description: Standard error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: VALIDATION
+        message:
+          type: string
+          description: Human-readable error description
+        errors:
+          type: array
+          description: Individual errors when code is MULTIPLE_ERRORS
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+            required:
+            - code
+      required:
+      - code
+    WebhookDeleteParametersResponse:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+      - id
+    OperationType:
+      type: string
+      enum:
+      - DOMAIN_CLAIM
+      - DOMAIN_UPDATE
+      - DOMAIN_RETURN
+      - WALLET_CREATE
+      - WALLET_UPDATE
+      - WALLET_VERIFY
+      - ACCOUNT_UPDATE
+    WalletCreateSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          result:
+            $ref: '#/components/schemas/WalletCreateResultResponse'
+          type:
+            type: string
+            enum:
+            - WALLET_CREATE
+        required:
+        - type
+    IcannDomainRenewalInfoPeriodResponse:
+      type: object
+      properties:
+        min:
+          type: number
+        max:
+          type: number
+        increments:
+          type: number
+      required:
+      - min
+      - max
+      - increments
+    UpdateDomainRecords:
+      allOf:
+      - $ref: '#/components/schemas/DomainRecords'
+      - type: object
+        maxProperties: 500
+    SubOperationTransactionResponse:
+      type: object
+      properties:
+        hash:
+          type: string
+        blockchain:
+          $ref: '#/components/schemas/BlockchainType'
+      required:
+      - blockchain
+    PlatformSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/SubOperationResponse'
+      - type: object
+        properties:
+          '@type':
+            type: string
+            enum:
+            - unstoppabledomains.com/partner.v3.PlatformOperation
+        required:
+        - '@type'
+    OwnerType:
+      type: string
+      enum:
+      - NONE
+      - UD
+      - SELF
+      - EXTERNAL
+      description: '- `NONE`: Domain is not currently owned by anyone
+
+        - `UD`: Domain is owned by a wallet/contract that belongs to Unstoppable Domains
+
+        - `SELF`: Domain is owned by your account. You can manage this domains through the API
+
+        - `EXTERNAL`: Owner doesn''t qualify as any of the above.
+
+        '
+    EvmOwnerAddress:
+      type: string
+      example: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+      pattern: ^0x[a-fA-F0-9]{40}$
+    TransferSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - TRANSFER
+          parameters:
+            $ref: '#/components/schemas/TransferParametersResponse'
+        required:
+        - type
+        - parameters
+    SubOperationResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: bc-2db427bd-5613-40c7-85b1-ab38beed0ed0
+        status:
+          $ref: '#/components/schemas/OperationStatus'
+      required:
+      - status
+      - id
+    DomainPriceResponse_2:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - STANDARD
+          - PREMIUM
+          - DEFERRED
+        listPrice:
+          $ref: '#/components/schemas/PriceItemResponse'
+        adjustments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainPriceAdjustmentResponse'
+        subTotal:
+          $ref: '#/components/schemas/PriceItemResponse'
+        validUntilTimestamp:
+          type: number
+      required:
+      - type
+      - listPrice
+      - subTotal
+    MintParametersResponse:
+      type: object
+      properties:
+        initialRecords:
+          $ref: '#/components/schemas/DomainRecords'
+        toAddress:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - toAddress
+    WebhookCreateSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WebhookCreateParametersResponse'
+          result:
+            $ref: '#/components/schemas/WebhookCreateResultResponse'
+          type:
+            type: string
+            enum:
+            - WEBHOOK_CREATE
+        required:
+        - parameters
+        - type
+    OwnerAddress:
+      oneOf:
+      - $ref: '#/components/schemas/EvmOwnerAddress'
+    DomainAvailabilityResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/DomainAvailabilityStatus'
+        price:
+          $ref: '#/components/schemas/DomainPriceResponse'
+        issuer:
+          $ref: '#/components/schemas/DomainOwnerResponse'
+      required:
+      - status
+    DomainRegistrationResponse:
+      type: object
+      properties:
+        tokenId:
+          type: string
+        tokenType:
+          type: string
+          enum:
+          - ERC721
+          - ERC1155
+      required:
+      - tokenId
+    OperationStatus:
+      type: string
+      enum:
+      - QUEUED
+      - SIGNATURE_REQUIRED
+      - PROCESSING
+      - COMPLETED
+      - FAILED
+      - CANCELLED
+    UpdateRecordsSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - UPDATE_RECORDS
+          parameters:
+            $ref: '#/components/schemas/UpdateRecordsParametersResponse'
+        required:
+        - type
+        - parameters
+    WalletSetDefaultSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WalletSetDefaultParametersResponse'
+          type:
+            type: string
+            enum:
+            - WALLET_SET_DEFAULT
+        required:
+        - parameters
+        - type
+    IcannDomainRenewalInfoResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainRenewalInfo
+        isEligible:
+          type: boolean
+        expirationDate:
+          type: string
+        gracePeriodExpirationDate:
+          type: string
+        price:
+          $ref: '#/components/schemas/DomainPriceResponse_2'
+        period:
+          $ref: '#/components/schemas/IcannDomainRenewalInfoPeriodResponse'
+      required:
+      - '@type'
+      - isEligible
+      - expirationDate
+      - period
+    ErrorResponse:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseSingle'
+      - $ref: '#/components/schemas/ErrorResponseMulti'
+    ErrorResponseContextEntityMulti:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MULTI_VALUE
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      required:
+      - type
+      - values
+    DomainAvailabilityStatus:
+      type: string
+      enum:
+      - AVAILABLE
+      - AVAILABLE_FROM_ISSUER
+      - REGISTERED
+      - PROTECTED
+      - COMING_SOON
+      - DISALLOWED
+      - RESERVED
+      - EXCEEDS_PRICE_LIMIT
+      description: "- `AVAILABLE`: Domain is available for registering\n- `AVAILABLE_FROM_ISSUER`: Domain is available for registering from an external issuer. \n  - This status is deprecated as it is only relevant to subdomains that have a verified, self-custodied parent domain\n- `EXCEEDS_PRICE_LIMIT`: Domain is available for registering, but exceeds the price limit on your account.\n  - In this situation you can contact your AM to facilitate a private sale or use our [Affiliate Program](https://unstoppabledomains.com/affiliate-registration) to refer users to our website for checkout  \n- `REGISTERED`: Domain belongs to an owner and is not available for registering\n- `PROTECTED`: Domain is being protected by Unstoppable Domains and is not available for general registering\n- `RESERVED`: Domain is being reserved by Unstoppable Domains and is not available for general registering\n- `COMING_SOON`: Domain is temporarily unavailable but will be available in the future\n- `DISALLOWED`: Domain is currently not allowed to be registered\n"
+    BlockchainSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/SubOperationResponse'
+      - type: object
+        properties:
+          '@type':
+            type: string
+            enum:
+            - unstoppabledomains.com/partner.v3.BlockchainOperation
+          transaction:
+            $ref: '#/components/schemas/SubOperationTransactionResponse'
+        required:
+        - '@type'
+    ErrorResponseSingle:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
+    MultipleDomainSearchResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.List
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainSearchResponse'
+      required:
+      - items
+      - '@type'
+    DomainSearchResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.Domain
+        records:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/DomainRecords'
+        name:
+          $ref: '#/components/schemas/DomainName'
+        owner:
+          $ref: '#/components/schemas/DomainOwnerResponse'
+        availability:
+          $ref: '#/components/schemas/DomainAvailabilityResponse'
+        registration:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/DomainRegistrationResponse'
+        blockchain:
+          $ref: '#/components/schemas/BlockchainType'
+      required:
+      - name
+      - owner
+      - availability
+      - '@type'
+    DomainName:
+      type: string
+      example: matt.crypto
+    ErrorResponseContextEntitySingle:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+      required:
+      - type
+      - value
+    DomainRecords:
+      type: object
+      additionalProperties:
+        type: string
+      example:
+        crypto.ETH.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+        crypto.MATIC.version.MATIC.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e5678'
+        crypto.MATIC.version.ERC20.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e0921'
+    ErrorResponseContext:
+      type: object
+      properties:
+        entities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntity'
+      required:
+      - entities
+    OperationPreviewParameter:
+      type: boolean
+      default: false
+      description: 'Allows simulating the operation creation (when set to `true`), without actually starting any processing. This can be used to validate the operation will be permitted and get a preview of the initial outcome.
+
+
+        When used, the operation in the response will have `PREVIEW` for all `id` and `status` values.
+
+        '
+    WalletCreateResultResponse:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - address
+    OperationCheckResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: op-4abb409c-9283-4589-bd36-d27a757a2165
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.Operation
+        status:
+          $ref: '#/components/schemas/OperationStatus'
+        type:
+          $ref: '#/components/schemas/OperationType'
+        domain:
+          $ref: '#/components/schemas/DomainName'
+        lastUpdatedTimestamp:
+          type: number
+          example: 1684356429790
+        dependencies:
+          type: array
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/MintSubOperationResponse'
+            - $ref: '#/components/schemas/UpdateRecordsSubOperationResponse'
+            - $ref: '#/components/schemas/TransferSubOperationResponse'
+            - $ref: '#/components/schemas/ReturnSubOperationResponse'
+            - $ref: '#/components/schemas/WalletCreateSubOperationResponse'
+            - $ref: '#/components/schemas/WalletSetDefaultSubOperationResponse'
+            - $ref: '#/components/schemas/WebhookCreateSubOperationResponse'
+            - $ref: '#/components/schemas/WebhookDeleteSubOperationResponse'
+      required:
+      - id
+      - status
+      - type
+      - dependencies
+      - '@type'
+      - lastUpdatedTimestamp
+    PriceItemResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+      required:
+      - usdCents
+    TransferParametersResponse:
+      type: object
+      properties:
+        fromAddress:
+          $ref: '#/components/schemas/OwnerAddress'
+        toAddress:
+          $ref: '#/components/schemas/OwnerAddress'
+        resetRecords:
+          type: boolean
+      required:
+      - fromAddress
+      - toAddress
+      - resetRecords
+    DomainOperationResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainOperationResult
+        operation:
+          $ref: '#/components/schemas/OperationCheckResponse'
+      required:
+      - '@type'
+      - operation
+    DomainRenewalRequestBody:
+      type: object
+      properties:
+        period:
+          type: number
+          minimum: 1
+          maximum: 10
+          description: Renewal period in years (1-10).
+      required:
+      - period
+      description: Renew a domain for the specified period.
+    DomainOwnerResponse:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/OwnerType'
+        address:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - type
+    WalletSetDefaultParametersResponse:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - address
+    BlockchainType:
+      type: string
+      enum:
+      - MATIC
+      - ETH
+      - BASE
+    WebhookCreateResultResponse:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+      - id
+    DomainPriceAdjustmentResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+        type:
+          type: string
+          enum: []
+      required:
+      - usdCents
+      - type
+    ErrorResponseMulti:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - MULTIPLE_ERRORS
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseSingle'
+      required:
+      - code
+      - errors
+    DomainPriceType:
+      type: string
+      enum:
+      - STANDARD
+      - PREMIUM
+      - DEFERRED
+      description: "- `STANDARD`: Domain is priced using the default, standard pricing algorithm\n- `PREMIUM`: Domain is considered premium by the registry and pricing may differ from the standard pricing\n- `DEFERRED`: Domain pricing is not available and an additional request is needed to determine pricing. \n  - This can be a limitation of the bulk domain searches due to constraints with checking prices for some registries\n  - When requesting a single domain the price will always be included (if available) and this status will not be returned\n"
+    DomainMintRequestBodyOwner:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - NONE
+          - UD
+          - SELF
+          - EXTERNAL
+        address:
+          type: string
+      required:
+      - type
+      - address
+    WebhookDeleteSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WebhookDeleteParametersResponse'
+          type:
+            type: string
+            enum:
+            - WEBHOOK_DELETE
+        required:
+        - parameters
+        - type
+    MintSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - MINT
+          parameters:
+            $ref: '#/components/schemas/MintParametersResponse'
+        required:
+        - type
+        - parameters
+    ErrorResponseContextEntity:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
+    WebhookType:
+      type: string
+      enum:
+      - OPERATION_FINISHED
+      - OPERATION_ACTION_REQUIRED
+    ReturnSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - RETURN
+        required:
+        - type
+    DomainPriceItemResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+          example: 1000
+      required:
+      - usdCents
+  examples:
+    InsufficientBalance:
+      description: The domain price would exceed overall balance limit.
+      value:
+        code: INSUFFICIENT_BALANCE
+    DomainNotAvailable:
+      description: The domain is not available to register.
+      value:
+        code: NOT_AVAILABLE
+    DomainExceedsLimit:
+      description: The domain exceeds account price limit.
+      value:
+        code: EXCEEDS_LIMIT
+    ValidationError:
+      description: Validation error due to incorrect parameters.
+      value:
+        code: VALIDATION
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
