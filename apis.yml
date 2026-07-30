@@ -1,6 +1,19 @@
 name: Unstoppable Domains
 description: Web3 domain name service providing REST APIs for resolving crypto domain names, managing NFT domains, reverse lookups, cross-chain address resolution, domain registration, and DNS management across 150+ TLDs on multiple blockchains.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/unstoppable-domains.png
 url: https://raw.githubusercontent.com/api-evangelist/unstoppable-domains/refs/heads/main/apis.yml
 created: '2026-06-14'
 modified: '2026-06-14'
@@ -19,81 +32,952 @@ tags:
   - Ethereum
   - Polygon
 apis:
-  - name: Unstoppable Domains Resolution API
-    description: HTTP-based REST API for resolving Web3 domain names to cryptocurrency addresses and records. Supports 310+ cryptocurrencies, reverse lookups, batch queries, TLD enumeration, and RPC proxy for Ethereum and Polygon. Covers UNS, CNS, and ENS naming services with TLDs including .crypto, .x, .nft, .wallet, .polygon, .bitcoin, .dao, .888, .blockchain, .zil, and .eth.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.unstoppabledomains.com/resolution/overview
-    baseURL: https://api.unstoppabledomains.com/resolve
-    tags:
-      - Resolution
-      - Domain
-      - Crypto Addresses
-      - Reverse Lookup
-      - Web3
-      - ENS
-    properties:
-      - type: Documentation
-        url: https://docs.unstoppabledomains.com/resolution/overview
-      - type: APIReference
-        url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
-      - type: OpenAPI
-        url: openapi/unstoppable-domains-resolution-api-openapi.yaml
-  - name: Unstoppable Domains Partner API
-    description: RESTful Partner API v3 for Web3 domain distribution and management. Enables searching, registering, and managing domains in custody wallets and self-custody wallets on Polygon and Base blockchains. Covers domain lifecycle operations, custody wallet creation, pending operation tracking, webhooks, and domain suggestions. Usage-based billing with periodic invoicing.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
-    baseURL: https://api.unstoppabledomains.com/partner/v3
-    tags:
-      - Partner
-      - Domain Registration
-      - Custody Wallet
-      - Web3
-      - NFT Domains
-      - Blockchain
-    properties:
-      - type: Documentation
-        url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
-      - type: APIReference
-        url: https://docs.unstoppabledomains.com/apis/partner/openapi
-      - type: OpenAPI
-        url: openapi/unstoppable-domains-partner-api-openapi.yaml
-  - name: Unstoppable Domains Reseller API
-    description: RESTful API for resellers offering traditional DNS domain registration and management alongside Web3 domains. Supports domain search with pricing and availability, registration workflows, DNS record management, and lifecycle operations through a single unified interface.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.unstoppabledomains.com/apis/reseller/quick-start
-    baseURL: https://api.unstoppabledomains.com/partner/v3
-    tags:
-      - Reseller
-      - DNS
-      - Domain Registration
-      - Traditional Domains
-      - White-label
-    properties:
-      - type: Documentation
-        url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
-      - type: APIReference
-        url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
-      - type: OpenAPI
-        url: openapi/unstoppable-domains-reseller-api-openapi.yaml
-  - name: Unstoppable Domains User API
-    description: MCP-compatible REST API for programmatic user account operations including domain search and purchase, portfolio management, DNS record configuration (A, AAAA, CNAME, MX, TXT, NS, SRV, CAA), marketplace listing creation and management, cart and checkout workflows, offer handling, and real-time webhook notifications for domain events.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.unstoppabledomains.com/user-api/overview
-    baseURL: https://api.unstoppabledomains.com
-    tags:
-      - User API
-      - Portfolio
-      - DNS Management
-      - Marketplace
-      - Cart
-      - Webhooks
-    properties:
-      - type: Documentation
-        url: https://docs.unstoppabledomains.com/user-api/overview
-      - type: APIReference
-        url: https://docs.unstoppabledomains.com/apis/user-api/openapi
-      - type: OpenAPI
-        url: openapi/unstoppable-domains-user-api-openapi.json
+- aid: unstoppable-domains:unstoppable-domains-account-api
+  name: Unstoppable Domains account API
+  description: Manage your account details
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - account
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-account-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-ai-lander-api
+  name: Unstoppable Domains AI Lander API
+  description: >-
+    Generate, manage, and remove AI-powered landing pages for domains (requires authentication)
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - AI Lander
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-ai-lander-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-backorders-api
+  name: Unstoppable Domains Backorders API
+  description: Create and manage domain backorders, and browse expired or pending-delete domains.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - Backorders
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-backorders-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-cart-api
+  name: Unstoppable Domains Cart API
+  description: Shopping cart management, payment methods, and checkout (requires authentication)
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - Cart
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-cart-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-contacts-api
+  name: Unstoppable Domains contacts API
+  description: >-
+    Create and manage ICANN-required contacts for domain registration. Contacts represent individuals
+    or organizations associated with domain roles (owner, admin, tech, billing).
+
+
+    New contacts are automatically sent a verification email upon creation. Contacts can be used in domain
+    registrations immediately, but domains associated with unverified contacts may become unmanageable
+    after a certain period.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - contacts
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-contacts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-dns-management-api
+  name: Unstoppable Domains DNS Management API
+  description: >-
+    Manage DNS records, nameservers, and hosting configurations for owned domains (requires authentication)
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - DNS Management
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-dns-management-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-dns-records-api
+  name: Unstoppable Domains dns-records API
+  description: >-
+    Create, read, update and delete DNS records for your domains. Also includes DNS metadata, nameserver
+    management, and DNSSEC configuration.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - dns-records
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-dns-records-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-domain-contacts-api
+  name: Unstoppable Domains domain-contacts API
+  description: >-
+    View and update the ICANN-required contacts (owner, admin, tech, billing) assigned to a specific domain.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - domain-contacts
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-domain-contacts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-domain-flags-api
+  name: Unstoppable Domains domain-flags API
+  description: >-
+    View and manage domain flags that control behavior and security settings such as DNS resolution, transfer
+    locks, WHOIS privacy, and more.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - domain-flags
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-domain-flags-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-domain-management-api
+  name: Unstoppable Domains domain-management API
+  description: >-
+    Comprehensive domain updates — modify nameservers, DNSSEC, contacts, flags, and DNS records in a single
+    request.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - domain-management
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-domain-management-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-domain-registration-api
+  name: Unstoppable Domains domain_registration API
+  description: Domain details/availability lookups and registration.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - domain_registration
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-domain-registration-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-domain-search-api
+  name: Unstoppable Domains domain-search API
+  description: >-
+    Search for domain availability and retrieve details for one or more domains. Use the `$expand` parameter
+    to include registration details and flags in the response.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - domain-search
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-domain-search-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-domain-transfers-api
+  name: Unstoppable Domains domain-transfers API
+  description: >-
+    Check transfer eligibility and retrieve authorization codes for transferring domains to another registrar.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - domain-transfers
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-domain-transfers-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-domains-api
+  name: Unstoppable Domains domains API
+  description: Manage your custody domains.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - domains
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-domains-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-external-domains-api
+  name: Unstoppable Domains external_domains API
+  description: "Manage domains that are owned in external, self-custody wallets.\n\nThe key difference\
+    \ between Custody and Self-Custody operations is that all Self-Custody operations require a signature\
+    \ from the domain owner.\n\nBefore you can initiate self-custody operations, you must [verify the\
+    \ self-custody wallet](/openapi/partner/v3/#tag/external_wallets) that owns the domain.\n\n## Signing\
+    \ Self-Custody Operations\nAfter you successfully initiate a self-custody operation, it will have\
+    \ a status of `SIGNATURE_REQUIRED`. You then need to collect a signature of the `messageToSign` from\
+    \ the `operation.dependencies[].transaction` object. \n\nAfter the owner has signed the message, you\
+    \ use the [dependency update route](/openapi/partner/v3/#operation/patchOperationDependency) to submit\
+    \ the signature and continue processing the operation."
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - external_domains
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-external-domains-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-external-wallets-api
+  name: Unstoppable Domains external_wallets API
+  description: >-
+    Manage self-custody wallets to allow for management of self-custody domains.
+
+
+    ## Verifying Self-Custody Wallets
+
+    Before you can initiate self-custody operations, you must first [verify the self-custody wallet](/openapi/partner/v3/#operation/getExternalWalletVerification)
+    (only needs to be done once per wallet).
+
+
+    This involves:
+
+    1. [Fetching a verification message to sign](/openapi/partner/v3/#operation/getExternalWalletVerification)
+
+    2. Collecting a `personal_sign` signature from the wallet owner
+
+    3. [Submitting the signature](/openapi/partner/v3/#operation/postExternalWalletVerification) to register
+    the verified wallet
+
+
+    After verifying a wallet, it will be returned by the Single-Wallet and Wallet List routes, with the
+    type of `EXTERNAL`.
+
+
+    ## Supported Self-Custody Wallets
+
+    - Externally Owned Accounts (EOAs)
+
+    - [ERC1271](https://eips.ethereum.org/EIPS/eip-1271) Smart Contract wallets deployed on Polygon
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - external_wallets
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-external-wallets-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-hosting-api
+  name: Unstoppable Domains hosting API
+  description: >-
+    Configure how your domains serve content on the web. Hosting configurations control what happens when
+    someone visits your domain — whether it redirects to another URL or proxies content from another server.
+
+
+    Available hosting types:
+
+    - `REDIRECT_301` — Permanent redirect to another URL
+
+    - `REDIRECT_302` — Temporary redirect to another URL
+
+    - `REVERSE_PROXY` — Proxy requests to a backend server
+
+
+    All hosting configurations require SSL certificate provisioning. When a configuration is created or
+    updated, the `certificateStatus` field will be `PENDING` until the certificate is issued and active.
+    This process typically completes within a few minutes but may take longer in some cases.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - hosting
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-hosting-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-leads-api
+  name: Unstoppable Domains Leads API
+  description: Domain conversations and messaging between buyers and sellers (requires authentication)
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - Leads
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-leads-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-marketplace-api
+  name: Unstoppable Domains marketplace API
+  description: >-
+    Browse and search the Unstoppable Domains secondary marketplace. Retrieve paginated listings of domains
+    available for purchase from existing owners, with filtering by TLD and sorting options.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - marketplace
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-marketplace-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-operations-api
+  name: Unstoppable Domains operations API
+  description: >-
+    All asynchronous processes handled by the API are represented as Operations. This includes registering
+    a domain, updating a domain's records, changing a domain's owner, returning a domain and more.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - operations
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-operations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-owner-api
+  name: Unstoppable Domains Owner API
+  description: The Owner API from Unstoppable Domains — 1 operation(s) for owner.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - Owner
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-owner-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-owners-api
+  name: Unstoppable Domains owners API
+  description: Search for owned domains
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - owners
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-owners-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-portfolio-api
+  name: Unstoppable Domains Portfolio API
+  description: Manage owned domains (requires authentication)
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - Portfolio
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-portfolio-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-pricing-api
+  name: Unstoppable Domains pricing API
+  description: >-
+    Retrieve pricing information for domain registration, renewal, transfer, and restoration by domain
+    name or TLD.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - pricing
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-pricing-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-reverse-api
+  name: Unstoppable Domains Reverse API
+  description: The Reverse API from Unstoppable Domains — 2 operation(s) for reverse.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - Reverse
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-reverse-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-rpc-proxy-api
+  name: Unstoppable Domains Rpc Proxy API
+  description: The Rpc Proxy API from Unstoppable Domains — 2 operation(s) for rpc proxy.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - Rpc Proxy
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-rpc-proxy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-search-api
+  name: Unstoppable Domains search API
+  description: Search for owned entities
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - search
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-search-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-session-api
+  name: Unstoppable Domains Session API
+  description: >-
+    Generate authenticated browser URLs for account and checkout flows that require web handoff.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - Session
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-session-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-status-api
+  name: Unstoppable Domains Status API
+  description: The Status API from Unstoppable Domains — 2 operation(s) for status.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - Status
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-status-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-suggestions-api
+  name: Unstoppable Domains suggestions API
+  description: Suggestions for finding available domains
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - suggestions
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-suggestions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-tlds-api
+  name: Unstoppable Domains tlds API
+  description: >-
+    Browse available top-level domains (TLDs), their details, and DNS security configuration.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - tlds
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-tlds-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-wallets-api
+  name: Unstoppable Domains wallets API
+  description: >-
+    Manage custody wallets used for storing and managing domains without any signature collection.
+
+
+    These wallets provide the most streamlined way to interact with domains since the initial management
+    request is the only step needed to make changes.
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - wallets
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-wallets-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
+- aid: unstoppable-domains:unstoppable-domains-webhooks-api
+  name: Unstoppable Domains webhooks API
+  description: >-
+    Manage webhooks used for asynchronous updates to your server.
+
+
+    You can follow our getting started guide here: [Webhooks in the Partner API](https://docs.unstoppabledomains.com/domain-distribution-and-management/guides/implementing-webhooks/)
+  humanURL: https://docs.unstoppabledomains.com/resolution/overview
+  baseURL: https://api.unstoppabledomains.com/resolve
+  tags:
+  - webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/unstoppable-domains-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/resolution/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/web3/apis/resolution/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/partner/openapi
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/apis/reseller/quick-start
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/reseller/openapi.yaml
+  - type: Documentation
+    url: https://docs.unstoppabledomains.com/user-api/overview
+  - type: APIReference
+    url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 common:
   - type: AgenticAccess
     url: agentic-access/unstoppable-domains-agentic-access.yml
