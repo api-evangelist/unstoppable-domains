@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account Portfolio API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Portfolio",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List portfolio domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_portfolio_list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List domains in the authenticated user's portfolio with filtering, sorting, and pagination. By default, only ICANN (DNS) domains are returned. Returns 50 domains per page by default. If hasMore is true in the pagination response, increment the page parameter to fetch additional results."
+        },
+        {
+          "info": {
+            "name": "Get comprehensive portfolio domain info",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_domain_get",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get comprehensive information for specific domains in your portfolio. Returns all data from ud_portfolio_list plus additional detail: renewal pricing, flags, DNS configuration (nameservers, hosting, DNSSEC), marketplace metrics, and pending operations. Supports bulk lookups for up to 50 domains."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,84 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account Backorders API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Backorders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create domain backorders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_backorder_create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create backorders for one or more expiring DNS domains. The system monitors the domain and automatically registers it when it drops."
+        },
+        {
+          "info": {
+            "name": "Cancel domain backorders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_backorder_cancel",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Cancel one or more pending domain backorders. Refunds the Account Balance hold (minus non-refundable service fee) and removes the scheduled registration job."
+        },
+        {
+          "info": {
+            "name": "List user's backorders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_backorders_list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List the authenticated user's domain backorders with optional status filtering, domain search, and pagination. Status normalization is applied automatically."
+        },
+        {
+          "info": {
+            "name": "Browse the expireds/pending-delete domain marketplace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_expireds_list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List domains that are approaching expiration or have recently dropped and are available for backorder registration. Supports filtering by status, TLD, label length, backorder count, and watchlist count."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

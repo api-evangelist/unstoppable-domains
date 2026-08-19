@@ -1,0 +1,1170 @@
+{
+  "item": [
+    {
+      "id": "86e5b06c-ac79-4ed3-a4bc-1150e275ef08",
+      "name": "domains",
+      "description": {
+        "content": "Manage your custody domains.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "57048125-cfaf-4916-8327-cceb0527e2e4",
+          "name": "Update a domain (partial update)",
+          "request": {
+            "name": "Update a domain (partial update)",
+            "description": {
+              "content": "Perform Domain updates while preserving the existing records.\n\n### Change Owner with Records Preserved\n```\n{\n  \"owner\": {\n    \"type\": \"EXTERNAL\",\n    \"address\": \"0x123\"\n  }\n}\n```\nChanges owner to the new owner address without modifying the domain records.\n\n#### Owner Types\nWhen changing owner of a domain, you must provide both a `type` and an `address` to clearly indicate the intent of the change.\n- `NONE`: Used when changing the owner to a \"burn\" address, which will result in nobody owning the domain\n  - Valid \"burn\" addresses are `0x0000000000000000000000000000000000000000` and `0x000000000000000000000000000000000000dEaD`\n- `UD`: Used when changing the owner to an addressed owned by Unstoppable Domains\n- `SELF`: Used when changing the owner to another address that belongs to your account\n- `EXTERNAL`: Used when changing the owner to address that doesn't qualify as any of the above. \n  - _WARNING_: This will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\n### Update Records with existing Records Preserved\n```\n{\n  \"records\": {\n    \"key2\": \"value2\"\n  }\n}\n```\nWhen applied to a domain with existing records, or with an existing `key2`, will result in only the `key2` value being set to the new value.\n\nSee [our documentation](https://docs.unstoppabledomains.com/resolution/guides/records-reference/) for more information on standardized keys.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "domains",
+                ":name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "$preview",
+                  "value": "false"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"owner\": {\n    \"type\": \"<string>\",\n    \"address\": \"<string>\"\n  },\n  \"records\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "05ca069c-904d-451f-b6da-04ac1bc1f7bc",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owner\": {\n    \"type\": \"SELF\",\n    \"address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\"\n  },\n  \"records\": {\n    \"crypto.ETH.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\",\n    \"crypto.MATIC.version.MATIC.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e5678\",\n    \"crypto.MATIC.version.ERC20.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e0921\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"@type\": \"unstoppabledomains.com/partner.v3.DomainOperationResult\",\n  \"operation\": {\n    \"id\": \"op-4abb409c-9283-4589-bd36-d27a757a2165\",\n    \"status\": \"COMPLETED\",\n    \"type\": \"ACCOUNT_UPDATE\",\n    \"dependencies\": [\n      {\n        \"@type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"parameters\": {\n          \"toAddress\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"initialRecords\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"type\": \"MINT\",\n        \"transaction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"@type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"parameters\": {\n          \"toAddress\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"initialRecords\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"type\": \"MINT\",\n        \"transaction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"@type\": \"unstoppabledomains.com/partner.v3.Operation\",\n    \"lastUpdatedTimestamp\": 1684356429790,\n    \"domain\": \"matt.crypto\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f27e91e2-dc97-485c-901f-ebec7a038fc6",
+              "name": "Validation error or bad request due to domain custody, unsupported blockchain, etc.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owner\": {\n    \"type\": \"SELF\",\n    \"address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\"\n  },\n  \"records\": {\n    \"crypto.ETH.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\",\n    \"crypto.MATIC.version.MATIC.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e5678\",\n    \"crypto.MATIC.version.ERC20.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e0921\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d82efcf-8700-4366-81e0-f9771a0de949",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owner\": {\n    \"type\": \"SELF\",\n    \"address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\"\n  },\n  \"records\": {\n    \"crypto.ETH.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\",\n    \"crypto.MATIC.version.MATIC.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e5678\",\n    \"crypto.MATIC.version.ERC20.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e0921\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"BLOCKCHAIN_CONGESTION\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "27dfbab0-059a-45f5-9304-7c29e2243e16",
+          "name": "Update a domain (overwriting update)",
+          "request": {
+            "name": "Update a domain (overwriting update)",
+            "description": {
+              "content": "Perform Domain updates while doing full resets of the records.\n\n### Change Owner with Record Reset\n```\n{\n  \"owner\": {\n    \"type\": \"EXTERNAL\",\n    \"address\": \"0x123\"\n  },\n  \"records\": {}\n}\n```\nClears all records from the domain, then changes owner to the new owner address.\n\nNOTE: You must include `\"records\": {}` to indicate the intent to clear records.\n\n#### Owner Types\nWhen changing owner of a domain, you must provide both a `type` and an `address` to clearly indicate the intent of the change.\n- `NONE`: Used when changing the owner to a \"burn\" address, which will result in nobody owning the domain\n  - Valid \"burn\" addresses are `0x0000000000000000000000000000000000000000` and `0x000000000000000000000000000000000000dEaD`\n- `UD`: Used when changing the owner to an addressed owned by Unstoppable Domains\n- `SELF`: Used when changing the owner to another address that belongs to your account\n- `EXTERNAL`: Used when changing the owner to address that doesn't qualify as any of the above.\n  - _WARNING_: This will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\n### Update Records with Record Reset\n```\n{\n  \"records\": {\n    \"key2\": \"value2\"\n  }\n}\n```\nWhen applied to a domain with existing records, only `key2` will remain after the update is complete.\n\nSee [our documentation](https://docs.unstoppabledomains.com/resolution/guides/records-reference/) for more information on standardized keys.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "domains",
+                ":name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "$preview",
+                  "value": "false"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"owner\": {\n    \"type\": \"<string>\",\n    \"address\": \"<string>\"\n  },\n  \"records\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b77e698b-fd35-4246-a756-376b15e180c8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owner\": {\n    \"type\": \"SELF\",\n    \"address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\"\n  },\n  \"records\": {\n    \"crypto.ETH.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\",\n    \"crypto.MATIC.version.MATIC.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e5678\",\n    \"crypto.MATIC.version.ERC20.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e0921\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"@type\": \"unstoppabledomains.com/partner.v3.DomainOperationResult\",\n  \"operation\": {\n    \"id\": \"op-4abb409c-9283-4589-bd36-d27a757a2165\",\n    \"status\": \"COMPLETED\",\n    \"type\": \"ACCOUNT_UPDATE\",\n    \"dependencies\": [\n      {\n        \"@type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"parameters\": {\n          \"toAddress\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"initialRecords\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"type\": \"MINT\",\n        \"transaction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"@type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"parameters\": {\n          \"toAddress\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"initialRecords\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"type\": \"MINT\",\n        \"transaction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"@type\": \"unstoppabledomains.com/partner.v3.Operation\",\n    \"lastUpdatedTimestamp\": 1684356429790,\n    \"domain\": \"matt.crypto\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c140df98-da08-42c6-9d0e-86010ad84b46",
+              "name": "Validation error or bad request due to domain custody, unsupported blockchain, etc.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owner\": {\n    \"type\": \"SELF\",\n    \"address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\"\n  },\n  \"records\": {\n    \"crypto.ETH.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\",\n    \"crypto.MATIC.version.MATIC.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e5678\",\n    \"crypto.MATIC.version.ERC20.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e0921\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ce5787b2-3f89-441c-8a28-c8b38d3a279e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owner\": {\n    \"type\": \"SELF\",\n    \"address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\"\n  },\n  \"records\": {\n    \"crypto.ETH.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\",\n    \"crypto.MATIC.version.MATIC.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e5678\",\n    \"crypto.MATIC.version.ERC20.address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e0921\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"BLOCKCHAIN_CONGESTION\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b55976ff-8ad4-4974-a60f-863db818da1f",
+          "name": "Return and refund a domain",
+          "request": {
+            "name": "Return and refund a domain",
+            "description": {
+              "content": "Return the domain to Unstoppable Domains so it is once again considered available for registering. The amount previously added to your running balance will be removed after successfully returning a domain.\n\nReturns are only allowed within 14 days of the original registration date, per our return policy.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "domains",
+                ":name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "$preview",
+                  "value": "false"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e541d36f-bb1c-4745-b65f-17b47c9c1b8b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"@type\": \"unstoppabledomains.com/partner.v3.DomainOperationResult\",\n  \"operation\": {\n    \"id\": \"op-4abb409c-9283-4589-bd36-d27a757a2165\",\n    \"status\": \"COMPLETED\",\n    \"type\": \"ACCOUNT_UPDATE\",\n    \"dependencies\": [\n      {\n        \"@type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"parameters\": {\n          \"toAddress\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"initialRecords\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"type\": \"MINT\",\n        \"transaction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"@type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"parameters\": {\n          \"toAddress\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"initialRecords\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"type\": \"MINT\",\n        \"transaction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"@type\": \"unstoppabledomains.com/partner.v3.Operation\",\n    \"lastUpdatedTimestamp\": 1684356429790,\n    \"domain\": \"matt.crypto\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9b0c8403-81c7-462f-b274-1f760d1a7659",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d52b6d78-0d47-419e-9b05-8fa548e21cd8",
+          "name": "Get domain",
+          "request": {
+            "name": "Get domain",
+            "description": {
+              "content": "**Get Records for a Domain**<br/>**Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "domains",
+                ":domainName"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domainName",
+                  "description": "(Required) A domain name registered by Unstoppable Domains"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1b04866a-0bdc-4737-ac5b-7009d1ff93f4",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":domainName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domainName",
+                      "description": "(Required) A domain name registered by Unstoppable Domains"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"meta\": {\n    \"type\": \"Zilliqa\",\n    \"domain\": \"string\",\n    \"reverse\": false,\n    \"resolver\": \"string\",\n    \"blockchain\": \"string\",\n    \"networkId\": 5,\n    \"registry\": \"string\",\n    \"customMeta\": {},\n    \"namehash\": \"string\",\n    \"tokenId\": \"string\",\n    \"owner\": \"string\"\n  },\n  \"records\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0182e2f7-1a7d-4bc4-a49b-0c0c77b4cc06",
+          "name": "Get domains list",
+          "request": {
+            "name": "Get domains list",
+            "description": {
+              "content": "\n  **Get Records for Multiple Domains**\n  <br/>\n  \nThe API only supports Unstoppable Domains' naming services for backward compatibility. A new API version is coming soon for other naming services\n<ul>\n  <li>\n    <p>Unstoppable Domain's <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/uns-architecture-overview\" target=\"_blank\">UNS</a> and <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/cns-architecture-overview\" target=\"_blank\">CNS</a> with TLDs:\n<strong>.x</strong>, <strong>.polygon</strong>, <strong>.nft</strong>, <strong>.crypto</strong>, <strong>.blockchain</strong>, <strong>.bitcoin</strong>, <strong>.dao</strong>, <strong>.888</strong>, <strong>.wallet</strong>, <strong>.binanceus</strong>, <strong>.hi</strong>, <strong>.klever</strong>, <strong>.kresus</strong>, <strong>.anime</strong>, <strong>.manga</strong>, <strong>.go</strong>, <strong>.zil</strong></p>\n  </li>\n  <li>\n    <p>Unstoppable Domain's <a href=\"https://unstoppabledomains.com/blog/categories/announcements/article/zilliqa-naming-service\" target=\"_blank\">Zilliqa</a> with TLDs:\n<strong>zil</strong></p>\n  </li>\n</ul>\n\n  <br/>\n  **Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "domains"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "resolution[data][0]",
+                  "value": "<string>",
+                  "description": "See this [list](https://github.com/unstoppabledomains/uns/blob/main/uns-config.json) for all the resolution keys supported"
+                },
+                {
+                  "disabled": false,
+                  "key": "resolution[data][1]",
+                  "value": "<string>",
+                  "description": "See this [list](https://github.com/unstoppabledomains/uns/blob/main/uns-config.json) for all the resolution keys supported"
+                },
+                {
+                  "disabled": false,
+                  "key": "data",
+                  "value": "[\"<string>\",\"<string>\"]",
+                  "description": "Wallet addresses of the owners of domains"
+                },
+                {
+                  "disabled": false,
+                  "key": "data",
+                  "value": "[\"<string>\",\"<string>\"]",
+                  "description": "Domain ending supported such as `crypto`, `x`, or `polygon`. See [supported tlds](https://api.unstoppabledomains.com/resolve/supported_tlds) for the full list"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "<string>",
+                  "description": "Sort key to specify how the returned domain list is sorted"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortDirection",
+                  "value": "<string>",
+                  "description": "Sort order of the returned domain list"
+                },
+                {
+                  "disabled": false,
+                  "key": "startingAfter",
+                  "value": "<string>",
+                  "description": "Query offset to skip a number of record, example: 100"
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Number of domains returned in the list, example: 50"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "18790507-1137-4993-a616-fe4519ab9bb2",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "resolution[data][0]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resolution[data][1]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "data",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "data",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortDirection",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startingAfter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"meta\": {\n        \"type\": \"Zilliqa\",\n        \"domain\": \"string\",\n        \"reverse\": true,\n        \"resolver\": \"string\",\n        \"blockchain\": \"string\",\n        \"networkId\": 137,\n        \"registry\": \"string\",\n        \"customMeta\": {},\n        \"namehash\": \"string\",\n        \"tokenId\": \"string\",\n        \"owner\": \"string\"\n      },\n      \"records\": {}\n    },\n    {\n      \"meta\": {\n        \"type\": \"Zilliqa\",\n        \"domain\": \"string\",\n        \"reverse\": false,\n        \"resolver\": \"string\",\n        \"blockchain\": \"string\",\n        \"networkId\": 5,\n        \"registry\": \"string\",\n        \"customMeta\": {},\n        \"namehash\": \"string\",\n        \"tokenId\": \"string\",\n        \"owner\": \"string\"\n      },\n      \"records\": {}\n    }\n  ],\n  \"meta\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "11cbe995-8e81-458e-93da-bfb3dbb1849a",
+          "name": "Get domains last transfer",
+          "request": {
+            "name": "Get domains last transfer",
+            "description": {
+              "content": "**Get Domain Transfer Events**<br/>**Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "domains",
+                ":domainName",
+                "transfers",
+                "latest"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domainName",
+                  "description": "(Required) A domain name registered by Unstoppable Domains"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "04a695f4-ef33-4dd7-9dee-98ea42d1b689",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":domainName",
+                    "transfers",
+                    "latest"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domainName",
+                      "description": "(Required) A domain name registered by Unstoppable Domains"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"domain\": \"string\",\n      \"from\": \"string\",\n      \"to\": \"string\",\n      \"networkId\": 5221,\n      \"blockNumber\": 2048,\n      \"blockchain\": \"string\"\n    },\n    {\n      \"domain\": \"string\",\n      \"from\": \"string\",\n      \"to\": \"string\",\n      \"networkId\": 8182,\n      \"blockNumber\": 2812,\n      \"blockchain\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "112759c7-da93-4427-99a0-a852dbb41979",
+          "name": "Get domains records",
+          "request": {
+            "name": "Get domains records",
+            "description": {
+              "content": "\n  **Get Records for Multiple Domains**\n  <br/>\n  It's recommended to use this API on different naming services as they support different record keys\n  <ul>\n    <li>\n      <p>Unstoppable Domain's <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/uns-architecture-overview\" target=\"_blank\">UNS</a> and <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/cns-architecture-overview\" target=\"_blank\">CNS</a> with TLDs:\n<strong>.x</strong>, <strong>.polygon</strong>, <strong>.nft</strong>, <strong>.crypto</strong>, <strong>.blockchain</strong>, <strong>.bitcoin</strong>, <strong>.dao</strong>, <strong>.888</strong>, <strong>.wallet</strong>, <strong>.binanceus</strong>, <strong>.hi</strong>, <strong>.klever</strong>, <strong>.kresus</strong>, <strong>.anime</strong>, <strong>.manga</strong>, <strong>.go</strong>, <strong>.zil</strong><br/>See this <a href=\"https://github.com/unstoppabledomains/uns/blob/main/uns-config.json\" target=\"_blank\">list</a> for all the resolution keys supported</p>\n    </li>\n    <li>\n      <p>\n      Ethereum Naming Service - <a href=\"https://docs.ens.domains/\" target=\"_blank\">ENS</a> with TLDs:\n<strong>.eth</strong>\n      <br/>See Ens' <a href=\"https://docs.ens.domains/ens-improvement-proposals\" target=\"_blank\">document</a> for all the resolution keys supported\n      </p>\n    </li>\n  </ul>\n  <br/>**Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "records"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "data",
+                  "value": "[\"<string>\",\"<string>\"]",
+                  "description": "(Required) Domain names registered by Unstoppable Domains. At least 1 domain must be passed in"
+                },
+                {
+                  "disabled": false,
+                  "key": "key",
+                  "value": "<string>",
+                  "description": "Filtered resolution key. See above to see the supported keys on different naming services"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cce72312-b179-4347-99d7-3f719a87bcec",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "records"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "data",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"domain\": \"string\",\n      \"records\": {}\n    },\n    {\n      \"domain\": \"string\",\n      \"records\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.unstoppabledomains.com/partner/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4630972a-0d3d-4d3d-9ace-05d37b94a10e",
+    "name": "Web3 Partner API v3 account domains API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n\n\nContact Support:\n Name: Unstoppable Domains (Partner Engineering)\n Email: partnerengineering@unstoppabledomains.com",
+      "type": "text/plain"
+    }
+  }
+}

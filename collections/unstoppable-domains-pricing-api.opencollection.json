@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account pricing API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "pricing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get domain pricing",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/pricing/dns/domains/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve pricing for a specific domain name, including registration, renewal, transfer, and restoration costs.\n"
+        },
+        {
+          "info": {
+            "name": "List TLD pricing",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/pricing/dns/tlds"
+          },
+          "docs": "Retrieve pricing information for all available TLDs, including registration, renewal, transfer, and restoration costs.\n"
+        },
+        {
+          "info": {
+            "name": "Get single TLD pricing",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/pricing/dns/tlds/:tld",
+            "params": [
+              {
+                "name": "tld",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve pricing information for a specific TLD, including registration, renewal, transfer, and restoration costs.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

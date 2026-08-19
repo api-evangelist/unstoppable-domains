@@ -1,0 +1,121 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account operations API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "operations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get list of operations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/operations",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "$cursor",
+                "value": "",
+                "type": "query",
+                "description": "The `next.$cursor` value from the previous page response"
+              }
+            ]
+          },
+          "docs": "Get paginated list of past operations, with the ability to filter based on various criteria.\n\nResults ordered with newest operations first.\n"
+        },
+        {
+          "info": {
+            "name": "Check operation status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/operations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Use this endpoint to check on the status for any Operation being processed by the API.\n"
+        },
+        {
+          "info": {
+            "name": "Update operation dependency",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.unstoppabledomains.com/partner/v3/operations/:id/dependencies/:depId",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "depId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sign operation dependency with status `SIGNATURE_REQUIRED` so it can continue processing"
+        },
+        {
+          "info": {
+            "name": "Pending Operations for a domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/pending-operations",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Unlike the operation list route, this endpoint will return a minimal representation of pending operations for a domain across **all activity** for a given domain.\n\nSince we only allow a single concurrent operation for a domain (across all accounts), **this endpoint should be checked before attempting any domain operations**. This is particularly important for **self-custody domains**, as any account (or even the owner themself) can initiate operations.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

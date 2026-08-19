@@ -1,0 +1,64 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account domain-transfers API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "domain-transfers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get transfer authorization code",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/authorization-code",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve the authorization (EPP) code required to transfer the domain to another registrar. The domain must be eligible for transfer before requesting this code.\n"
+        },
+        {
+          "info": {
+            "name": "Check inbound transfer eligibility",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/transfers/inbound-eligibility",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Check whether a domain is eligible for inbound transfer to your account. Provide the authorization code to validate the transfer.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

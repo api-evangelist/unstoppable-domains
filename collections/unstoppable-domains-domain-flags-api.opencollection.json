@@ -1,0 +1,69 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account domain-flags API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "domain-flags",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get domain flags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/flags",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve the current flag settings for the specified domain, including resolution, transfer lock, delete lock, update lock, renewal, and WHOIS privacy status.\n"
+        },
+        {
+          "info": {
+            "name": "Update domain flags",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/flags",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update one or more flags for the specified domain. Use this to toggle transfer lock, auto-renew, WHOIS privacy, and other domain settings. Use `$preview=true` to validate without applying changes.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

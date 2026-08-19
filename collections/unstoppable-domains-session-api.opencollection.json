@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account Session API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Session",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate an authenticated URL for browser sign-in",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_authenticated_url_get",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a one-time URL that automatically signs the user in and redirects to the specified page. Use this whenever the user needs to complete an action in the browser (e.g., adding a payment method, managing account settings). The URL expires after 60 seconds and is single-use."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

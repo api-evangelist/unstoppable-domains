@@ -1,0 +1,95 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account contacts API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "contacts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/contacts/:contactId",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path",
+                "description": "Contact ID (format: ct-<uuid>)"
+              }
+            ]
+          },
+          "docs": "Retrieve the details of a specific contact by ID, including personal information, address, phone, email, and verification status.\n"
+        },
+        {
+          "info": {
+            "name": "Create a contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/contacts",
+            "params": [
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new contact for use in domain registration and management. A verification email will be sent to the contact's email address. Use `$preview=true` to validate without creating the contact.\n"
+        },
+        {
+          "info": {
+            "name": "List ICANN contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_contacts_list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List ICANN contacts configured for the authenticated user's account. Required for DNS domain registration (.com, .org, etc.)."
+        },
+        {
+          "info": {
+            "name": "Create ICANN contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_contact_create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new ICANN contact for DNS domain registration. Required for .com, .org, .net, etc."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,308 @@
+{
+  "item": [
+    {
+      "id": "0c0bd215-e5ba-4888-9c23-23cfe11636cd",
+      "name": "Reverse",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "44e1e922-e31d-4f18-9f6a-ead3ed5eecec",
+          "name": "Get reverse",
+          "request": {
+            "name": "Get reverse",
+            "description": {
+              "content": "**Get Reverse Record for an Address**<br/>**Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reverse",
+                ":address"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "address",
+                  "description": "(Required) A wallet address to query for reverse record"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9bf40974-392a-4c8e-bea8-8249f36e2b99",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reverse",
+                    ":address"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "address",
+                      "description": "(Required) A wallet address to query for reverse record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"meta\": {\n        \"type\": \"Zilliqa\",\n        \"domain\": \"string\",\n        \"reverse\": true,\n        \"resolver\": \"string\",\n        \"blockchain\": \"string\",\n        \"networkId\": 1,\n        \"registry\": \"string\",\n        \"customMeta\": {},\n        \"namehash\": \"string\",\n        \"tokenId\": \"string\",\n        \"owner\": \"string\"\n      },\n      \"records\": {}\n    },\n    {\n      \"meta\": {\n        \"type\": \"Ens\",\n        \"domain\": \"string\",\n        \"reverse\": false,\n        \"resolver\": \"string\",\n        \"blockchain\": \"string\",\n        \"networkId\": 1337,\n        \"registry\": \"string\",\n        \"customMeta\": {},\n        \"namehash\": \"string\",\n        \"tokenId\": \"string\",\n        \"owner\": \"string\"\n      },\n      \"records\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "be0fcb50-eab7-4ba8-a855-de94a107fd97",
+          "name": "Get reverses",
+          "request": {
+            "name": "Get reverses",
+            "description": {
+              "content": "\n  **Get Records for Multiple Domains**\n  <br/>\n  \nThe API only supports Unstoppable Domains' naming services for backward compatibility. A new API version is coming soon for other naming services\n<ul>\n  <li>\n    <p>Unstoppable Domain's <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/uns-architecture-overview\" target=\"_blank\">UNS</a> and <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/cns-architecture-overview\" target=\"_blank\">CNS</a> with TLDs:\n<strong>.x</strong>, <strong>.polygon</strong>, <strong>.nft</strong>, <strong>.crypto</strong>, <strong>.blockchain</strong>, <strong>.bitcoin</strong>, <strong>.dao</strong>, <strong>.888</strong>, <strong>.wallet</strong>, <strong>.binanceus</strong>, <strong>.hi</strong>, <strong>.klever</strong>, <strong>.kresus</strong>, <strong>.anime</strong>, <strong>.manga</strong>, <strong>.go</strong>, <strong>.zil</strong></p>\n  </li>\n  <li>\n    <p>Unstoppable Domain's <a href=\"https://unstoppabledomains.com/blog/categories/announcements/article/zilliqa-naming-service\" target=\"_blank\">Zilliqa</a> with TLDs:\n<strong>zil</strong></p>\n  </li>\n</ul>\n\n  <br/>\n  **Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reverse",
+                "query"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "data",
+                  "value": "[\"<string>\",\"<string>\"]",
+                  "description": "See this [list](https://github.com/unstoppabledomains/uns/blob/main/uns-config.json) for all the resolution keys supported"
+                },
+                {
+                  "disabled": false,
+                  "key": "data",
+                  "value": "[\"<string>\",\"<string>\"]",
+                  "description": "Wallet addresses of the owners of domains"
+                },
+                {
+                  "disabled": false,
+                  "key": "data",
+                  "value": "[\"<string>\",\"<string>\"]",
+                  "description": "Domain ending supported such as `crypto`, `x`, or `polygon`. See [supported tlds](https://api.unstoppabledomains.com/resolve/supported_tlds) for the full list"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "<string>",
+                  "description": "Sort key to specify how the returned domain list is sorted"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortDirection",
+                  "value": "<string>",
+                  "description": "Sort order of the returned domain list"
+                },
+                {
+                  "disabled": false,
+                  "key": "startingAfter",
+                  "value": "<string>",
+                  "description": "Query offset to skip a number of record, example: 100"
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Number of domains returned in the list, example: 50"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addresses\": [\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c5597232-e4db-4136-97c7-a185f0d1bf84",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reverse",
+                    "query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "data",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "data",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "data",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortDirection",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startingAfter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"addresses\": [\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"meta\": {\n        \"type\": \"Uns\",\n        \"domain\": \"string\",\n        \"reverse\": true,\n        \"resolver\": \"string\",\n        \"blockchain\": \"string\",\n        \"networkId\": 5,\n        \"registry\": \"string\",\n        \"customMeta\": {},\n        \"namehash\": \"string\",\n        \"tokenId\": \"string\",\n        \"owner\": \"string\"\n      },\n      \"records\": {}\n    },\n    {\n      \"meta\": {\n        \"type\": \"Zilliqa\",\n        \"domain\": \"string\",\n        \"reverse\": true,\n        \"resolver\": \"string\",\n        \"blockchain\": \"string\",\n        \"networkId\": 1337,\n        \"registry\": \"string\",\n        \"customMeta\": {},\n        \"namehash\": \"string\",\n        \"tokenId\": \"string\",\n        \"owner\": \"string\"\n      },\n      \"records\": {}\n    }\n  ],\n  \"meta\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.unstoppabledomains.com/partner/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a3325eaa-14de-4eb5-9d18-eb129a5ad0c0",
+    "name": "Web3 Partner API v3 account Reverse API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n\n\nContact Support:\n Name: Unstoppable Domains (Partner Engineering)\n Email: partnerengineering@unstoppabledomains.com",
+      "type": "text/plain"
+    }
+  }
+}

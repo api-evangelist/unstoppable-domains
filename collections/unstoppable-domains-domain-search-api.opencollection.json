@@ -1,0 +1,107 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account domain-search API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "domain-search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Lookup multiple domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains",
+            "params": [
+              {
+                "name": "$expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ending",
+                "value": "",
+                "type": "query",
+                "description": "TLD or domain endings to combine with unqualified query labels (e.g. `com`, `net`). Required when any `query` value is an unqualified label."
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Domain names or labels to search. Fully qualified names (e.g. `example.com`) are looked up directly. Unqualified labels (e.g. `example`) are combined with each `ending` value to produce domain names."
+              }
+            ]
+          },
+          "docs": "Get domain availability and details for multiple domains. Optionally, use the `$expand` query parameter to include additional data in the response (e.g. `?$expand=registration&$expand=flags`).\n\nIf a domain is available for registration it will have an `availability.status` of `AVAILABLE` and will include an `availability.price` object.\n\n**Search constraints:**\n- Each `query` value must be a fully qualified domain name (e.g. `example.com`), OR at least one `ending` parameter must be provided.\n- T"
+        },
+        {
+          "info": {
+            "name": "Lookup a single domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$expand",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get availability and details for a single domain. Optionally, use the `$expand` query parameter to include additional data such as registration details and flags.\n"
+        },
+        {
+          "info": {
+            "name": "Search for available domains or check specific domain availability",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_domains_search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search for domain availability and pricing. Can check a specific domain (e.g., \"example.com\") or search terms across multiple TLDs. Supports multiple queries in a single request for efficient batch lookups. Returns a list of matching domains with their availability status, prices, and other details. IMPORTANT: Not all ICANN TLDs are supported. Use ud_tld_list to verify TLD support before searching with specific TLDs."
+        },
+        {
+          "info": {
+            "name": "List available TLDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_tld_list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List all available ICANN TLDs (top-level domains) supported by our registrar."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

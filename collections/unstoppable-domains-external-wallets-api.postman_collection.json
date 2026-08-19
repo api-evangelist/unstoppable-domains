@@ -1,0 +1,870 @@
+{
+  "item": [
+    {
+      "id": "5e3be351-6034-460e-852c-aa90fd948dde",
+      "name": "external_wallets",
+      "description": {
+        "content": "Manage self-custody wallets to allow for management of self-custody domains.\n\n## Verifying Self-Custody Wallets\nBefore you can initiate self-custody operations, you must first [verify the self-custody wallet](/openapi/partner/v3/#operation/getExternalWalletVerification) (only needs to be done once per wallet).\n\nThis involves:\n1. [Fetching a verification message to sign](/openapi/partner/v3/#operation/getExternalWalletVerification)\n2. Collecting a `personal_sign` signature from the wallet owner\n3. [Submitting the signature](/openapi/partner/v3/#operation/postExternalWalletVerification) to register the verified wallet\n\nAfter verifying a wallet, it will be returned by the Single-Wallet and Wallet List routes, with the type of `EXTERNAL`.\n\n## Supported Self-Custody Wallets\n- Externally Owned Accounts (EOAs)\n- [ERC1271](https://eips.ethereum.org/EIPS/eip-1271) Smart Contract wallets deployed on Polygon\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b5a67f59-61e8-45fc-82dc-92562b9d4119",
+          "name": "Get wallet verification to sign",
+          "request": {
+            "name": "Get wallet verification to sign",
+            "description": {
+              "content": "In order to use an self-custody wallet within the API, you must first use it to sign a verification message. This endpoint will provide the specific substring that needs to be signed.\n\nThe response `message` is meant to be included in `personal_sign` request for the wallet owner to sign. The exact message that is signed simply needs to include the response `message`, so you can include some human-friendly text, as well.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "account",
+                "wallets",
+                ":address",
+                "verification"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "address",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a04fdf43-96da-458b-82cc-f995d4918722",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "wallets",
+                    ":address",
+                    "verification"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "address",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"@type\": \"unstoppabledomains.com/partner.v3.WalletUnsignedVerification\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f47e7e4f-b031-4975-a94c-62a1c542e58c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "wallets",
+                    ":address",
+                    "verification"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "address",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"WALLET_ALREADY_VERIFIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a200fee3-8360-4bf9-9699-d5b94ffecaa1",
+          "name": "Submit signed wallet verification",
+          "request": {
+            "name": "Submit signed wallet verification",
+            "description": {
+              "content": "After signing the [verification message](/openapi/partner/v3/#operation/getExternalWalletVerification), submit the signature to have the self-custody wallet registered as a verified external wallet for management operations.\n\nIf the message the owner signed was not the exact `message` from the [verification response](/openapi/partner/v3/#operation/getExternalWalletVerification), you must also provide the exact message in the request body. It should be the non-hex string used in the `personal_sign` request.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "account",
+                "wallets",
+                ":address",
+                "verification"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "address",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"signature\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9b81fb65-a4a4-4f49-8e0a-915479623c54",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "wallets",
+                    ":address",
+                    "verification"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "address",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"signature\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"@type\": \"unstoppabledomains.com/partner.v3.WalletVerificationResult\",\n  \"operation\": {\n    \"id\": \"op-4abb409c-9283-4589-bd36-d27a757a2165\",\n    \"status\": \"QUEUED\",\n    \"type\": \"DOMAIN_UPDATE\",\n    \"dependencies\": [\n      {\n        \"@type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"parameters\": {\n          \"toAddress\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"initialRecords\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"type\": \"MINT\",\n        \"transaction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"@type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"parameters\": {\n          \"toAddress\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"initialRecords\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"type\": \"MINT\",\n        \"transaction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"@type\": \"unstoppabledomains.com/partner.v3.Operation\",\n    \"lastUpdatedTimestamp\": 1684356429790,\n    \"domain\": \"matt.crypto\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "744bed56-90f3-4479-baef-d19e9dedcd4e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "wallets",
+                    ":address",
+                    "verification"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "address",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"signature\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"WALLET_ALREADY_VERIFIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eccb1100-fc8f-4797-b2fe-64fa06df45c1",
+          "name": "Get list of self-custody wallets",
+          "request": {
+            "name": "Get list of self-custody wallets",
+            "description": {
+              "content": "These wallets are verified `EXTERNAL` wallets that you can use for initiating self-custody domain operations. Any operation initiated for one of these wallets requires an external signature.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "external",
+                "wallets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "$cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "18f2c7be-d918-4676-83e0-ea4a1805d45c",
+              "name": "Paginated list of `EXTERNAL` wallets",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external",
+                    "wallets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"@type\": \"unstoppabledomains.com/partner.v3.CursorList\",\n  \"items\": [\n    {\n      \"@type\": \"unstoppabledomains.com/partner.v3.WalletMinimal\",\n      \"address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\",\n      \"type\": \"SELF\",\n      \"primaryDomain\": \"matt.crypto\"\n    },\n    {\n      \"@type\": \"unstoppabledomains.com/partner.v3.WalletMinimal\",\n      \"address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\",\n      \"type\": \"EXTERNAL\",\n      \"primaryDomain\": \"matt.crypto\"\n    }\n  ],\n  \"next\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d7b974b0-c2fa-4b82-bdde-d77a621b15c2",
+          "name": "Get self-custody wallet",
+          "request": {
+            "name": "Get self-custody wallet",
+            "description": {
+              "content": "Get details for a single self-custody wallet that has verified for your account.\n\nInclude the `?$expand=primaryDomain` to include the wallet's Primary Domain (also known as the Reverse Resolution) in the response.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "external",
+                "wallets",
+                ":address"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "$expand",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "address",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2a0978b6-7d84-458b-9f5b-0f28597acfec",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external",
+                    "wallets",
+                    ":address"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "address",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"@type\": \"unstoppabledomains.com/partner.v3.WalletMinimal\",\n  \"address\": \"0xb4783AeF93923a2d4eEA29C84f347F26E62e4321\",\n  \"type\": \"EXTERNAL\",\n  \"primaryDomain\": \"matt.crypto\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "67415fa0-4f28-4edb-a9ed-96c4c6e07a35",
+              "name": "Wallet does not exist in your account",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external",
+                    "wallets",
+                    ":address"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$expand",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "address",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"context\": {\n    \"entities\": [\n      {\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9348bc62-9665-4f58-bbc3-e8be6582a7bd",
+          "name": "Update self-custody wallet",
+          "request": {
+            "name": "Update self-custody wallet",
+            "description": {
+              "content": "Update details for a specific self-custody wallet in your account.\n\nThis can be used to set (or clear) the Primary Domain (also known as the Reverse Resolution) for a domain.\n\nTo clear the Primary Domain for a wallet, pass a `null` value for the `primaryDomain` property within the request body.\n\n**Note**: This will create an operation that requires a signature from the self-custody wallet owner.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "external",
+                "wallets",
+                ":address"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "address",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"primaryDomain\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4792ba5f-2eef-4eaf-a2a8-101261470949",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external",
+                    "wallets",
+                    ":address"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "address",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"primaryDomain\": \"matt.crypto\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"@type\": \"unstoppabledomains.com/partner.v3.WalletUpdateResult\",\n  \"operation\": {\n    \"id\": \"op-4abb409c-9283-4589-bd36-d27a757a2165\",\n    \"status\": \"CANCELLED\",\n    \"type\": \"DOMAIN_CLAIM\",\n    \"dependencies\": [\n      {\n        \"@type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"parameters\": {\n          \"toAddress\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"initialRecords\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"type\": \"MINT\",\n        \"transaction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"@type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"parameters\": {\n          \"toAddress\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"initialRecords\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"type\": \"MINT\",\n        \"transaction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"@type\": \"unstoppabledomains.com/partner.v3.Operation\",\n    \"lastUpdatedTimestamp\": 1684356429790,\n    \"domain\": \"matt.crypto\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "75957a99-65ff-4805-bb5e-9eebb6089187",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external",
+                    "wallets",
+                    ":address"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "address",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"primaryDomain\": \"matt.crypto\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9d43678f-09d6-41e8-b29f-eadb5230df79",
+              "name": "Wallet does not exist in your account",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "external",
+                    "wallets",
+                    ":address"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "address",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"primaryDomain\": \"matt.crypto\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"context\": {\n    \"entities\": [\n      {\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"value\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.unstoppabledomains.com/partner/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b7077796-66ec-4cad-9be6-597b41b74c4c",
+    "name": "Web3 Partner API v3 account external_wallets API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n\n\nContact Support:\n Name: Unstoppable Domains (Partner Engineering)\n Email: partnerengineering@unstoppabledomains.com",
+      "type": "text/plain"
+    }
+  }
+}

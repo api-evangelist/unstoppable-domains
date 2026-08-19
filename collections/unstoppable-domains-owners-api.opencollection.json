@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account owners API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "owners",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search for domains owned by an address",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/owners/:address/domains",
+            "params": [
+              {
+                "name": "address",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$expand",
+                "value": "",
+                "type": "query",
+                "description": "Use `$expand` options to conditionally include portions of the response"
+              },
+              {
+                "name": "$cursor",
+                "value": "",
+                "type": "query",
+                "description": "The `next.$cursor` value from the previous page response"
+              }
+            ]
+          },
+          "docs": "Search for domains owned by an address"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

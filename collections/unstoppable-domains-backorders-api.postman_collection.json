@@ -1,0 +1,657 @@
+{
+  "item": [
+    {
+      "id": "ea0e055b-e524-46ac-b315-a4f4a09399e6",
+      "name": "Backorders",
+      "description": {
+        "content": "Create and manage domain backorders, and browse expired or pending-delete domains.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "67faad9f-3b38-4b5d-8da6-978346770b75",
+          "name": "Create domain backorders",
+          "request": {
+            "name": "Create domain backorders",
+            "description": {
+              "content": "Create backorders for one or more expiring DNS domains. The system monitors the domain and automatically registers it when it drops.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_backorder_create"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\",\n      \"contactId\": \"<string>\",\n      \"availableAfterTimestamp\": \"<number>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "30e281c9-ee3d-4801-87a2-8d4246e8bdff",
+              "name": "Backorder creation results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_backorder_create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\",\n      \"contactId\": \"<string>\",\n      \"availableAfterTimestamp\": \"<number>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"name\": \"string\",\n      \"success\": true,\n      \"backorderId\": 2896.022481810416,\n      \"price\": 8697.193516941064,\n      \"serviceFee\": 9303.6525585307,\n      \"status\": \"string\",\n      \"error\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"success\": true,\n      \"backorderId\": 3599.974210748228,\n      \"price\": 8049.591478152283,\n      \"serviceFee\": 683.2468236959688,\n      \"status\": \"string\",\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 6067.142737183455,\n  \"failureCount\": 3034.1695238687216,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d9e180a0-3297-488c-a6ad-f1d05412c234",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_backorder_create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\",\n      \"contactId\": \"<string>\",\n      \"availableAfterTimestamp\": \"<number>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "45938e9d-91f2-4209-9420-2a0d56e08e9d",
+          "name": "Cancel domain backorders",
+          "request": {
+            "name": "Cancel domain backorders",
+            "description": {
+              "content": "Cancel one or more pending domain backorders. Refunds the Account Balance hold (minus non-refundable service fee) and removes the scheduled registration job.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_backorder_cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"backorderIds\": [\n    \"<number>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "340de083-86a4-4b47-bb72-b13d2b2f93a4",
+              "name": "Backorder cancellation results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_backorder_cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"backorderIds\": [\n    \"<number>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"backorderId\": 4285.166693757559,\n      \"domain\": \"string\",\n      \"success\": true,\n      \"refundAmount\": 6787.216060895918,\n      \"error\": \"string\"\n    },\n    {\n      \"backorderId\": 2190.7051135469137,\n      \"domain\": \"string\",\n      \"success\": false,\n      \"refundAmount\": 5308.7045788822425,\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 9808.19752431864,\n  \"failureCount\": 3136.4107464975464,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "15f4e07a-7370-4d8e-a281-4811d5c4545f",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_backorder_cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"backorderIds\": [\n    \"<number>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a20b1f45-81ad-4dfd-b75f-240b56899abc",
+          "name": "List user's backorders",
+          "request": {
+            "name": "List user's backorders",
+            "description": {
+              "content": "List the authenticated user's domain backorders with optional status filtering, domain search, and pagination. Status normalization is applied automatically.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_backorders_list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"query\": \"<string>\",\n  \"offset\": \"<number>\",\n  \"limit\": \"<number>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e6d32b9a-94df-4561-9493-e14dc9813e59",
+              "name": "List of backorders with pagination",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_backorders_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"query\": \"<string>\",\n  \"offset\": \"<number>\",\n  \"limit\": \"<number>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"backorders\": [\n    {\n      \"backorderId\": 4518.680007745577,\n      \"domain\": \"string\",\n      \"status\": \"string\",\n      \"price\": 2417.6452284701954,\n      \"serviceFee\": 8079.537829289753,\n      \"availableAfter\": 7965.271374953088,\n      \"createdAt\": 3478.6771910656776,\n      \"updatedAt\": 7440.2356621078725\n    },\n    {\n      \"backorderId\": 771.2210010475728,\n      \"domain\": \"string\",\n      \"status\": \"string\",\n      \"price\": 1184.8409327609443,\n      \"serviceFee\": 2944.0785763585563,\n      \"availableAfter\": 6957.2021671163875,\n      \"createdAt\": 526.2333614238701,\n      \"updatedAt\": 6849.106242337334\n    }\n  ],\n  \"pagination\": {\n    \"total\": 9952.45471046507,\n    \"count\": 9244.172663306035,\n    \"offset\": 4976.979099323059,\n    \"limit\": 2623.2741887245393,\n    \"hasMore\": false,\n    \"nextOffset\": 806.3606568953252\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9afcce37-d037-4740-9a2e-a116848e48c7",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_backorders_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"query\": \"<string>\",\n  \"offset\": \"<number>\",\n  \"limit\": \"<number>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5c05533b-c0ab-4435-babf-a9fccf0e837a",
+          "name": "Browse the expireds/pending-delete domain marketplace",
+          "request": {
+            "name": "Browse the expireds/pending-delete domain marketplace",
+            "description": {
+              "content": "List domains that are approaching expiration or have recently dropped and are available for backorder registration. Supports filtering by status, TLD, label length, backorder count, and watchlist count.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_expireds_list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"<string>\",\n  \"status\": \"<string>\",\n  \"tlds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sortBy\": \"<string>\",\n  \"sortDirection\": \"<string>\",\n  \"lengthRange\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"bidsRange\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"watchlistRange\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"offset\": \"<number>\",\n  \"limit\": \"<number>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "00a42aca-ce30-4fc0-89c0-8de10a9fbcc5",
+              "name": "List of expiring/dropped domains",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_expireds_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"<string>\",\n  \"status\": \"<string>\",\n  \"tlds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sortBy\": \"<string>\",\n  \"sortDirection\": \"<string>\",\n  \"lengthRange\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"bidsRange\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"watchlistRange\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"offset\": \"<number>\",\n  \"limit\": \"<number>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"domains\": [\n    {\n      \"name\": \"string\",\n      \"deletionTimestamp\": 870.7545465740429,\n      \"status\": \"COMING_SOON\",\n      \"labelLength\": 4432.457632113956,\n      \"watchlistCount\": 5232.147725567797,\n      \"backorderCount\": 9866.787186582926\n    },\n    {\n      \"name\": \"string\",\n      \"deletionTimestamp\": 3198.6690385582306,\n      \"status\": \"COMING_SOON\",\n      \"labelLength\": 605.1796453062431,\n      \"watchlistCount\": 513.1656972763177,\n      \"backorderCount\": 1986.3441254617965\n    }\n  ],\n  \"pagination\": {\n    \"total\": 5184.090838019719,\n    \"count\": 3140.4123727539313,\n    \"offset\": 1802.0141995799322,\n    \"limit\": 7260.346949378016,\n    \"hasMore\": true,\n    \"nextOffset\": 6219.191852394097\n  },\n  \"truncated\": true,\n  \"truncationMessage\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "27ce24e2-72b1-4073-b764-6ad939aa2d11",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_expireds_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"<string>\",\n  \"status\": \"<string>\",\n  \"tlds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sortBy\": \"<string>\",\n  \"sortDirection\": \"<string>\",\n  \"lengthRange\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"bidsRange\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"watchlistRange\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"offset\": \"<number>\",\n  \"limit\": \"<number>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.unstoppabledomains.com/partner/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "66915c6f-e57c-48a1-8573-ce81cc865aa6",
+    "name": "Web3 Partner API v3 account Backorders API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n\n\nContact Support:\n Name: Unstoppable Domains (Partner Engineering)\n Email: partnerengineering@unstoppabledomains.com",
+      "type": "text/plain"
+    }
+  }
+}

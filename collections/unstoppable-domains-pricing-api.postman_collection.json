@@ -1,0 +1,998 @@
+{
+  "item": [
+    {
+      "id": "a6838ee9-3e18-499c-ac7a-618433e4f903",
+      "name": "pricing",
+      "description": {
+        "content": "Retrieve pricing information for domain registration, renewal, transfer, and restoration by domain name or TLD.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "83a46f80-6077-4942-a4e3-40733f6f3db3",
+          "name": "Get domain pricing",
+          "request": {
+            "name": "Get domain pricing",
+            "description": {
+              "content": "Retrieve pricing for a specific domain name, including registration, renewal, transfer, and restoration costs.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pricing",
+                "dns",
+                "domains",
+                ":name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6c738f05-babc-432a-819c-5a49d29c5093",
+              "name": "Domain pricing",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"@type\": \"unstoppabledomains.com/partner.v3.DomainDnsPricing\",\n  \"registration\": {\n    \"type\": \"STANDARD\",\n    \"listPrice\": {\n      \"usdCents\": 5051.793092620188\n    },\n    \"subTotal\": {\n      \"usdCents\": 8078.626457882888\n    },\n    \"adjustments\": [\n      {\n        \"usdCents\": 765.6454599168605,\n        \"type\": \"undefined\"\n      },\n      {\n        \"usdCents\": 2701.1241128568076,\n        \"type\": \"undefined\"\n      }\n    ],\n    \"validUntilTimestamp\": 6716.981304411865\n  },\n  \"renewal\": {\n    \"type\": \"PREMIUM\",\n    \"listPrice\": {\n      \"usdCents\": 7476.302378076734\n    },\n    \"subTotal\": {\n      \"usdCents\": 2879.0002621752296\n    },\n    \"adjustments\": [\n      {\n        \"usdCents\": 413.1886416283148,\n        \"type\": \"undefined\"\n      },\n      {\n        \"usdCents\": 1661.9695447666215,\n        \"type\": \"undefined\"\n      }\n    ],\n    \"validUntilTimestamp\": 9573.263951500194\n  },\n  \"transfer\": {\n    \"type\": \"DEFERRED\",\n    \"listPrice\": {\n      \"usdCents\": 9682.380146032268\n    },\n    \"subTotal\": {\n      \"usdCents\": 5959.246902998585\n    },\n    \"adjustments\": [\n      {\n        \"usdCents\": 9545.616183168278,\n        \"type\": \"undefined\"\n      },\n      {\n        \"usdCents\": 1073.1960338258584,\n        \"type\": \"undefined\"\n      }\n    ],\n    \"validUntilTimestamp\": 5172.923104578037\n  },\n  \"restoration\": {\n    \"type\": \"PREMIUM\",\n    \"listPrice\": {\n      \"usdCents\": 5498.938339460151\n    },\n    \"subTotal\": {\n      \"usdCents\": 4688.084040601278\n    },\n    \"adjustments\": [\n      {\n        \"usdCents\": 9956.417345139582,\n        \"type\": \"undefined\"\n      },\n      {\n        \"usdCents\": 5028.2341619727995,\n        \"type\": \"undefined\"\n      }\n    ],\n    \"validUntilTimestamp\": 3333.8968055485375\n  },\n  \"constraints\": {\n    \"registration\": {\n      \"period\": {\n        \"min\": 8681.150354166608,\n        \"max\": 8.741158348940514,\n        \"increments\": 6457.911003563226\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "243db02a-0875-4ae3-862d-eed7be96b945",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9d2d6950-b8e0-4d6f-a4e8-a75ddd2de7fd",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc6f651a-142e-4d60-abe2-b42773f3689e",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ffe52d39-08f9-4459-866c-ee671fa769a3",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b4b24e77-d9f6-4b5c-b603-cc31e949bdfa",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "domains",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cf8157b6-0d76-44c4-9bb7-b35cc7333222",
+          "name": "List TLD pricing",
+          "request": {
+            "name": "List TLD pricing",
+            "description": {
+              "content": "Retrieve pricing information for all available TLDs, including registration, renewal, transfer, and restoration costs.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pricing",
+                "dns",
+                "tlds"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e804a339-b41e-499c-a46d-db3a6bdd4382",
+              "name": "List of TLD pricing",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "tlds"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"@type\": \"unstoppabledomains.com/partner.v3.List\",\n  \"items\": [\n    {\n      \"@type\": \"unstoppabledomains.com/partner.v3.TldDnsPricing\",\n      \"name\": \"string\",\n      \"registration\": {\n        \"type\": \"STANDARD\",\n        \"listPrice\": {\n          \"usdCents\": 2588.9738456144773\n        },\n        \"subTotal\": {\n          \"usdCents\": 8620.57918493518\n        },\n        \"adjustments\": [\n          {\n            \"usdCents\": 1364.5025553297219,\n            \"type\": \"undefined\"\n          },\n          {\n            \"usdCents\": 293.6629431612259,\n            \"type\": \"undefined\"\n          }\n        ],\n        \"validUntilTimestamp\": 4858.660063004895\n      },\n      \"renewal\": {\n        \"type\": \"PREMIUM\",\n        \"listPrice\": {\n          \"usdCents\": 408.22461892799475\n        },\n        \"subTotal\": {\n          \"usdCents\": 5877.190191884903\n        },\n        \"adjustments\": [\n          {\n            \"usdCents\": 5806.306324624035,\n            \"type\": \"undefined\"\n          },\n          {\n            \"usdCents\": 2307.0093356538337,\n            \"type\": \"undefined\"\n          }\n        ],\n        \"validUntilTimestamp\": 5283.347514839668\n      },\n      \"transfer\": {\n        \"type\": \"PREMIUM\",\n        \"listPrice\": {\n          \"usdCents\": 1977.1985582554453\n        },\n        \"subTotal\": {\n          \"usdCents\": 6411.500424507195\n        },\n        \"adjustments\": [\n          {\n            \"usdCents\": 9832.597181782776,\n            \"type\": \"undefined\"\n          },\n          {\n            \"usdCents\": 7410.845470467545,\n            \"type\": \"undefined\"\n          }\n        ],\n        \"validUntilTimestamp\": 235.14903452458324\n      },\n      \"restoration\": {\n        \"type\": \"PREMIUM\",\n        \"listPrice\": {\n          \"usdCents\": 1520.733715893965\n        },\n        \"subTotal\": {\n          \"usdCents\": 179.39858189809365\n        },\n        \"adjustments\": [\n          {\n            \"usdCents\": 385.01614378814276,\n            \"type\": \"undefined\"\n          },\n          {\n            \"usdCents\": 2048.387970057662,\n            \"type\": \"undefined\"\n          }\n        ],\n        \"validUntilTimestamp\": 3441.631537810057\n      },\n      \"constraints\": {\n        \"registration\": {\n          \"period\": {\n            \"min\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"max\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"increments\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      }\n    },\n    {\n      \"@type\": \"unstoppabledomains.com/partner.v3.TldDnsPricing\",\n      \"name\": \"string\",\n      \"registration\": {\n        \"type\": \"DEFERRED\",\n        \"listPrice\": {\n          \"usdCents\": 2294.5573573993192\n        },\n        \"subTotal\": {\n          \"usdCents\": 1776.906951097088\n        },\n        \"adjustments\": [\n          {\n            \"usdCents\": 830.2978643189796,\n            \"type\": \"undefined\"\n          },\n          {\n            \"usdCents\": 3774.964956431057,\n            \"type\": \"undefined\"\n          }\n        ],\n        \"validUntilTimestamp\": 4737.463489848213\n      },\n      \"renewal\": {\n        \"type\": \"DEFERRED\",\n        \"listPrice\": {\n          \"usdCents\": 327.2382744962432\n        },\n        \"subTotal\": {\n          \"usdCents\": 2660.9353147939873\n        },\n        \"adjustments\": [\n          {\n            \"usdCents\": 5432.494868178018,\n            \"type\": \"undefined\"\n          },\n          {\n            \"usdCents\": 6276.1805290632865,\n            \"type\": \"undefined\"\n          }\n        ],\n        \"validUntilTimestamp\": 4136.6923096072005\n      },\n      \"transfer\": {\n        \"type\": \"PREMIUM\",\n        \"listPrice\": {\n          \"usdCents\": 9142.984288016718\n        },\n        \"subTotal\": {\n          \"usdCents\": 2679.4249364834964\n        },\n        \"adjustments\": [\n          {\n            \"usdCents\": 6451.984714177931,\n            \"type\": \"undefined\"\n          },\n          {\n            \"usdCents\": 6939.247268973848,\n            \"type\": \"undefined\"\n          }\n        ],\n        \"validUntilTimestamp\": 6273.256969750305\n      },\n      \"restoration\": {\n        \"type\": \"DEFERRED\",\n        \"listPrice\": {\n          \"usdCents\": 7179.861077773438\n        },\n        \"subTotal\": {\n          \"usdCents\": 8222.111905677075\n        },\n        \"adjustments\": [\n          {\n            \"usdCents\": 3221.89348059849,\n            \"type\": \"undefined\"\n          },\n          {\n            \"usdCents\": 4567.530125489353,\n            \"type\": \"undefined\"\n          }\n        ],\n        \"validUntilTimestamp\": 2456.00915327601\n      },\n      \"constraints\": {\n        \"registration\": {\n          \"period\": {\n            \"min\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"max\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"increments\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bc92f3b6-842d-48af-9ecb-96abd8465f3b",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "tlds"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7132c784-2afa-47aa-9aa2-b69dc32f37c8",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "tlds"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d1dc177-3068-4f64-a83a-6255f2115ead",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "tlds"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "319ece2e-fb43-4f07-97e3-c28b93b41ba9",
+          "name": "Get single TLD pricing",
+          "request": {
+            "name": "Get single TLD pricing",
+            "description": {
+              "content": "Retrieve pricing information for a specific TLD, including registration, renewal, transfer, and restoration costs.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pricing",
+                "dns",
+                "tlds",
+                ":tld"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tld",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "791c64f4-980d-48a8-b932-0559a169111a",
+              "name": "TLD pricing details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "tlds",
+                    ":tld"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tld",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"@type\": \"unstoppabledomains.com/partner.v3.TldDnsPricing\",\n  \"name\": \"string\",\n  \"registration\": {\n    \"type\": \"DEFERRED\",\n    \"listPrice\": {\n      \"usdCents\": 9758.234282816453\n    },\n    \"subTotal\": {\n      \"usdCents\": 2679.587157238348\n    },\n    \"adjustments\": [\n      {\n        \"usdCents\": 228.7016926065133,\n        \"type\": \"undefined\"\n      },\n      {\n        \"usdCents\": 4716.130331415047,\n        \"type\": \"undefined\"\n      }\n    ],\n    \"validUntilTimestamp\": 9712.81141193737\n  },\n  \"renewal\": {\n    \"type\": \"PREMIUM\",\n    \"listPrice\": {\n      \"usdCents\": 5633.1944408083355\n    },\n    \"subTotal\": {\n      \"usdCents\": 8889.910945945536\n    },\n    \"adjustments\": [\n      {\n        \"usdCents\": 2654.0552142188058,\n        \"type\": \"undefined\"\n      },\n      {\n        \"usdCents\": 1521.988286030601,\n        \"type\": \"undefined\"\n      }\n    ],\n    \"validUntilTimestamp\": 8886.829925137936\n  },\n  \"transfer\": {\n    \"type\": \"PREMIUM\",\n    \"listPrice\": {\n      \"usdCents\": 9479.262878256972\n    },\n    \"subTotal\": {\n      \"usdCents\": 1499.2750133611976\n    },\n    \"adjustments\": [\n      {\n        \"usdCents\": 6961.303802008899,\n        \"type\": \"undefined\"\n      },\n      {\n        \"usdCents\": 6294.773233917036,\n        \"type\": \"undefined\"\n      }\n    ],\n    \"validUntilTimestamp\": 8481.951613062181\n  },\n  \"restoration\": {\n    \"type\": \"STANDARD\",\n    \"listPrice\": {\n      \"usdCents\": 9297.159976326328\n    },\n    \"subTotal\": {\n      \"usdCents\": 3097.710379713219\n    },\n    \"adjustments\": [\n      {\n        \"usdCents\": 3483.279495239976,\n        \"type\": \"undefined\"\n      },\n      {\n        \"usdCents\": 502.94776873714306,\n        \"type\": \"undefined\"\n      }\n    ],\n    \"validUntilTimestamp\": 9873.340915849223\n  },\n  \"constraints\": {\n    \"registration\": {\n      \"period\": {\n        \"min\": 7779.603806224092,\n        \"max\": 8859.227698680157,\n        \"increments\": 835.3500361319144\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04a71132-0d68-422c-8ef9-4384dde70213",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "tlds",
+                    ":tld"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tld",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f133c5a-14e7-486e-b09a-a820167b51d5",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "tlds",
+                    ":tld"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tld",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b38d76f0-a34d-48de-bce9-de59244ad364",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "tlds",
+                    ":tld"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tld",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d21f803f-3f64-48db-9c1c-984569795d86",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "tlds",
+                    ":tld"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tld",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c7a1a4aa-1254-4cf3-bcc9-539cd434a5e1",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pricing",
+                    "dns",
+                    "tlds",
+                    ":tld"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tld",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.unstoppabledomains.com/partner/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "235f3298-0009-480e-ac7d-b7a595319c1a",
+    "name": "Web3 Partner API v3 account pricing API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n\n\nContact Support:\n Name: Unstoppable Domains (Partner Engineering)\n Email: partnerengineering@unstoppabledomains.com",
+      "type": "text/plain"
+    }
+  }
+}

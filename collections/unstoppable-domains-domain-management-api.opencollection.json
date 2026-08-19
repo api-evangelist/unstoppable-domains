@@ -1,0 +1,128 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account domain-management API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "domain-management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update a domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Domain name"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query",
+                "description": "Preview mode — validate the request without executing changes."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Comprehensive domain update — modify nameservers, DNSSEC, contacts, flags, and DNS records in a single operation. All fields are optional; only include the sections you want to change. Returns an operation that tracks all the resulting changes."
+        },
+        {
+          "info": {
+            "name": "Enable or disable auto renewal for ICANN DNS domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_domain_auto_renewal_update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enable or disable auto renewal for ICANN DNS domains (.com, .net, .org, .io, etc.). When enabled, domains will be automatically renewed before expiration using the saved payment method. User must own the domains and have a valid payment method on file. Use ud_cart_get_payment_methods to retrieve available payment methods."
+        },
+        {
+          "info": {
+            "name": "Add tags to domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_domain_tags_add",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add tags to domains in your portfolio. Creates new tags automatically if they don't exist. Supports bulk operations for up to 50 domains."
+        },
+        {
+          "info": {
+            "name": "Remove tags from domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_domain_tags_remove",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove tags from domains in your portfolio. Supports bulk operations for up to 50 domains."
+        },
+        {
+          "info": {
+            "name": "Update domain flags",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_domain_flags_update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update domain flags (WHOIS privacy, transfer lock) for domains in your portfolio. Supports bulk operations for up to 50 domains."
+        },
+        {
+          "info": {
+            "name": "Push domains to another user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_domain_push",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Push domains to another Unstoppable Domains user. Requires MFA (two-factor authentication) verification. The recipient must accept the transfer."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

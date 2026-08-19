@@ -1,0 +1,1889 @@
+{
+  "item": [
+    {
+      "id": "f6eed2ab-8037-426c-8cd9-b4efe02a0e23",
+      "name": "DNS Management",
+      "description": {
+        "content": "Manage DNS records, nameservers, and hosting configurations for owned domains (requires authentication)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f3a0fbb2-6536-45e0-bf44-20295c92ebac",
+          "name": "List DNS records for a domain",
+          "request": {
+            "name": "List DNS records for a domain",
+            "description": {
+              "content": "List all DNS records for a domain in your portfolio. Supports filtering by record type and subdomain, with pagination.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_dns_records_list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domain\": \"<string>\",\n  \"type\": \"<string>\",\n  \"subName\": \"<string>\",\n  \"cursor\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f81eff15-0923-4801-a353-5be404ab6433",
+              "name": "DNS records list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_records_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domain\": \"<string>\",\n  \"type\": \"<string>\",\n  \"subName\": \"<string>\",\n  \"cursor\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"domain\": \"string\",\n  \"records\": [\n    {\n      \"id\": \"string\",\n      \"type\": \"CAA\",\n      \"subName\": \"string\",\n      \"values\": [\n        \"string\",\n        \"string\"\n      ],\n      \"ttl\": 1955.29515649715,\n      \"readonly\": true,\n      \"readonlyReasons\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    {\n      \"id\": \"string\",\n      \"type\": \"NS\",\n      \"subName\": \"string\",\n      \"values\": [\n        \"string\",\n        \"string\"\n      ],\n      \"ttl\": 3297.227766896156,\n      \"readonly\": true,\n      \"readonlyReasons\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  ],\n  \"pagination\": {\n    \"hasMore\": false,\n    \"nextCursor\": \"string\"\n  },\n  \"dnsStatus\": {\n    \"configured\": true,\n    \"provider\": \"ud\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91857459-4542-4ff3-b8af-7d114f8b0643",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_records_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domain\": \"<string>\",\n  \"type\": \"<string>\",\n  \"subName\": \"<string>\",\n  \"cursor\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a964c887-f524-4c37-a05a-67bc5a2f364f",
+          "name": "Add DNS records (bulk)",
+          "request": {
+            "name": "Add DNS records (bulk)",
+            "description": {
+              "content": "Add DNS records to one or more domains. Supports A, AAAA, CNAME, MX, TXT, NS, SRV, and CAA record types. Bulk operations up to 50 records.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_dns_record_add"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"records\": [\n    {\n      \"domain\": \"<string>\",\n      \"type\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"subName\": \"@\",\n      \"ttl\": 3600\n    }\n  ],\n  \"upsertMode\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "19dc82d6-d685-4847-b45d-b2afd5537510",
+              "name": "Bulk operation result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_record_add"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"records\": [\n    {\n      \"domain\": \"<string>\",\n      \"type\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"subName\": \"@\",\n      \"ttl\": 3600\n    }\n  ],\n  \"upsertMode\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"domain\": \"string\",\n      \"success\": true,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"domain\": \"string\",\n      \"success\": false,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 868.4187742121852,\n  \"failureCount\": 8925.487523568583\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b04a924-e629-4dd0-81b5-01767ce8adbb",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_record_add"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"records\": [\n    {\n      \"domain\": \"<string>\",\n      \"type\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"subName\": \"@\",\n      \"ttl\": 3600\n    }\n  ],\n  \"upsertMode\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "45e5c4cc-a73c-43ea-a358-b421221fa8ab",
+          "name": "Update DNS records (bulk)",
+          "request": {
+            "name": "Update DNS records (bulk)",
+            "description": {
+              "content": "Update existing DNS records on one or more domains. Bulk operations up to 50 records.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_dns_record_update"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"records\": [\n    {\n      \"domain\": \"<string>\",\n      \"recordId\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ttl\": 3600\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8edeac61-b8ae-4986-8363-9a8baab61d31",
+              "name": "Bulk operation result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_record_update"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"records\": [\n    {\n      \"domain\": \"<string>\",\n      \"recordId\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ttl\": 3600\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"domain\": \"string\",\n      \"success\": true,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"domain\": \"string\",\n      \"success\": false,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 868.4187742121852,\n  \"failureCount\": 8925.487523568583\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7df8fdf4-d313-411f-8c7c-65fff544d30c",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_record_update"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"records\": [\n    {\n      \"domain\": \"<string>\",\n      \"recordId\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ttl\": 3600\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "89d63dd9-8972-44b3-a379-78860ba57183",
+          "name": "Remove DNS records (bulk)",
+          "request": {
+            "name": "Remove DNS records (bulk)",
+            "description": {
+              "content": "Remove specific DNS records by ID from one or more domains. Bulk operations up to 50 records.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_dns_record_remove"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"records\": [\n    {\n      \"domain\": \"<string>\",\n      \"recordId\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "afb78441-21c5-4e6c-b141-21f8db1adc37",
+              "name": "Bulk operation result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_record_remove"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"records\": [\n    {\n      \"domain\": \"<string>\",\n      \"recordId\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"domain\": \"string\",\n      \"success\": true,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"domain\": \"string\",\n      \"success\": false,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 868.4187742121852,\n  \"failureCount\": 8925.487523568583\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "26799c39-3895-404a-990d-5130489ffdc0",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_record_remove"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"records\": [\n    {\n      \"domain\": \"<string>\",\n      \"recordId\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "52d2da28-a098-4fa4-8391-8b1e3210fdec",
+          "name": "Remove all DNS records (bulk)",
+          "request": {
+            "name": "Remove all DNS records (bulk)",
+            "description": {
+              "content": "Remove ALL user-created DNS records from one or more domains. Requires explicit confirmation. Bulk operations up to 50 domains.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_dns_records_remove_all"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\"\n    }\n  ],\n  \"confirmDeleteAll\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fff9c9af-6dcf-482d-a3f6-9576c3a4fd25",
+              "name": "Bulk operation result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_records_remove_all"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\"\n    }\n  ],\n  \"confirmDeleteAll\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"domain\": \"string\",\n      \"success\": true,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"domain\": \"string\",\n      \"success\": false,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 868.4187742121852,\n  \"failureCount\": 8925.487523568583\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "40f0180b-303e-494d-88a4-2a87026e1dc5",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_records_remove_all"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\"\n    }\n  ],\n  \"confirmDeleteAll\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "742f454f-c398-4141-b419-ec439460b7e1",
+          "name": "List nameservers for a domain",
+          "request": {
+            "name": "List nameservers for a domain",
+            "description": {
+              "content": "List current nameservers and check if using UD defaults or custom nameservers.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_dns_nameservers_list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domain\": \"<string>\",\n  \"includeDnssec\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1638bd6f-fbe9-4e46-8709-c55f86d5c47b",
+              "name": "Nameservers list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_nameservers_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domain\": \"<string>\",\n  \"includeDnssec\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"domain\": \"string\",\n  \"nameservers\": [\n    \"string\",\n    \"string\"\n  ],\n  \"isUsingDefaultNameservers\": true,\n  \"dnssec\": {\n    \"enabled\": false,\n    \"records\": [\n      {\n        \"keyTag\": 2981.3477657960207,\n        \"algorithm\": 1630.8350970621887,\n        \"digestType\": 4973.682688063099,\n        \"digest\": \"string\"\n      },\n      {\n        \"keyTag\": 5074.940236480806,\n        \"algorithm\": 1352.6024423949457,\n        \"digestType\": 7514.17272916952,\n        \"digest\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7904bacf-edff-4a8a-a598-7654ba31464c",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_nameservers_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domain\": \"<string>\",\n  \"includeDnssec\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "566844e7-9945-4ffe-916f-07894c4348c3",
+          "name": "Set custom nameservers (bulk)",
+          "request": {
+            "name": "Set custom nameservers (bulk)",
+            "description": {
+              "content": "Configure external nameservers (e.g., Cloudflare, Route 53) for one or more domains. Supports up to 50 domains per request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_dns_nameservers_set_custom"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\",\n      \"nameservers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"dnssec\": \"<object>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2168bc4c-f910-4c15-81f9-564801765850",
+              "name": "Bulk operation result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_nameservers_set_custom"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\",\n      \"nameservers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"dnssec\": \"<object>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"domain\": \"string\",\n      \"success\": true,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"domain\": \"string\",\n      \"success\": false,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 868.4187742121852,\n  \"failureCount\": 8925.487523568583\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a204f888-e90e-4fac-b834-451d035539ce",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_nameservers_set_custom"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\",\n      \"nameservers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"dnssec\": \"<object>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8e6db2ff-333c-45f0-8d06-3e1540ec8c60",
+          "name": "Reset to UD default nameservers (bulk)",
+          "request": {
+            "name": "Reset to UD default nameservers (bulk)",
+            "description": {
+              "content": "Switch back to Unstoppable Domains default nameservers for one or more domains. Supports up to 50 domains per request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_dns_nameservers_set_default"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cc70efd9-a0df-4838-8b0c-f3f12ca864e1",
+              "name": "Bulk operation result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_nameservers_set_default"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"domain\": \"string\",\n      \"success\": true,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"domain\": \"string\",\n      \"success\": false,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 868.4187742121852,\n  \"failureCount\": 8925.487523568583\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd4c05d2-57c3-45aa-8a7b-aeba9638b875",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_nameservers_set_default"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4d53caec-85f8-4e32-98ff-ce89a100f9e9",
+          "name": "List hosting configurations",
+          "request": {
+            "name": "List hosting configurations",
+            "description": {
+              "content": "List hosting/forwarding configurations (redirects, reverse proxy, hosted sites, UD Profile).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_dns_hosting_list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domain\": \"<string>\",\n  \"cursor\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b9b81908-6ec0-43d3-8a07-dbddd26cc87f",
+              "name": "Hosting configurations",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_hosting_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domain\": \"<string>\",\n  \"cursor\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"domain\": \"string\",\n  \"configs\": [\n    {\n      \"type\": \"REVERSE_PROXY\",\n      \"subName\": \"string\",\n      \"targetUrl\": \"string\",\n      \"status\": \"string\",\n      \"certificateStatus\": \"string\"\n    },\n    {\n      \"type\": \"UD_PROFILE\",\n      \"subName\": \"string\",\n      \"targetUrl\": \"string\",\n      \"status\": \"string\",\n      \"certificateStatus\": \"string\"\n    }\n  ],\n  \"pagination\": {\n    \"hasMore\": true,\n    \"nextCursor\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fd4259aa-a618-4e0f-939a-2f0f44fdfe8c",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_hosting_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domain\": \"<string>\",\n  \"cursor\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "01548395-ae65-4001-8278-05fde3445f92",
+          "name": "Add hosting configuration (bulk)",
+          "request": {
+            "name": "Add hosting configuration (bulk)",
+            "description": {
+              "content": "Configure hosting for one or more domains: for-sale listing page, permanent redirect (301), temporary redirect (302), or reverse proxy. Supports up to 50 domains per request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_dns_hosting_add"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\",\n      \"type\": \"<string>\",\n      \"targetUrl\": \"<string>\",\n      \"subName\": \"<string>\",\n      \"forceCompatibility\": \"<boolean>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ee29838c-b24c-45d3-b749-7eb7d2fa6a25",
+              "name": "Bulk operation result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_hosting_add"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\",\n      \"type\": \"<string>\",\n      \"targetUrl\": \"<string>\",\n      \"subName\": \"<string>\",\n      \"forceCompatibility\": \"<boolean>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"domain\": \"string\",\n      \"success\": true,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"domain\": \"string\",\n      \"success\": false,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 868.4187742121852,\n  \"failureCount\": 8925.487523568583\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a13c372c-88c7-441c-8ee7-664d5508fa8a",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_hosting_add"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\",\n      \"type\": \"<string>\",\n      \"targetUrl\": \"<string>\",\n      \"subName\": \"<string>\",\n      \"forceCompatibility\": \"<boolean>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "05b33409-8934-4c44-a318-b692132ee377",
+          "name": "Remove hosting configuration (bulk)",
+          "request": {
+            "name": "Remove hosting configuration (bulk)",
+            "description": {
+              "content": "Remove hosting/forwarding configuration from one or more domains. Supports up to 50 domains per request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_dns_hosting_remove"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\",\n      \"subName\": \"<string>\",\n      \"deleteAll\": \"<boolean>\"\n    }\n  ],\n  \"confirmDeleteAll\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c61e763c-7c87-456f-b630-2c1a5c2e0a34",
+              "name": "Bulk operation result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_hosting_remove"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\",\n      \"subName\": \"<string>\",\n      \"deleteAll\": \"<boolean>\"\n    }\n  ],\n  \"confirmDeleteAll\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"domain\": \"string\",\n      \"success\": true,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"domain\": \"string\",\n      \"success\": false,\n      \"operationId\": \"string\",\n      \"nameservers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"hasDnssec\": true,\n      \"config\": {\n        \"type\": \"string\",\n        \"subName\": \"string\",\n        \"targetUrl\": \"string\"\n      },\n      \"subName\": \"string\",\n      \"deletedAll\": false,\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 868.4187742121852,\n  \"failureCount\": 8925.487523568583\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90a89b3a-be2e-4bb4-ad3a-653d92ae1cd5",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_dns_hosting_remove"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\",\n      \"subName\": \"<string>\",\n      \"deleteAll\": \"<boolean>\"\n    }\n  ],\n  \"confirmDeleteAll\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dce443ee-e773-4e35-b6d9-793c1e66af1f",
+          "name": "Get pending operations for multiple domains",
+          "request": {
+            "name": "Get pending operations for multiple domains",
+            "description": {
+              "content": "Check status of DNS operations across multiple domains. Use to track changes and verify completion after bulk operations.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_domain_pending_operations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\"\n    }\n  ],\n  \"includeCompleted\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "958c6e7f-e3f8-41c1-9c63-4a78b559308d",
+              "name": "Pending operations for all domains",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_domain_pending_operations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\"\n    }\n  ],\n  \"includeCompleted\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"domain\": \"string\",\n      \"success\": false,\n      \"hasPendingOperations\": true,\n      \"operations\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"string\",\n          \"status\": \"string\",\n          \"createdAt\": \"string\",\n          \"updatedAt\": \"string\",\n          \"originOperationId\": \"string\",\n          \"errorCode\": \"string\"\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"string\",\n          \"status\": \"string\",\n          \"createdAt\": \"string\",\n          \"updatedAt\": \"string\",\n          \"originOperationId\": \"string\",\n          \"errorCode\": \"string\"\n        }\n      ],\n      \"error\": \"string\"\n    },\n    {\n      \"domain\": \"string\",\n      \"success\": true,\n      \"hasPendingOperations\": false,\n      \"operations\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"string\",\n          \"status\": \"string\",\n          \"createdAt\": \"string\",\n          \"updatedAt\": \"string\",\n          \"originOperationId\": \"string\",\n          \"errorCode\": \"string\"\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"string\",\n          \"status\": \"string\",\n          \"createdAt\": \"string\",\n          \"updatedAt\": \"string\",\n          \"originOperationId\": \"string\",\n          \"errorCode\": \"string\"\n        }\n      ],\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 3089.373082289055,\n  \"failureCount\": 4460.552242875861,\n  \"summary\": {\n    \"totalPendingCount\": 9093.653510993438,\n    \"domainsWithPending\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "299c1314-0a47-4880-b8c7-036e41ded849",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_domain_pending_operations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"name\": \"<string>\"\n    }\n  ],\n  \"includeCompleted\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.unstoppabledomains.com/partner/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "8fa3fd6d-d7d5-4c87-8115-b0541107d126",
+    "name": "Web3 Partner API v3 account DNS Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n\n\nContact Support:\n Name: Unstoppable Domains (Partner Engineering)\n Email: partnerengineering@unstoppabledomains.com",
+      "type": "text/plain"
+    }
+  }
+}

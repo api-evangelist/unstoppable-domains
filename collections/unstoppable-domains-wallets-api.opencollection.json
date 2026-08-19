@@ -1,0 +1,109 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account wallets API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "wallets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get list of account wallets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/wallets",
+            "params": [
+              {
+                "name": "$cursor",
+                "value": "",
+                "type": "query",
+                "description": "The `next.$cursor` value from the previous page response"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Any domains held in the wallets of type `SELF` can be managed by your account without any signature collection. You can use these `SELF` wallets to distribute domains in whatever way works best for you.\n\nThis route will return both custody (`SELF`) and self-custody (`EXTERNAL`) wallets associated with your account. To only list custody wallets, simply include the `?type=SELF` query string parameter.\n"
+        },
+        {
+          "info": {
+            "name": "Create a new custody wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/wallets"
+          },
+          "docs": "Create an additional custodial wallet in your account.\n"
+        },
+        {
+          "info": {
+            "name": "Get wallet details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/wallets/:address",
+            "params": [
+              {
+                "name": "address",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$expand",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get details for a wallet associated with your account. This route supports both custody (`SELF`) and self-custody (`EXTERNAL`) wallets.\n\nInclude the `?$expand=primaryDomain` to include the wallet's Primary Domain (also known as the Reverse Resolution) in the response.\n"
+        },
+        {
+          "info": {
+            "name": "Update custody wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/wallets/:address",
+            "params": [
+              {
+                "name": "address",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update details for a specific custody wallet in your account.\n\nThis can be used to set (or clear) the Primary Domain (also known as the Reverse Resolution) for a custody wallet.\n\nTo clear the Primary Domain for a wallet, pass a `null` value for the `primaryDomain` property within the request body.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

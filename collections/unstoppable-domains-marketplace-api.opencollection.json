@@ -1,0 +1,148 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account marketplace API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "marketplace",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List marketplace domain listings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/marketplace/domains/listings",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Search query to filter listings by domain name. Supports partial matching."
+              },
+              {
+                "name": "tlds",
+                "value": "",
+                "type": "query",
+                "description": "One or more TLD extensions to filter listings (e.g., `com`, `xyz`). At least one TLD must be provided."
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort results by."
+              },
+              {
+                "name": "orderDirection",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction. Defaults to ascending."
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (1–100)."
+              },
+              {
+                "name": "$page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination (1-indexed)."
+              }
+            ]
+          },
+          "docs": "Retrieve a paginated list of domains currently listed for sale on the Unstoppable Domains secondary marketplace. Use this endpoint to browse available domains, filter by TLD, and sort by price, name, or listing date.\n\nResults are paginated — use the `$page` and `perPage` parameters to navigate through results.\n"
+        },
+        {
+          "info": {
+            "name": "Create marketplace listings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_listing_create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List one or more domains for sale on the marketplace. Supports buy-now pricing, offers, and lease-to-own options."
+        },
+        {
+          "info": {
+            "name": "Update marketplace listings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_listing_update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update price, settings, or options for existing listings."
+        },
+        {
+          "info": {
+            "name": "Cancel marketplace listings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_listing_cancel",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Cancel one or more active marketplace listings."
+        },
+        {
+          "info": {
+            "name": "List marketplace offers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_offers_list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List incoming offers on domains you own. Filter by domain or status."
+        },
+        {
+          "info": {
+            "name": "Respond to marketplace offers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_offer_respond",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Accept or reject incoming offers on your domains."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

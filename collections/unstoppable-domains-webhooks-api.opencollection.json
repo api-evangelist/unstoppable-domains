@@ -1,0 +1,86 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account webhooks API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get list of your webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/webhooks"
+          },
+          "docs": "Get list of your webhooks"
+        },
+        {
+          "info": {
+            "name": "Register new webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register a new webhook for a given webhook event type. You are limited to 3 webhook registrations per webhook type.\n\nAll webhook `url` values should be complete, valid URLs, using either `http` or `https` procotols. All webhook deliveries will be `POST` requests and sent to the registered URL exactly as provided.\n"
+        },
+        {
+          "info": {
+            "name": "Get webhook details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/webhooks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get webhook details"
+        },
+        {
+          "info": {
+            "name": "Deregister existing webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/webhooks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deregister existing webhook"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

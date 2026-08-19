@@ -1,0 +1,211 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get account details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account"
+          },
+          "docs": "Get account details"
+        },
+        {
+          "info": {
+            "name": "Update account details",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Change your default wallet address, which is used when no wallet address is specified during domain registration.\n"
+        },
+        {
+          "info": {
+            "name": "Get account billing balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/billing"
+          },
+          "docs": "Retrieve the current billing balance for your account in USD cents. Negative values represent credits available; positive values represent amounts owed.\n"
+        },
+        {
+          "info": {
+            "name": "List billing transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/billing/transactions",
+            "params": [
+              {
+                "name": "$cursor",
+                "value": "",
+                "type": "query",
+                "description": "Opaque cursor for paginating through results. Use the value from `next.$cursor` in a previous response."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter transactions by type. Repeat the parameter or pass a comma-separated list to filter on multiple types."
+              },
+              {
+                "name": "groupBy",
+                "value": "",
+                "type": "query",
+                "description": "When set to `operationId`, transactions are grouped by their originating operation and returned as `BillingTransactionGroup` items."
+              }
+            ]
+          },
+          "docs": "List billing transactions for your account. Each transaction represents a credit or debit applied to your balance (orders, refunds, settlements, grants, revenue share, etc.).\n\nFilter by `type` to narrow results to specific balance-change categories. Pass `groupBy=operationId` to receive transactions grouped by their originating operation, with each group reporting the total amount and associated domain.\n\nResults are paginated — use the `$cursor` parameter to retrieve subsequent pages.\n"
+        },
+        {
+          "info": {
+            "name": "List account domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/domain-registrations",
+            "params": [
+              {
+                "name": "$cursor",
+                "value": "",
+                "type": "query",
+                "description": "Opaque cursor for paginating through results. Omit it to fetch the first page, then pass the value from `next.$cursor` in the previous response to fetch each subsequent page."
+              },
+              {
+                "name": "$expand",
+                "value": "",
+                "type": "query",
+                "description": "Use `$expand=flags` to additionally include the EPP domain flags for each returned domain."
+              }
+            ]
+          },
+          "docs": "Retrieve a paginated list of the domains in your account.\n\nResults are returned using cursor-based pagination. Omit `$cursor` to fetch the first page, then pass the `next.$cursor` value from the previous page response to fetch each subsequent page. When `next` is `null` there are no more pages.\n\nUse `$expand=flags` to additionally include the EPP domain flags for each returned domain.\n"
+        },
+        {
+          "info": {
+            "name": "List webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/webhooks"
+          },
+          "docs": "Retrieve all webhook subscriptions configured for your account.\n"
+        },
+        {
+          "info": {
+            "name": "Create a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new webhook subscription. Webhooks notify your server of asynchronous events such as operation completions and status changes.\n\nYou can follow our getting started guide here: [Webhooks in the Reseller API](https://docs.unstoppabledomains.com/domain-distribution-and-management/guides/implementing-webhooks/)\n"
+        },
+        {
+          "info": {
+            "name": "Get a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/webhooks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Webhook ID (format: wh-<uuid>)"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific webhook subscription by ID.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.unstoppabledomains.com/partner/v3/account/webhooks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Webhook ID (format: wh-<uuid>)"
+              }
+            ]
+          },
+          "docs": "Delete a webhook subscription by ID.\n"
+        },
+        {
+          "info": {
+            "name": "Create an account via email and password (headless)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/api/oauth/signup",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Step 1 of headless account creation. Registers a new user with email and password, sends a verification code via email, and returns a signup_session_token. Use POST /api/oauth/signup/verify with the token and code to get OAuth tokens. Returns identical responses for new and existing users to prevent account enumeration."
+        },
+        {
+          "info": {
+            "name": "Verify signup code and get OAuth tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/api/oauth/signup/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Step 2 of headless account creation. Exchanges the signup_session_token and the 6-character verification code (sent via email) for OAuth access and refresh tokens."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

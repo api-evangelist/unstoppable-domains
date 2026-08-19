@@ -1,0 +1,1209 @@
+{
+  "item": [
+    {
+      "id": "44849898-bdeb-4be3-8281-bfe7dfac59d1",
+      "name": "marketplace",
+      "description": {
+        "content": "Browse and search the Unstoppable Domains secondary marketplace. Retrieve paginated listings of domains available for purchase from existing owners, with filtering by TLD and sorting options.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a0f43072-edfa-41a7-8b95-81b35ceb94ed",
+          "name": "List marketplace domain listings",
+          "request": {
+            "name": "List marketplace domain listings",
+            "description": {
+              "content": "Retrieve a paginated list of domains currently listed for sale on the Unstoppable Domains secondary marketplace. Use this endpoint to browse available domains, filter by TLD, and sort by price, name, or listing date.\n\nResults are paginated — use the `$page` and `perPage` parameters to navigate through results.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "marketplace",
+                "domains",
+                "listings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "Search query to filter listings by domain name. Supports partial matching."
+                },
+                {
+                  "disabled": false,
+                  "key": "orderBy",
+                  "value": "<string>",
+                  "description": "Field to sort results by."
+                },
+                {
+                  "disabled": false,
+                  "key": "orderDirection",
+                  "value": "<string>",
+                  "description": "Sort direction. Defaults to ascending."
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "<number>",
+                  "description": "Number of results per page (1–100)."
+                },
+                {
+                  "disabled": false,
+                  "key": "$page",
+                  "value": "<number>",
+                  "description": "Page number for pagination (1-indexed)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b6285fe0-d4c6-44cd-8bcb-12217560ed00",
+              "name": "Paginated list of marketplace domain listings",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketplace",
+                    "domains",
+                    "listings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "$page",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"domain\": \"string\",\n      \"status\": \"string\",\n      \"listPrice\": {\n        \"usdCents\": 6487.213343881176\n      },\n      \"payout\": {\n        \"address\": \"string\"\n      },\n      \"owner\": {\n        \"address\": \"string\"\n      },\n      \"expiresAt\": 48.15916580652946\n    },\n    {\n      \"domain\": \"string\",\n      \"status\": \"string\",\n      \"listPrice\": {\n        \"usdCents\": 8542.779617847293\n      },\n      \"payout\": {\n        \"address\": \"string\"\n      },\n      \"owner\": {\n        \"address\": \"string\"\n      },\n      \"expiresAt\": 5800.572252328892\n    }\n  ],\n  \"next\": {\n    \"page\": 4844,\n    \"limit\": 84\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "07757c9c-80bb-46b5-a214-319f6c44a346",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketplace",
+                    "domains",
+                    "listings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "$page",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4a03c073-b889-4e61-b096-e45700d3a027",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketplace",
+                    "domains",
+                    "listings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "$page",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44e14560-0cfa-47e1-93ef-f1f545330855",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketplace",
+                    "domains",
+                    "listings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "$page",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8cf535f1-c4e6-4264-9793-8581428e5c21",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketplace",
+                    "domains",
+                    "listings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "$page",
+                      "value": "<number>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4df5fce0-6528-433c-9acd-d24acddaae28",
+          "name": "Create marketplace listings",
+          "request": {
+            "name": "Create marketplace listings",
+            "description": {
+              "content": "List one or more domains for sale on the marketplace. Supports buy-now pricing, offers, and lease-to-own options.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_listing_create"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domains\": [\n    {\n      \"domainName\": \"<string>\",\n      \"priceInCents\": \"<number>\",\n      \"expiresAt\": \"<string>\",\n      \"isEmailAliasUsed\": \"<boolean>\",\n      \"listingSettings\": {\n        \"isOfferFeatureEnabled\": \"<boolean>\",\n        \"minOfferAmountInCents\": \"<number>\",\n        \"domainDisplayName\": \"<string>\"\n      },\n      \"leaseToOwnOptions\": {\n        \"type\": \"<string>\",\n        \"maxTermLength\": \"<integer>\",\n        \"downPaymentPercentage\": \"<number>\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b4b4589f-acc7-422e-9843-04add404e507",
+              "name": "Listing creation results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_listing_create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"domainName\": \"<string>\",\n      \"priceInCents\": \"<number>\",\n      \"expiresAt\": \"<string>\",\n      \"isEmailAliasUsed\": \"<boolean>\",\n      \"listingSettings\": {\n        \"isOfferFeatureEnabled\": \"<boolean>\",\n        \"minOfferAmountInCents\": \"<number>\",\n        \"domainDisplayName\": \"<string>\"\n      },\n      \"leaseToOwnOptions\": {\n        \"type\": \"<string>\",\n        \"maxTermLength\": \"<integer>\",\n        \"downPaymentPercentage\": \"<number>\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"domainName\": \"string\",\n      \"success\": false,\n      \"listingId\": 8147.735015227387,\n      \"status\": \"string\",\n      \"isLazy\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"domainName\": \"string\",\n      \"success\": false,\n      \"listingId\": 4515.645239633547,\n      \"status\": \"string\",\n      \"isLazy\": false,\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 3866.247486039588,\n  \"failureCount\": 2515.2969920989476,\n  \"message\": \"string\",\n  \"signatureRequired\": false,\n  \"signatureNote\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "786ce891-e52b-496c-ba5d-d42b4f2aab6d",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_listing_create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    {\n      \"domainName\": \"<string>\",\n      \"priceInCents\": \"<number>\",\n      \"expiresAt\": \"<string>\",\n      \"isEmailAliasUsed\": \"<boolean>\",\n      \"listingSettings\": {\n        \"isOfferFeatureEnabled\": \"<boolean>\",\n        \"minOfferAmountInCents\": \"<number>\",\n        \"domainDisplayName\": \"<string>\"\n      },\n      \"leaseToOwnOptions\": {\n        \"type\": \"<string>\",\n        \"maxTermLength\": \"<integer>\",\n        \"downPaymentPercentage\": \"<number>\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3d105a32-8040-4577-aad7-e250195cdb0c",
+          "name": "Update marketplace listings",
+          "request": {
+            "name": "Update marketplace listings",
+            "description": {
+              "content": "Update price, settings, or options for existing listings.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_listing_update"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"listings\": [\n    {\n      \"id\": \"<number>\",\n      \"priceInCents\": \"<number>\",\n      \"expiresAt\": \"<string>\",\n      \"isEmailAliasUsed\": \"<boolean>\",\n      \"listingSettings\": {\n        \"minOfferAmountInCents\": \"<number>\",\n        \"isOfferFeatureEnabled\": \"<boolean>\",\n        \"domainDisplayName\": \"<string>\"\n      },\n      \"leaseToOwnOptions\": {\n        \"type\": \"<string>\",\n        \"maxTermLength\": \"<integer>\",\n        \"downPaymentPercentage\": \"<number>\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "77afe3aa-b8b5-41f8-9396-cb0631892f54",
+              "name": "Listing update results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_listing_update"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"listings\": [\n    {\n      \"id\": \"<number>\",\n      \"priceInCents\": \"<number>\",\n      \"expiresAt\": \"<string>\",\n      \"isEmailAliasUsed\": \"<boolean>\",\n      \"listingSettings\": {\n        \"minOfferAmountInCents\": \"<number>\",\n        \"isOfferFeatureEnabled\": \"<boolean>\",\n        \"domainDisplayName\": \"<string>\"\n      },\n      \"leaseToOwnOptions\": {\n        \"type\": \"<string>\",\n        \"maxTermLength\": \"<integer>\",\n        \"downPaymentPercentage\": \"<number>\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"listingId\": 6745.641118445673,\n      \"domainName\": \"string\",\n      \"success\": true,\n      \"status\": \"string\",\n      \"isLazy\": true,\n      \"error\": \"string\"\n    },\n    {\n      \"listingId\": 4151.408987791862,\n      \"domainName\": \"string\",\n      \"success\": false,\n      \"status\": \"string\",\n      \"isLazy\": false,\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 7076.510441546322,\n  \"failureCount\": 9908.599160590464,\n  \"message\": \"string\",\n  \"signatureRequired\": true,\n  \"signatureNote\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9c5d768a-a0ee-446e-b2c4-23e5017c372c",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_listing_update"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"listings\": [\n    {\n      \"id\": \"<number>\",\n      \"priceInCents\": \"<number>\",\n      \"expiresAt\": \"<string>\",\n      \"isEmailAliasUsed\": \"<boolean>\",\n      \"listingSettings\": {\n        \"minOfferAmountInCents\": \"<number>\",\n        \"isOfferFeatureEnabled\": \"<boolean>\",\n        \"domainDisplayName\": \"<string>\"\n      },\n      \"leaseToOwnOptions\": {\n        \"type\": \"<string>\",\n        \"maxTermLength\": \"<integer>\",\n        \"downPaymentPercentage\": \"<number>\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eac71d72-cc1d-4e96-80e8-6df5b7ec19f1",
+          "name": "Cancel marketplace listings",
+          "request": {
+            "name": "Cancel marketplace listings",
+            "description": {
+              "content": "Cancel one or more active marketplace listings.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_listing_cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"listingIds\": [\n    \"<number>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "38839584-e25d-487c-a2ba-585d5efe7b6b",
+              "name": "Cancellation results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_listing_cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"listingIds\": [\n    \"<number>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"listingId\": 3896.5271274242264,\n      \"domainName\": \"string\",\n      \"success\": true,\n      \"error\": \"string\"\n    },\n    {\n      \"listingId\": 9461.010821108994,\n      \"domainName\": \"string\",\n      \"success\": false,\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 4930.880464280853,\n  \"failureCount\": 6368.581289821338,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b4644e59-7cc6-487f-a106-8dfcf40d6da2",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_listing_cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"listingIds\": [\n    \"<number>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "489d80ea-ce95-4c0d-9e41-205b5d73377e",
+          "name": "List marketplace offers",
+          "request": {
+            "name": "List marketplace offers",
+            "description": {
+              "content": "List incoming offers on domains you own. Filter by domain or status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_offers_list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domainName\": \"<string>\",\n  \"group\": \"<string>\",\n  \"page\": \"<number>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e51358d1-801a-4671-8c9a-f39e0408633b",
+              "name": "List of offers",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_offers_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domainName\": \"<string>\",\n  \"group\": \"<string>\",\n  \"page\": \"<number>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"offers\": [\n    {\n      \"id\": 8035.019526977578,\n      \"domainName\": \"string\",\n      \"priceInCents\": 4066.8295038338565,\n      \"priceFormatted\": \"string\",\n      \"buyerUserId\": \"string\",\n      \"buyerStatus\": \"string\",\n      \"sellerStatus\": \"string\",\n      \"expiresAt\": \"string\",\n      \"createdAt\": \"string\",\n      \"updatedAt\": \"string\"\n    },\n    {\n      \"id\": 5501.050850363982,\n      \"domainName\": \"string\",\n      \"priceInCents\": 9362.721627797131,\n      \"priceFormatted\": \"string\",\n      \"buyerUserId\": \"string\",\n      \"buyerStatus\": \"string\",\n      \"sellerStatus\": \"string\",\n      \"expiresAt\": \"string\",\n      \"createdAt\": \"string\",\n      \"updatedAt\": \"string\"\n    }\n  ],\n  \"pagination\": {\n    \"page\": 2422.6922600905978,\n    \"pageSize\": 7412.743400369345,\n    \"totalPages\": 6046.306941251432,\n    \"total\": 7850.171287692136,\n    \"hasMore\": false\n  },\n  \"truncated\": true,\n  \"truncationMessage\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8f3e52fb-d37a-4dc0-b236-eda3534053ee",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_offers_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domainName\": \"<string>\",\n  \"group\": \"<string>\",\n  \"page\": \"<number>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2b082b0a-4c83-406e-8185-55eb8d23880a",
+          "name": "Respond to marketplace offers",
+          "request": {
+            "name": "Respond to marketplace offers",
+            "description": {
+              "content": "Accept or reject incoming offers on your domains.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_offer_respond"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"offers\": [\n    {\n      \"id\": \"<number>\",\n      \"action\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "87488e4c-9f20-4e08-abe5-9ed4ef4c1984",
+              "name": "Offer response results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_offer_respond"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"offers\": [\n    {\n      \"id\": \"<number>\",\n      \"action\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"offerId\": 1670.0729121179402,\n      \"domainName\": \"string\",\n      \"action\": \"string\",\n      \"success\": true,\n      \"priceInCents\": 5204.393866346024,\n      \"priceFormatted\": \"string\",\n      \"newStatus\": \"string\",\n      \"error\": \"string\"\n    },\n    {\n      \"offerId\": 5097.988407941405,\n      \"domainName\": \"string\",\n      \"action\": \"string\",\n      \"success\": false,\n      \"priceInCents\": 6699.252620047107,\n      \"priceFormatted\": \"string\",\n      \"newStatus\": \"string\",\n      \"error\": \"string\"\n    }\n  ],\n  \"successCount\": 6629.4949875934,\n  \"failureCount\": 7485.4384493747075,\n  \"message\": \"string\",\n  \"signatureRequired\": true,\n  \"signatureNote\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1cb2e85-1946-41ef-b769-52a893435810",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_offer_respond"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"offers\": [\n    {\n      \"id\": \"<number>\",\n      \"action\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.unstoppabledomains.com/partner/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "74c85133-6178-443f-9b57-3cf3fc9d4eec",
+    "name": "Web3 Partner API v3 account marketplace API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n\n\nContact Support:\n Name: Unstoppable Domains (Partner Engineering)\n Email: partnerengineering@unstoppabledomains.com",
+      "type": "text/plain"
+    }
+  }
+}

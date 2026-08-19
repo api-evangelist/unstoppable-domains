@@ -1,0 +1,219 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account domains API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "domains",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update a domain (overwriting update)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform Domain updates while doing full resets of the records.\n\n### Change Owner with Record Reset\n```\n{\n  \"owner\": {\n    \"type\": \"EXTERNAL\",\n    \"address\": \"0x123\"\n  },\n  \"records\": {}\n}\n```\nClears all records from the domain, then changes owner to the new owner address.\n\nNOTE: You must include `\"records\": {}` to indicate the intent to clear records.\n\n#### Owner Types\nWhen changing owner of a domain, you must provide both a `type` and an `address` to clearly indicate the intent of the change.\n-"
+        },
+        {
+          "info": {
+            "name": "Update a domain (partial update)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform Domain updates while preserving the existing records.\n\n### Change Owner with Records Preserved\n```\n{\n  \"owner\": {\n    \"type\": \"EXTERNAL\",\n    \"address\": \"0x123\"\n  }\n}\n```\nChanges owner to the new owner address without modifying the domain records.\n\n#### Owner Types\nWhen changing owner of a domain, you must provide both a `type` and an `address` to clearly indicate the intent of the change.\n- `NONE`: Used when changing the owner to a \"burn\" address, which will result in nobody owning the "
+        },
+        {
+          "info": {
+            "name": "Return and refund a domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Return the domain to Unstoppable Domains so it is once again considered available for registering. The amount previously added to your running balance will be removed after successfully returning a domain.\n\nReturns are only allowed within 14 days of the original registration date, per our return policy.\n"
+        },
+        {
+          "info": {
+            "name": "Get domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:domainName",
+            "params": [
+              {
+                "name": "domainName",
+                "value": "",
+                "type": "path",
+                "description": "A domain name registered by Unstoppable Domains"
+              }
+            ]
+          },
+          "docs": "**Get Records for a Domain**<br/>**Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key."
+        },
+        {
+          "info": {
+            "name": "Get domains list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains",
+            "params": [
+              {
+                "name": "resolution",
+                "value": "",
+                "type": "query",
+                "description": "See this [list](https://github.com/unstoppabledomains/uns/blob/main/uns-config.json) for all the resolution keys supported"
+              },
+              {
+                "name": "owners",
+                "value": "",
+                "type": "query",
+                "description": "Wallet addresses of the owners of domains"
+              },
+              {
+                "name": "tlds",
+                "value": "",
+                "type": "query",
+                "description": "Domain ending supported such as `crypto`, `x`, or `polygon`. See [supported tlds](https://api.unstoppabledomains.com/resolve/supported_tlds) for the full list"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort key to specify how the returned domain list is sorted"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "Sort order of the returned domain list"
+              },
+              {
+                "name": "startingAfter",
+                "value": "",
+                "type": "query",
+                "description": "Query offset to skip a number of record, example: 100"
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Number of domains returned in the list, example: 50"
+              }
+            ]
+          },
+          "docs": "\n  **Get Records for Multiple Domains**\n  <br/>\n  \nThe API only supports Unstoppable Domains' naming services for backward compatibility. A new API version is coming soon for other naming services\n<ul>\n  <li>\n    <p>Unstoppable Domain's <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/uns-architecture-overview\" target=\"_blank\">UNS</a> and <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/cns-architecture-overview\" target=\"_blank\">CNS</a> with TLDs:\n<stron"
+        },
+        {
+          "info": {
+            "name": "Get domains last transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:domainName/transfers/latest",
+            "params": [
+              {
+                "name": "domainName",
+                "value": "",
+                "type": "path",
+                "description": "A domain name registered by Unstoppable Domains"
+              }
+            ]
+          },
+          "docs": "**Get Domain Transfer Events**<br/>**Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key."
+        },
+        {
+          "info": {
+            "name": "Get domains records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/records",
+            "params": [
+              {
+                "name": "domains",
+                "value": "",
+                "type": "query",
+                "description": "Domain names registered by Unstoppable Domains. At least 1 domain must be passed in"
+              },
+              {
+                "name": "key",
+                "value": "",
+                "type": "query",
+                "description": "Filtered resolution key. See above to see the supported keys on different naming services"
+              }
+            ]
+          },
+          "docs": "\n  **Get Records for Multiple Domains**\n  <br/>\n  It's recommended to use this API on different naming services as they support different record keys\n  <ul>\n    <li>\n      <p>Unstoppable Domain's <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/uns-architecture-overview\" target=\"_blank\">UNS</a> and <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/cns-architecture-overview\" target=\"_blank\">CNS</a> with TLDs:\n<strong>.x</strong>, <strong>.polygon</strong>,"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

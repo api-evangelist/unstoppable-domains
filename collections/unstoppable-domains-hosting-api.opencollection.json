@@ -1,0 +1,113 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account hosting API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "hosting",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List hosting configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/hosting",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Domain name"
+              },
+              {
+                "name": "$cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor for retrieving the next page of results."
+              },
+              {
+                "name": "subName",
+                "value": "",
+                "type": "query",
+                "description": "Filter results by subdomain name(s)."
+              }
+            ]
+          },
+          "docs": "Retrieve all hosting configurations for the specified domain. Each configuration represents how a domain or subdomain serves content (e.g., redirect, reverse proxy).\n\nUse the `subName` parameter to filter results to specific subdomains. Results are paginated — use the `$cursor` parameter to retrieve subsequent pages.\n"
+        },
+        {
+          "info": {
+            "name": "Create or update hosting configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/hosting",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Domain name"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query",
+                "description": "Preview mode — validate the request without executing changes."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set or update the hosting configuration for a domain or subdomain. This controls how the domain serves content — whether via redirect or reverse proxy.\n\nUse the `subName` field in the request body to target a specific subdomain. If omitted, the configuration applies to the root domain.\n\nAll hosting configurations require an SSL certificate. After creating or updating a configuration, the `certificateStatus` will initially be `PENDING` while the certificate is provisioned. This typically complete"
+        },
+        {
+          "info": {
+            "name": "Delete hosting configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/hosting",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "Domain name"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query",
+                "description": "Preview mode — validate the request without executing changes."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove the hosting configuration for a domain or subdomain. This stops the domain from serving content through the configured hosting type and releases the associated SSL certificate.\n\nUse the `subName` field in the request body to target a specific subdomain's configuration. If omitted, the root domain configuration is removed.\n\nUse `$preview=true` to validate the request without applying changes.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

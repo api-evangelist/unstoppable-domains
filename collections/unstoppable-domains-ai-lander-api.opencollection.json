@@ -1,0 +1,84 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account AI Lander API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "AI Lander",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate AI landing page for domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_domain_generate_lander",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Trigger AI-generated landing page creation for one or more domains. Enqueues asynchronous generation jobs. Use ud_domain_lander_status to check progress."
+        },
+        {
+          "info": {
+            "name": "Check AI lander generation status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_domain_lander_status",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Check the status of AI landing page generation for one or more domains. Returns pending, generating, processing, hosted, failed, or none."
+        },
+        {
+          "info": {
+            "name": "Download landing page content from domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_domain_download_lander",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Download existing hosted lander files from one or more domains. Single-page landers return raw HTML (htmlContent); multi-file sites return a base64-encoded zip (zipContent)."
+        },
+        {
+          "info": {
+            "name": "Remove AI landing page from domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_domain_remove_lander",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove AI-generated landing pages and hosting configuration from one or more domains. Deletes GCS content and removes hosting config."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

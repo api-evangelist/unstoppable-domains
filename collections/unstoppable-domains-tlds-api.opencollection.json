@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account tlds API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "tlds",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get TLD DNSSEC configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/tlds/:tld/dns/security",
+            "params": [
+              {
+                "name": "tld",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve the supported DNSSEC algorithms and digest types for the specified TLD.\n"
+        },
+        {
+          "info": {
+            "name": "List available TLDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/tlds"
+          },
+          "docs": "Retrieve a list of all available top-level domains (TLDs) including their naming system and registration availability.\n"
+        },
+        {
+          "info": {
+            "name": "Get TLD details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/tlds/:tld",
+            "params": [
+              {
+                "name": "tld",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details for a specific top-level domain (TLD) including its naming system and registration availability.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

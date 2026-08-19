@@ -1,0 +1,204 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account DNS Management API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "DNS Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List DNS records for a domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_dns_records_list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List all DNS records for a domain in your portfolio. Supports filtering by record type and subdomain, with pagination."
+        },
+        {
+          "info": {
+            "name": "Add DNS records (bulk)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_dns_record_add",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add DNS records to one or more domains. Supports A, AAAA, CNAME, MX, TXT, NS, SRV, and CAA record types. Bulk operations up to 50 records."
+        },
+        {
+          "info": {
+            "name": "Update DNS records (bulk)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_dns_record_update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update existing DNS records on one or more domains. Bulk operations up to 50 records."
+        },
+        {
+          "info": {
+            "name": "Remove DNS records (bulk)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_dns_record_remove",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove specific DNS records by ID from one or more domains. Bulk operations up to 50 records."
+        },
+        {
+          "info": {
+            "name": "Remove all DNS records (bulk)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_dns_records_remove_all",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove ALL user-created DNS records from one or more domains. Requires explicit confirmation. Bulk operations up to 50 domains."
+        },
+        {
+          "info": {
+            "name": "List nameservers for a domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_dns_nameservers_list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List current nameservers and check if using UD defaults or custom nameservers."
+        },
+        {
+          "info": {
+            "name": "Set custom nameservers (bulk)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_dns_nameservers_set_custom",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Configure external nameservers (e.g., Cloudflare, Route 53) for one or more domains. Supports up to 50 domains per request."
+        },
+        {
+          "info": {
+            "name": "Reset to UD default nameservers (bulk)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_dns_nameservers_set_default",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Switch back to Unstoppable Domains default nameservers for one or more domains. Supports up to 50 domains per request."
+        },
+        {
+          "info": {
+            "name": "List hosting configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_dns_hosting_list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "List hosting/forwarding configurations (redirects, reverse proxy, hosted sites, UD Profile)."
+        },
+        {
+          "info": {
+            "name": "Add hosting configuration (bulk)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_dns_hosting_add",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Configure hosting for one or more domains: for-sale listing page, permanent redirect (301), temporary redirect (302), or reverse proxy. Supports up to 50 domains per request."
+        },
+        {
+          "info": {
+            "name": "Remove hosting configuration (bulk)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_dns_hosting_remove",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove hosting/forwarding configuration from one or more domains. Supports up to 50 domains per request."
+        },
+        {
+          "info": {
+            "name": "Get pending operations for multiple domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_domain_pending_operations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Check status of DNS operations across multiple domains. Use to track changes and verify completion after bulk operations."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

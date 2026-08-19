@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account Rpc Proxy API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Rpc Proxy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Proxy eth",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/chains/eth/rpc",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Ethereum RPC provider to interact with Unstoppable Domain Smart Contract**<br/>This endpoint is meant to be use by Unstoppable Domains's [SDKs](https://docs.unstoppabledomains.com/resolution/sdks-and-libraries/overview/) to query directly onchain data"
+        },
+        {
+          "info": {
+            "name": "Proxy pol",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/chains/matic/rpc",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Polygon RPC provider to interact with Unstoppable Domain Smart Contract**<br/>This endpoint is meant to be use by Unstoppable Domains's [SDKs](https://docs.unstoppabledomains.com/resolution/sdks-and-libraries/overview/) to query directly onchain data"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

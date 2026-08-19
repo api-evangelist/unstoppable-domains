@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account external_domains API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "external_domains",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update a self-custody domain (overwriting update)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.unstoppabledomains.com/partner/v3/external/domains/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform Self-Custody Domain updates while doing full resets of the records.\nUsage is the same as the [custody variant](/openapi/partner/v3/#operation/updateDomainPut).\n"
+        },
+        {
+          "info": {
+            "name": "Update a self-custody domain (partial update)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.unstoppabledomains.com/partner/v3/external/domains/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform Self-Custody Domain updates while preserving the existing records.\nUsage is the same as the [custody variant](/openapi/partner/v3/#operation/updateDomainPatch).\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,349 @@
+{
+  "item": [
+    {
+      "id": "c177f63b-d400-4f3e-bec2-7fd65335c4bc",
+      "name": "Portfolio",
+      "description": {
+        "content": "Manage owned domains (requires authentication)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b9ae00c8-415f-496c-b30d-1432ec9362f3",
+          "name": "List portfolio domains",
+          "request": {
+            "name": "List portfolio domains",
+            "description": {
+              "content": "List domains in the authenticated user's portfolio with filtering, sorting, and pagination. By default, only ICANN (DNS) domains are returned. Returns 50 domains per page by default. If hasMore is true in the pagination response, increment the page parameter to fetch additional results.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_portfolio_list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": \"<number>\",\n  \"pageSize\": \"<number>\",\n  \"searchTerm\": \"<string>\",\n  \"status\": \"<string>\",\n  \"registryType\": \"<string>\",\n  \"expiringWithinDays\": \"<number>\",\n  \"expired\": \"<boolean>\",\n  \"minLength\": \"<number>\",\n  \"maxLength\": \"<number>\",\n  \"autoRenewal\": \"<string>\",\n  \"tagFilters\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"orderBy\": \"<string>\",\n  \"orderDirection\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6d51a7ba-6d45-4c05-aff5-9ba7448991e4",
+              "name": "Portfolio domains list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_portfolio_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page\": 1,\n  \"pageSize\": 50,\n  \"searchTerm\": \"<string>\",\n  \"status\": \"<string>\",\n  \"registryType\": \"<string>\",\n  \"expiringWithinDays\": 30,\n  \"expired\": \"<boolean>\",\n  \"minLength\": \"<number>\",\n  \"maxLength\": \"<number>\",\n  \"autoRenewal\": \"<string>\",\n  \"tagFilters\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"orderBy\": \"<string>\",\n  \"orderDirection\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"domains\": [\n    {\n      \"name\": \"string\",\n      \"extension\": \"string\",\n      \"label\": \"string\",\n      \"sld\": \"string\",\n      \"punycode\": true,\n      \"purchasedAt\": \"string\",\n      \"expiresAt\": \"string\",\n      \"transferStatus\": \"string\",\n      \"isExternallyOwned\": false,\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"reverse\": false,\n      \"offersCount\": 1302.119193197967,\n      \"leadsCount\": 5920.200022670879,\n      \"watchlistCount\": 8857.388724802417,\n      \"listing\": {\n        \"id\": 1985.8428977154874,\n        \"price\": 2995.760305349658,\n        \"status\": \"string\",\n        \"createdAt\": \"string\",\n        \"updatedAt\": \"string\",\n        \"views\": 784.5929003013185\n      },\n      \"autoRenewal\": {\n        \"status\": \"string\",\n        \"expiresAt\": \"string\"\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"extension\": \"string\",\n      \"label\": \"string\",\n      \"sld\": \"string\",\n      \"punycode\": false,\n      \"purchasedAt\": \"string\",\n      \"expiresAt\": \"string\",\n      \"transferStatus\": \"string\",\n      \"isExternallyOwned\": true,\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"reverse\": false,\n      \"offersCount\": 6696.170075055238,\n      \"leadsCount\": 5786.035168803873,\n      \"watchlistCount\": 758.7368177249665,\n      \"listing\": {\n        \"id\": 3575.5731994578123,\n        \"price\": 3448.1186741589286,\n        \"status\": \"string\",\n        \"createdAt\": \"string\",\n        \"updatedAt\": \"string\",\n        \"views\": 27.295106468613326\n      },\n      \"autoRenewal\": {\n        \"status\": \"string\",\n        \"expiresAt\": \"string\"\n      }\n    }\n  ],\n  \"pagination\": {\n    \"page\": 7155.199490275553,\n    \"pageSize\": 3927.4977387314802,\n    \"totalPages\": 6104.787268479514,\n    \"total\": 9468.636699344957,\n    \"hasMore\": true,\n    \"nextPage\": 3131.189875591408\n  },\n  \"truncated\": true,\n  \"truncationMessage\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3ea8d695-9898-4dd1-bbdd-15e5fe3f6bc5",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_portfolio_list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"page\": 1,\n  \"pageSize\": 50,\n  \"searchTerm\": \"<string>\",\n  \"status\": \"<string>\",\n  \"registryType\": \"<string>\",\n  \"expiringWithinDays\": 30,\n  \"expired\": \"<boolean>\",\n  \"minLength\": \"<number>\",\n  \"maxLength\": \"<number>\",\n  \"autoRenewal\": \"<string>\",\n  \"tagFilters\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"orderBy\": \"<string>\",\n  \"orderDirection\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3c163855-7673-4dd3-a775-5173200e0b65",
+          "name": "Get comprehensive portfolio domain info",
+          "request": {
+            "name": "Get comprehensive portfolio domain info",
+            "description": {
+              "content": "Get comprehensive information for specific domains in your portfolio. Returns all data from ud_portfolio_list plus additional detail: renewal pricing, flags, DNS configuration (nameservers, hosting, DNSSEC), marketplace metrics, and pending operations. Supports bulk lookups for up to 50 domains.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mcp",
+                "v1",
+                "actions",
+                "ud_domain_get"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domains\": [\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2124da93-e49f-41f0-8271-6c54433f9ea7",
+              "name": "Portfolio domain details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_domain_get"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    \"example.com\",\n    \"mysite.io\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"domains\": [\n    {\n      \"domain\": \"string\",\n      \"found\": true,\n      \"extension\": \"string\",\n      \"label\": \"string\",\n      \"sld\": \"string\",\n      \"punycode\": false,\n      \"lifecycle\": {\n        \"purchasedAt\": \"string\",\n        \"expiresAt\": \"string\",\n        \"transferStatus\": \"string\",\n        \"isExternallyOwned\": true,\n        \"reverse\": true,\n        \"renewal\": {\n          \"isEligible\": false,\n          \"period\": {\n            \"min\": 7865.146917831066,\n            \"max\": 3166.3067314778405,\n            \"increments\": 3760.904100422451\n          },\n          \"pricePerYear\": 6032.153971978903,\n          \"pricePerYearFormatted\": \"string\"\n        },\n        \"autoRenewal\": {\n          \"status\": \"string\",\n          \"expiresAt\": \"string\"\n        }\n      },\n      \"flags\": {\n        \"DNS_TRANSFER_OUT\": {\n          \"status\": \"ENABLED\"\n        },\n        \"DNS_WHOIS_PROXY\": {\n          \"status\": \"ENABLED\"\n        },\n        \"DNS_RESOLUTION\": {\n          \"status\": \"ENABLED\"\n        },\n        \"DNS_DELETE\": {\n          \"status\": \"ENABLED\"\n        },\n        \"DNS_UPDATE\": {\n          \"status\": \"ENABLED\"\n        },\n        \"DNS_UNS_TOKENIZATION\": {\n          \"status\": \"ENABLED\"\n        }\n      },\n      \"dns\": {\n        \"nameservers\": {\n          \"status\": \"custom\",\n          \"nameservers\": [\n            \"string\",\n            \"string\"\n          ]\n        },\n        \"hosting\": [\n          {\n            \"subName\": \"string\",\n            \"type\": \"string\",\n            \"targetUrl\": \"string\",\n            \"status\": \"string\"\n          },\n          {\n            \"subName\": \"string\",\n            \"type\": \"string\",\n            \"targetUrl\": \"string\",\n            \"status\": \"string\"\n          }\n        ],\n        \"dnssec\": {\n          \"enabled\": false,\n          \"valid\": false\n        }\n      },\n      \"marketplace\": {\n        \"listing\": {\n          \"id\": 2781.8426949312247,\n          \"price\": 4271.292990030472,\n          \"status\": \"string\",\n          \"createdAt\": \"string\",\n          \"updatedAt\": \"string\",\n          \"views\": 7529.045086650371,\n          \"listingSettings\": {}\n        },\n        \"offersCount\": 3600.073324975371,\n        \"leadsCount\": 7458.725064626524,\n        \"watchlistCount\": 904.9587444084051\n      },\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"pendingOperations\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"string\",\n          \"status\": \"string\",\n          \"createdAt\": \"string\"\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"string\",\n          \"status\": \"string\",\n          \"createdAt\": \"string\"\n        }\n      ],\n      \"error\": \"string\"\n    },\n    {\n      \"domain\": \"string\",\n      \"found\": false,\n      \"extension\": \"string\",\n      \"label\": \"string\",\n      \"sld\": \"string\",\n      \"punycode\": false,\n      \"lifecycle\": {\n        \"purchasedAt\": \"string\",\n        \"expiresAt\": \"string\",\n        \"transferStatus\": \"string\",\n        \"isExternallyOwned\": false,\n        \"reverse\": true,\n        \"renewal\": {\n          \"isEligible\": true,\n          \"period\": {\n            \"min\": 1314.8250174500897,\n            \"max\": 8919.297715869146,\n            \"increments\": 5433.307665673185\n          },\n          \"pricePerYear\": 714.0375062430293,\n          \"pricePerYearFormatted\": \"string\"\n        },\n        \"autoRenewal\": {\n          \"status\": \"string\",\n          \"expiresAt\": \"string\"\n        }\n      },\n      \"flags\": {\n        \"DNS_TRANSFER_OUT\": {\n          \"status\": \"DISABLED\"\n        },\n        \"DNS_WHOIS_PROXY\": {\n          \"status\": \"DISABLED\"\n        },\n        \"DNS_RESOLUTION\": {\n          \"status\": \"DISABLED\"\n        },\n        \"DNS_DELETE\": {\n          \"status\": \"DISABLED\"\n        },\n        \"DNS_UPDATE\": {\n          \"status\": \"DISABLED\"\n        },\n        \"DNS_UNS_TOKENIZATION\": {\n          \"status\": \"DISABLED\"\n        }\n      },\n      \"dns\": {\n        \"nameservers\": {\n          \"status\": \"none\",\n          \"nameservers\": [\n            \"string\",\n            \"string\"\n          ]\n        },\n        \"hosting\": [\n          {\n            \"subName\": \"string\",\n            \"type\": \"string\",\n            \"targetUrl\": \"string\",\n            \"status\": \"string\"\n          },\n          {\n            \"subName\": \"string\",\n            \"type\": \"string\",\n            \"targetUrl\": \"string\",\n            \"status\": \"string\"\n          }\n        ],\n        \"dnssec\": {\n          \"enabled\": false,\n          \"valid\": false\n        }\n      },\n      \"marketplace\": {\n        \"listing\": {\n          \"id\": 3245.733907309867,\n          \"price\": 8770.852408510704,\n          \"status\": \"string\",\n          \"createdAt\": \"string\",\n          \"updatedAt\": \"string\",\n          \"views\": 8588.182930544834,\n          \"listingSettings\": {}\n        },\n        \"offersCount\": 8929.298268724879,\n        \"leadsCount\": 657.0417850554288,\n        \"watchlistCount\": 7895.019306870119\n      },\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"pendingOperations\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"string\",\n          \"status\": \"string\",\n          \"createdAt\": \"string\"\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"string\",\n          \"status\": \"string\",\n          \"createdAt\": \"string\"\n        }\n      ],\n      \"error\": \"string\"\n    }\n  ],\n  \"availableTags\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d384748-82b6-4ea6-b775-fbcd8288cbcd",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mcp",
+                    "v1",
+                    "actions",
+                    "ud_domain_get"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domains\": [\n    \"example.com\",\n    \"mysite.io\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.unstoppabledomains.com/partner/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ce2a44d3-f385-4aae-b35a-0b2dd154d90d",
+    "name": "Web3 Partner API v3 account Portfolio API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n\n\nContact Support:\n Name: Unstoppable Domains (Partner Engineering)\n Email: partnerengineering@unstoppabledomains.com",
+      "type": "text/plain"
+    }
+  }
+}

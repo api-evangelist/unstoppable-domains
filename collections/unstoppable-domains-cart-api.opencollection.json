@@ -1,0 +1,189 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account Cart API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cart",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get shopping cart with pricing",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_cart_get",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get the current shopping cart contents with comprehensive pricing breakdown including discounts, taxes, and credits. Optionally apply a discount code. Requires authentication."
+        },
+        {
+          "info": {
+            "name": "Add domains to cart for registration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_cart_add_domain_registration",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add one or more domains to the shopping cart for fresh registration. Returns the updated cart summary. Requires authentication."
+        },
+        {
+          "info": {
+            "name": "Add marketplace-listed domains to cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_cart_add_domain_listed",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add one or more marketplace-listed domains to the shopping cart. Supports both \"Buy it now\" (full price) and \"Lease to Own\" (monthly payments) purchases. Requires authentication."
+        },
+        {
+          "info": {
+            "name": "Add Afternic marketplace domains to cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_cart_add_domain_afternic",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add one or more Afternic marketplace domains to the shopping cart. For domains with marketplace.source = \"afternic\" and marketplace.status = \"registered-listed-for-sale\" from search results. Requires authentication."
+        },
+        {
+          "info": {
+            "name": "Add Sedo marketplace domains to cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_cart_add_domain_sedo",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add one or more Sedo marketplace domains to the shopping cart. For domains with marketplace.source = \"sedo\" and marketplace.status = \"registered-listed-for-sale\" from search results. Requires authentication."
+        },
+        {
+          "info": {
+            "name": "Add domain renewals to cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_cart_add_domain_renewal",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add one or more domain renewals to the shopping cart. User must own the domains to renew them. Returns the updated cart summary. Requires authentication."
+        },
+        {
+          "info": {
+            "name": "Remove items from cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_cart_remove",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove one or more items from the shopping cart by product ID. Returns the updated cart. Requires authentication."
+        },
+        {
+          "info": {
+            "name": "Get available payment methods",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_cart_get_payment_methods",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get saved credit cards, account balance, and promo credits available for checkout. Requires authentication."
+        },
+        {
+          "info": {
+            "name": "Get URL to add a payment method",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_cart_add_payment_method_url",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get a URL to the payment management page where users can securely add a new credit card. Requires authentication."
+        },
+        {
+          "info": {
+            "name": "Complete cart checkout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_cart_checkout",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Complete checkout for cart items using saved payment method or account balance. Requires authentication."
+        },
+        {
+          "info": {
+            "name": "Get checkout URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/mcp/v1/actions/ud_cart_get_url",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate a checkout URL for completing the purchase in a browser. Returns the URL along with a cart summary. Requires authentication."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

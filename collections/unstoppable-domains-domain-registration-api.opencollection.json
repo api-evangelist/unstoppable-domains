@@ -1,0 +1,150 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account domain_registration API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "domain_registration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Lookup multiple domain details and availability",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains",
+            "params": [
+              {
+                "name": "$expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tlds",
+                "value": "",
+                "type": "query",
+                "description": "Use `ending` instead"
+              },
+              {
+                "name": "ending",
+                "value": "",
+                "type": "query",
+                "description": "TLD or Parent Domain to apply to your `query` base names"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get domain availability and owner details for multiple domains using the query string search options. Optionally, use the `$expand` query string to include additional data in the response (ie. `?$expand=records&$expand=registration`).\n\nIf the domain is available to be registered it will have a `availability.status` of `AVAILABLE` and will include an `availability.price` object.\n"
+        },
+        {
+          "info": {
+            "name": "Register a domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains",
+            "params": [
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "If a domain is available, use this route to register it to your account. The domain will be minted or transfered to your custodial wallet where only Unstoppable Domains, on your behalf, will be able to make changes to it.\n\nThe price of the domain will be automatically added to your running balance with Unstoppable Domains. The pending balance of your account will be invoiced periodically.\n\n### Register to specific owner\nIf you do not provide an `owner` in your request, your account's default wal"
+        },
+        {
+          "info": {
+            "name": "Get domain details and availability",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$expand",
+                "value": "",
+                "type": "query",
+                "description": "Use `$expand` options to conditionally include portions of the response"
+              }
+            ]
+          },
+          "docs": "Get information about the domain's current owner and availability status. Optionally, use the `$expand` query string to include additional data in the response (ie. `?$expand=records&$expand=registration`).\n\nIf the domain is available to be registered it will have a `availability.status` of `AVAILABLE` and will include an `availability.price` object.\n"
+        },
+        {
+          "info": {
+            "name": "Get domain renewal info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/renewals",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve renewal eligibility and pricing for the specified domain, including the current expiration date, grace period expiration, and available renewal periods.\n"
+        },
+        {
+          "info": {
+            "name": "Renew a domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/renewals",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Renew the specified domain for a given period (in years). Use `$preview=true` to get a renewal price quote without executing the renewal.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

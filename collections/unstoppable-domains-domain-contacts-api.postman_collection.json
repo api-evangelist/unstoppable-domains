@@ -1,0 +1,879 @@
+{
+  "item": [
+    {
+      "id": "39448f39-cde2-45a2-b75d-23e0f62762d4",
+      "name": "domain-contacts",
+      "description": {
+        "content": "View and update the ICANN-required contacts (owner, admin, tech, billing) assigned to a specific domain.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8613345b-642d-46b3-98a2-5ce48bcdfc1f",
+          "name": "Get domain contacts",
+          "request": {
+            "name": "Get domain contacts",
+            "description": {
+              "content": "Retrieve the contacts associated with the specified domain, including owner, admin, tech, and billing roles.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "domains",
+                ":name",
+                "dns",
+                "contacts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "256b9348-4582-483d-8ecb-0bb28b2b7cc7",
+              "name": "Domain contact assignments",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name",
+                    "dns",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"@type\": \"unstoppabledomains.com/partner.v3.DomainContacts\",\n  \"owner\": {\n    \"@type\": \"unstoppabledomains.com/partner.v3.Contact\",\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"string\"\n    },\n    \"email\": \"string\",\n    \"organization\": \"string\",\n    \"tldData\": {\n      \"ca\": {\n        \"registrantAgreementAcknowledged\": false,\n        \"preferredLanguageCode\": \"fr\",\n        \"canadianPresenceRequirement\": \"ABO\"\n      }\n    },\n    \"verification\": {\n      \"status\": \"VERIFIED\",\n      \"timestamp\": 6227.504658625877\n    }\n  },\n  \"admin\": {\n    \"@type\": \"unstoppabledomains.com/partner.v3.Contact\",\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"string\"\n    },\n    \"email\": \"string\",\n    \"organization\": \"string\",\n    \"tldData\": {\n      \"ca\": {\n        \"registrantAgreementAcknowledged\": true,\n        \"preferredLanguageCode\": \"fr_CA\",\n        \"canadianPresenceRequirement\": \"LGR\"\n      }\n    },\n    \"verification\": {\n      \"status\": \"SUSPENDED\",\n      \"timestamp\": 7298.42304663657\n    }\n  },\n  \"tech\": {\n    \"@type\": \"unstoppabledomains.com/partner.v3.Contact\",\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"string\"\n    },\n    \"email\": \"string\",\n    \"organization\": \"string\",\n    \"tldData\": {\n      \"ca\": {\n        \"registrantAgreementAcknowledged\": false,\n        \"preferredLanguageCode\": \"fr\",\n        \"canadianPresenceRequirement\": \"OMK\"\n      }\n    },\n    \"verification\": {\n      \"status\": \"SUSPENDED\",\n      \"timestamp\": 7045.392579081451\n    }\n  },\n  \"billing\": {\n    \"@type\": \"unstoppabledomains.com/partner.v3.Contact\",\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"string\"\n    },\n    \"email\": \"string\",\n    \"organization\": \"string\",\n    \"tldData\": {\n      \"ca\": {\n        \"registrantAgreementAcknowledged\": false,\n        \"preferredLanguageCode\": \"fr_CA\",\n        \"canadianPresenceRequirement\": \"TRS\"\n      }\n    },\n    \"verification\": {\n      \"status\": \"REQUESTED\",\n      \"timestamp\": 6044.664447298348\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1bf27dc8-d75c-418d-bc87-a1cbe4edf1fa",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name",
+                    "dns",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb808540-9794-406e-a200-d936558c104b",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name",
+                    "dns",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "24a5b818-7430-4f98-a3e7-3255dd82bc12",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name",
+                    "dns",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "52524215-9b78-438e-8609-8e255e15fd98",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name",
+                    "dns",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7fed70fc-ebd7-44c5-af96-f87ec7581f7f",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name",
+                    "dns",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fb033416-8f80-4342-893e-bc35fb06d66d",
+          "name": "Update domain contacts",
+          "request": {
+            "name": "Update domain contacts",
+            "description": {
+              "content": "Update the contacts associated with the specified domain. You can update any combination of owner, admin, tech, and billing contacts. Use `$preview=true` to validate without applying changes.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "domains",
+                ":name",
+                "dns",
+                "contacts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "$preview",
+                  "value": "false",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"owner\": {\n    \"tldData\": {\n      \"ca\": {\n        \"registrantAgreementAcknowledged\": \"<boolean>\",\n        \"preferredLanguageCode\": \"<string>\",\n        \"canadianPresenceRequirement\": \"<string>\"\n      }\n    },\n    \"id\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"organization\": \"<string>\",\n    \"countryCode\": \"<string>\",\n    \"street\": \"<string>\",\n    \"city\": \"<string>\",\n    \"postalCode\": \"<string>\",\n    \"stateProvince\": \"<string>\",\n    \"phone\": {\n      \"number\": \"<string>\",\n      \"dialingPrefix\": \"<string>\"\n    },\n    \"email\": \"<email>\"\n  },\n  \"admin\": {\n    \"id\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"organization\": \"<string>\",\n    \"countryCode\": \"<string>\",\n    \"street\": \"<string>\",\n    \"city\": \"<string>\",\n    \"postalCode\": \"<string>\",\n    \"stateProvince\": \"<string>\",\n    \"phone\": {\n      \"number\": \"<string>\",\n      \"dialingPrefix\": \"<string>\"\n    },\n    \"email\": \"<email>\"\n  },\n  \"tech\": {\n    \"id\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"organization\": \"<string>\",\n    \"countryCode\": \"<string>\",\n    \"street\": \"<string>\",\n    \"city\": \"<string>\",\n    \"postalCode\": \"<string>\",\n    \"stateProvince\": \"<string>\",\n    \"phone\": {\n      \"number\": \"<string>\",\n      \"dialingPrefix\": \"<string>\"\n    },\n    \"email\": \"<email>\"\n  },\n  \"billing\": {\n    \"id\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"organization\": \"<string>\",\n    \"countryCode\": \"<string>\",\n    \"street\": \"<string>\",\n    \"city\": \"<string>\",\n    \"postalCode\": \"<string>\",\n    \"stateProvince\": \"<string>\",\n    \"phone\": {\n      \"number\": \"<string>\",\n      \"dialingPrefix\": \"<string>\"\n    },\n    \"email\": \"<email>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "25eb914a-425e-4f77-a8ba-7299510e3863",
+              "name": "Contact update operation created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name",
+                    "dns",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owner\": {\n    \"tldData\": {\n      \"ca\": {\n        \"registrantAgreementAcknowledged\": true,\n        \"preferredLanguageCode\": \"fr\",\n        \"canadianPresenceRequirement\": \"MAJ\"\n      }\n    },\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"RKPooKMtUQLY@melXoqJbWTy.xrrp\"\n  },\n  \"admin\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"5pTuhhBV6ldXY@pHjQSLhvkLTIZ.xk\"\n  },\n  \"tech\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"WIeDutCJbRB2ch@mRlwwUlxSnRBXgvPDp.wo\"\n  },\n  \"billing\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"K3hC82tZA8@bSIQRedgOF.wjy\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"@type\": \"unstoppabledomains.com/partner.v3.DomainContactOperationResult\",\n  \"operation\": {\n    \"@type\": \"unstoppabledomains.com/partner.v3.Operation\",\n    \"id\": \"op-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"status\": \"FAILED\",\n    \"type\": \"DOMAIN_RENEW\",\n    \"createdAtTimestamp\": 4420.086942124838,\n    \"lastUpdatedTimestamp\": 4153.737386924156,\n    \"dependencies\": [\n      {\n        \"id\": \"plop_abc12345-1234-1234-1234-abc123456789\",\n        \"@type\": \"unstoppabledomains.com/partner.v3.PlatformOperation\",\n        \"status\": \"QUEUED\",\n        \"type\": \"DOMAIN_REGISTER\",\n        \"parameters\": {\n          \"owner\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"contacts\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"period\": 1\n        },\n        \"error\": {\n          \"code\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"message\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      {\n        \"id\": \"plop_abc12345-1234-1234-1234-abc123456789\",\n        \"@type\": \"unstoppabledomains.com/partner.v3.PlatformOperation\",\n        \"status\": \"PREVIEW\",\n        \"type\": \"DOMAIN_REGISTER\",\n        \"parameters\": {\n          \"owner\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"contacts\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"period\": 1\n        },\n        \"error\": {\n          \"code\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"message\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    ],\n    \"domain\": \"string\",\n    \"validUntilTimestamp\": 9341.786128268417\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14e3b7e4-9609-41f1-aac5-a31ea0a41219",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name",
+                    "dns",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owner\": {\n    \"tldData\": {\n      \"ca\": {\n        \"registrantAgreementAcknowledged\": true,\n        \"preferredLanguageCode\": \"fr\",\n        \"canadianPresenceRequirement\": \"MAJ\"\n      }\n    },\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"RKPooKMtUQLY@melXoqJbWTy.xrrp\"\n  },\n  \"admin\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"5pTuhhBV6ldXY@pHjQSLhvkLTIZ.xk\"\n  },\n  \"tech\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"WIeDutCJbRB2ch@mRlwwUlxSnRBXgvPDp.wo\"\n  },\n  \"billing\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"K3hC82tZA8@bSIQRedgOF.wjy\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "19f9083b-a363-4565-9c0e-86c9c9a2448c",
+              "name": "Authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name",
+                    "dns",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owner\": {\n    \"tldData\": {\n      \"ca\": {\n        \"registrantAgreementAcknowledged\": true,\n        \"preferredLanguageCode\": \"fr\",\n        \"canadianPresenceRequirement\": \"MAJ\"\n      }\n    },\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"RKPooKMtUQLY@melXoqJbWTy.xrrp\"\n  },\n  \"admin\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"5pTuhhBV6ldXY@pHjQSLhvkLTIZ.xk\"\n  },\n  \"tech\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"WIeDutCJbRB2ch@mRlwwUlxSnRBXgvPDp.wo\"\n  },\n  \"billing\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"K3hC82tZA8@bSIQRedgOF.wjy\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "61bd669d-3f06-4382-9caa-7d8b6e39b53e",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name",
+                    "dns",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owner\": {\n    \"tldData\": {\n      \"ca\": {\n        \"registrantAgreementAcknowledged\": true,\n        \"preferredLanguageCode\": \"fr\",\n        \"canadianPresenceRequirement\": \"MAJ\"\n      }\n    },\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"RKPooKMtUQLY@melXoqJbWTy.xrrp\"\n  },\n  \"admin\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"5pTuhhBV6ldXY@pHjQSLhvkLTIZ.xk\"\n  },\n  \"tech\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"WIeDutCJbRB2ch@mRlwwUlxSnRBXgvPDp.wo\"\n  },\n  \"billing\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"K3hC82tZA8@bSIQRedgOF.wjy\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "53eac129-3480-4757-9d6e-1ee5cd1bc929",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name",
+                    "dns",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owner\": {\n    \"tldData\": {\n      \"ca\": {\n        \"registrantAgreementAcknowledged\": true,\n        \"preferredLanguageCode\": \"fr\",\n        \"canadianPresenceRequirement\": \"MAJ\"\n      }\n    },\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"RKPooKMtUQLY@melXoqJbWTy.xrrp\"\n  },\n  \"admin\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"5pTuhhBV6ldXY@pHjQSLhvkLTIZ.xk\"\n  },\n  \"tech\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"WIeDutCJbRB2ch@mRlwwUlxSnRBXgvPDp.wo\"\n  },\n  \"billing\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"K3hC82tZA8@bSIQRedgOF.wjy\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cee8d331-4971-40cd-afbb-ee49bd5e4f3b",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "domains",
+                    ":name",
+                    "dns",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "$preview",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owner\": {\n    \"tldData\": {\n      \"ca\": {\n        \"registrantAgreementAcknowledged\": true,\n        \"preferredLanguageCode\": \"fr\",\n        \"canadianPresenceRequirement\": \"MAJ\"\n      }\n    },\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"RKPooKMtUQLY@melXoqJbWTy.xrrp\"\n  },\n  \"admin\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"5pTuhhBV6ldXY@pHjQSLhvkLTIZ.xk\"\n  },\n  \"tech\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"WIeDutCJbRB2ch@mRlwwUlxSnRBXgvPDp.wo\"\n  },\n  \"billing\": {\n    \"id\": \"ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"organization\": \"string\",\n    \"countryCode\": \"string\",\n    \"street\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"stateProvince\": \"string\",\n    \"phone\": {\n      \"number\": \"string\",\n      \"dialingPrefix\": \"+1\"\n    },\n    \"email\": \"K3hC82tZA8@bSIQRedgOF.wjy\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"VALIDATION\",\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.unstoppabledomains.com/partner/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "8cc484fd-5334-435b-b890-e4191c4101ec",
+    "name": "Web3 Partner API v3 account domain-contacts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n\n\nContact Support:\n Name: Unstoppable Domains (Partner Engineering)\n Email: partnerengineering@unstoppabledomains.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account suggestions API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "suggestions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get suggested domains that are available for registering",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/suggestions/domains",
+            "params": [
+              {
+                "name": "tlds",
+                "value": "",
+                "type": "query",
+                "description": "Use `ending` instead"
+              },
+              {
+                "name": "ending",
+                "value": "",
+                "type": "query",
+                "description": "TLD or Parent Domain to apply to your `query` base names"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "All domains returned by this route are available for registration"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

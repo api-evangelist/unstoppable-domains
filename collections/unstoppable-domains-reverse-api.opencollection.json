@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account Reverse API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reverse",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get reverse",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/reverse/:address",
+            "params": [
+              {
+                "name": "address",
+                "value": "",
+                "type": "path",
+                "description": "A wallet address to query for reverse record"
+              }
+            ]
+          },
+          "docs": "**Get Reverse Record for an Address**<br/>**Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key."
+        },
+        {
+          "info": {
+            "name": "Get reverses",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/reverse/query",
+            "params": [
+              {
+                "name": "resolution",
+                "value": "",
+                "type": "query",
+                "description": "See this [list](https://github.com/unstoppabledomains/uns/blob/main/uns-config.json) for all the resolution keys supported"
+              },
+              {
+                "name": "owners",
+                "value": "",
+                "type": "query",
+                "description": "Wallet addresses of the owners of domains"
+              },
+              {
+                "name": "tlds",
+                "value": "",
+                "type": "query",
+                "description": "Domain ending supported such as `crypto`, `x`, or `polygon`. See [supported tlds](https://api.unstoppabledomains.com/resolve/supported_tlds) for the full list"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort key to specify how the returned domain list is sorted"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "Sort order of the returned domain list"
+              },
+              {
+                "name": "startingAfter",
+                "value": "",
+                "type": "query",
+                "description": "Query offset to skip a number of record, example: 100"
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Number of domains returned in the list, example: 50"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "\n  **Get Records for Multiple Domains**\n  <br/>\n  \nThe API only supports Unstoppable Domains' naming services for backward compatibility. A new API version is coming soon for other naming services\n<ul>\n  <li>\n    <p>Unstoppable Domain's <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/uns-architecture-overview\" target=\"_blank\">UNS</a> and <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/cns-architecture-overview\" target=\"_blank\">CNS</a> with TLDs:\n<stron"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

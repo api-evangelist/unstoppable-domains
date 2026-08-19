@@ -1,0 +1,305 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account dns-records API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "dns-records",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get DNS metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve DNS metadata for the specified domain, including the DNS provider and registration status.\n"
+        },
+        {
+          "info": {
+            "name": "List DNS records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/records",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "subName",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve DNS records for the specified domain. Supports filtering by record type and subdomain name, and cursor-based pagination.\n"
+        },
+        {
+          "info": {
+            "name": "Create a DNS record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/records",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new DNS record for the specified domain. Supports all standard DNS record types. Use `$preview=true` to validate the request without creating the record.\n\nThe `$upsert` option controls behavior when a matching record already exists: `REPLACE` overwrites, `APPEND` adds values, `DISALLOWED` rejects the request.\n"
+        },
+        {
+          "info": {
+            "name": "Update a DNS record",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/records/:id",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "DNS record ID (format: rr-<uuid>)"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing DNS record by ID. You can modify the record values and TTL. Use `$preview=true` to validate the request without applying the change.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a DNS record",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/records/:id",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "DNS record ID (format: rr-<uuid>)"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Delete a DNS record by ID. Use `$preview=true` to validate the request without deleting the record.\n"
+        },
+        {
+          "info": {
+            "name": "Get DNSSEC status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/security",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve the current DNSSEC status for the specified domain.\n"
+        },
+        {
+          "info": {
+            "name": "Enable DNSSEC",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/security",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enable DNSSEC for the specified domain. Use `$preview=true` to validate without applying changes. Set `$forceCompatibility` to override compatibility warnings.\n"
+        },
+        {
+          "info": {
+            "name": "Disable DNSSEC",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/security",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Disable DNSSEC for the specified domain. Use `$preview=true` to validate without applying changes.\n"
+        },
+        {
+          "info": {
+            "name": "Get nameservers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/nameservers",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$expand",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve the current nameserver configuration for the specified domain. Use `$expand=dnssec` to include DNSSEC details in the response.\n"
+        },
+        {
+          "info": {
+            "name": "Set external nameservers",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/nameservers",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set external (custom) nameservers for the specified domain, replacing the default UD-managed nameservers. Use `$preview=true` to validate without applying changes.\n"
+        },
+        {
+          "info": {
+            "name": "Remove external nameservers",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.unstoppabledomains.com/partner/v3/domains/:name/dns/nameservers",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$preview",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Remove external nameservers and revert to UD-managed nameservers. Use `$preview=true` to validate without applying changes.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

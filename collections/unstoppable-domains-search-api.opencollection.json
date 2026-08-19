@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Web3 Partner API v3 account search API",
+    "version": "3.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search for owned domains by one or more addresses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.unstoppabledomains.com/partner/v3/search/owners/domains",
+            "params": [
+              {
+                "name": "$expand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "owner.address",
+                "value": "",
+                "type": "query",
+                "description": "Addresses to search by"
+              },
+              {
+                "name": "$cursor",
+                "value": "",
+                "type": "query",
+                "description": "The `next.$cursor` value from the previous page response"
+              }
+            ]
+          },
+          "docs": "Search for owned domains by one or more addresses"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
