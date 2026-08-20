@@ -38,6 +38,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Account
+  tags_raw:
   - account
   properties:
   - type: OpenAPI
@@ -150,6 +152,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Contacts
+  tags_raw:
   - contacts
   properties:
   - type: OpenAPI
@@ -205,6 +209,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - DNS Records
+  tags_raw:
   - dns-records
   properties:
   - type: OpenAPI
@@ -288,6 +294,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Domain Management
+  tags_raw:
   - domain-management
   properties:
   - type: OpenAPI
@@ -314,6 +322,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Domain Registration
+  tags_raw:
   - domain_registration
   properties:
   - type: OpenAPI
@@ -342,6 +352,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Domain Search
+  tags_raw:
   - domain-search
   properties:
   - type: OpenAPI
@@ -395,6 +407,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Domains
+  tags_raw:
   - domains
   properties:
   - type: OpenAPI
@@ -428,7 +442,8 @@ apis:
     \ the signature and continue processing the operation."
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
-  tags:
+  tags: []
+  tags_raw:
   - external_domains
   properties:
   - type: OpenAPI
@@ -482,7 +497,8 @@ apis:
     - [ERC1271](https://eips.ethereum.org/EIPS/eip-1271) Smart Contract wallets deployed on Polygon
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
-  tags:
+  tags: []
+  tags_raw:
   - external_wallets
   properties:
   - type: OpenAPI
@@ -525,6 +541,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Hosting
+  tags_raw:
   - hosting
   properties:
   - type: OpenAPI
@@ -579,6 +597,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Marketplace
+  tags_raw:
   - marketplace
   properties:
   - type: OpenAPI
@@ -606,7 +626,8 @@ apis:
     a domain, updating a domain's records, changing a domain's owner, returning a domain and more.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
-  tags:
+  tags: []
+  tags_raw:
   - operations
   properties:
   - type: OpenAPI
@@ -659,6 +680,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Owners
+  tags_raw:
   - owners
   properties:
   - type: OpenAPI
@@ -713,6 +736,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Pricing
+  tags_raw:
   - pricing
   properties:
   - type: OpenAPI
@@ -791,6 +816,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Search
+  tags_raw:
   - search
   properties:
   - type: OpenAPI
@@ -870,6 +897,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Suggestions
+  tags_raw:
   - suggestions
   properties:
   - type: OpenAPI
@@ -897,6 +926,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - TLDs
+  tags_raw:
   - tlds
   properties:
   - type: OpenAPI
@@ -928,6 +959,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Wallets
+  tags_raw:
   - wallets
   properties:
   - type: OpenAPI
@@ -958,6 +991,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Webhook
+  tags_raw:
   - webhooks
   properties:
   - type: OpenAPI
