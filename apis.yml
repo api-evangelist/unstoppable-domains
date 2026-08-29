@@ -1,5 +1,17 @@
 name: Unstoppable Domains
 description: Web3 domain name service providing REST APIs for resolving crypto domain names, managing NFT domains, reverse lookups, cross-chain address resolution, domain registration, and DNS management across 150+ TLDs on multiple blockchains.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
@@ -1014,6 +1026,9 @@ apis:
   - type: APIReference
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 common:
+  - type: CapabilityMap
+    url: capabilities/unstoppable-domains-capability-edges.yml
+    name: Unstoppable Domains Business Capability Map
   - type: AgenticAccess
     url: agentic-access/unstoppable-domains-agentic-access.yml
   - type: VulnerabilityDisclosure
