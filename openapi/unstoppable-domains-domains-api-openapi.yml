@@ -1,18 +1,20 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Web3 Partner API v3 account domains API
-  version: 3.0.0
+  title: Unstoppable Domains API
   contact:
     name: Unstoppable Domains (Partner Engineering)
     email: partnerengineering@unstoppabledomains.com
-  description: "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n"
+  version: '1.0'
+  description: 'Operations tagged domains across 2 of this provider''s published API definitions: unstoppable-domains-partner-api-openapi.yaml, unstoppable-domains-resolution-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.unstoppabledomains.com/partner/v3
   description: Production
 - url: https://api.ud-sandbox.com/partner/v3
   description: Sandbox
-security:
-- bearer: []
+- url: https://api.unstoppabledomains.com/resolve
+  description: Production
+- url: https://api.ud-sandbox.com/resolve
+  description: Sandbox
 tags:
 - name: domains
   x-displayName: Custody Domains
@@ -69,6 +71,8 @@ paths:
           $ref: '#/components/responses/502BadGateway'
       tags:
       - domains
+      security:
+      - bearer: []
     put:
       operationId: updateDomainPut
       summary: Update a domain (overwriting update)
@@ -119,6 +123,8 @@ paths:
           $ref: '#/components/responses/502BadGateway'
       tags:
       - domains
+      security:
+      - bearer: []
     delete:
       operationId: returnDomain
       summary: Return and refund a domain
@@ -156,6 +162,13 @@ paths:
                   $ref: '#/components/examples/ValidationError'
       tags:
       - domains
+      security:
+      - bearer: []
+    servers:
+    - url: https://api.unstoppabledomains.com/partner/v3
+      description: Production
+    - url: https://api.ud-sandbox.com/partner/v3
+      description: Sandbox
   /domains/{domainName}:
     get:
       operationId: DomainsController.getDomain
@@ -178,6 +191,13 @@ paths:
       tags:
       - domains
       description: '**Get Records for a Domain**<br/>**Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key.'
+      security:
+      - apiKeyAuth: []
+    servers:
+    - url: https://api.unstoppabledomains.com/resolve
+      description: Production
+    - url: https://api.ud-sandbox.com/resolve
+      description: Sandbox
   /domains:
     get:
       operationId: DomainsController.getDomainsList
@@ -286,6 +306,13 @@ paths:
       tags:
       - domains
       description: "\n  **Get Records for Multiple Domains**\n  <br/>\n  \nThe API only supports Unstoppable Domains' naming services for backward compatibility. A new API version is coming soon for other naming services\n<ul>\n  <li>\n    <p>Unstoppable Domain's <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/uns-architecture-overview\" target=\"_blank\">UNS</a> and <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/cns-architecture-overview\" target=\"_blank\">CNS</a> with TLDs:\n<strong>.x</strong>, <strong>.polygon</strong>, <strong>.nft</strong>, <strong>.crypto</strong>, <strong>.blockchain</strong>, <strong>.bitcoin</strong>, <strong>.dao</strong>, <strong>.888</strong>, <strong>.wallet</strong>, <strong>.binanceus</strong>, <strong>.hi</strong>, <strong>.klever</strong>, <strong>.kresus</strong>, <strong>.anime</strong>, <strong>.manga</strong>, <strong>.go</strong>, <strong>.zil</strong></p>\n  </li>\n  <li>\n    <p>Unstoppable Domain's <a href=\"https://unstoppabledomains.com/blog/categories/announcements/article/zilliqa-naming-service\" target=\"_blank\">Zilliqa</a> with TLDs:\n<strong>zil</strong></p>\n  </li>\n</ul>\n\n  <br/>\n  **Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key."
+      security:
+      - apiKeyAuth: []
+    servers:
+    - url: https://api.unstoppabledomains.com/resolve
+      description: Production
+    - url: https://api.ud-sandbox.com/resolve
+      description: Sandbox
   /domains/{domainName}/transfers/latest:
     get:
       operationId: DomainsController.getDomainsLastTransfer
@@ -313,6 +340,13 @@ paths:
       tags:
       - domains
       description: '**Get Domain Transfer Events**<br/>**Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key.'
+      security:
+      - apiKeyAuth: []
+    servers:
+    - url: https://api.unstoppabledomains.com/resolve
+      description: Production
+    - url: https://api.ud-sandbox.com/resolve
+      description: Sandbox
   /records:
     get:
       operationId: DomainsController.getDomainsRecords
@@ -354,344 +388,15 @@ paths:
       tags:
       - domains
       description: "\n  **Get Records for Multiple Domains**\n  <br/>\n  It's recommended to use this API on different naming services as they support different record keys\n  <ul>\n    <li>\n      <p>Unstoppable Domain's <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/uns-architecture-overview\" target=\"_blank\">UNS</a> and <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/cns-architecture-overview\" target=\"_blank\">CNS</a> with TLDs:\n<strong>.x</strong>, <strong>.polygon</strong>, <strong>.nft</strong>, <strong>.crypto</strong>, <strong>.blockchain</strong>, <strong>.bitcoin</strong>, <strong>.dao</strong>, <strong>.888</strong>, <strong>.wallet</strong>, <strong>.binanceus</strong>, <strong>.hi</strong>, <strong>.klever</strong>, <strong>.kresus</strong>, <strong>.anime</strong>, <strong>.manga</strong>, <strong>.go</strong>, <strong>.zil</strong><br/>See this <a href=\"https://github.com/unstoppabledomains/uns/blob/main/uns-config.json\" target=\"_blank\">list</a> for all the resolution keys supported</p>\n    </li>\n    <li>\n      <p>\n      Ethereum Naming Service - <a href=\"https://docs.ens.domains/\" target=\"_blank\">ENS</a> with TLDs:\n<strong>.eth</strong>\n      <br/>See Ens' <a href=\"https://docs.ens.domains/ens-improvement-proposals\" target=\"_blank\">document</a> for all the resolution keys supported\n      </p>\n    </li>\n  </ul>\n  <br/>**Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key."
+      security:
+      - apiKeyAuth: []
+    servers:
+    - url: https://api.unstoppabledomains.com/resolve
+      description: Production
+    - url: https://api.ud-sandbox.com/resolve
+      description: Sandbox
 components:
   schemas:
-    UpdateRecordsParametersResponse:
-      type: object
-      properties:
-        recordUpdates:
-          $ref: '#/components/schemas/DomainRecords'
-        resetRecords:
-          type: boolean
-      required:
-      - recordUpdates
-      - resetRecords
-    WebhookCreateParametersResponse:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/WebhookType'
-        url:
-          type: string
-          format: uri
-      required:
-      - type
-      - url
-    WebhookDeleteParametersResponse:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-      - id
-    DomainLatestTransfer:
-      properties:
-        domain:
-          type: string
-        from:
-          minLength: 1
-          type: string
-        to:
-          minLength: 1
-          type: string
-        networkId:
-          minLength: 1
-          type: integer
-        blockNumber:
-          minLength: 1
-          type: integer
-        blockchain:
-          minLength: 1
-          type: string
-      type: object
-      required:
-      - domain
-      - from
-      - to
-      - networkId
-      - blockNumber
-      - blockchain
-    DomainUpdateRequestBody:
-      type: object
-      properties:
-        owner:
-          $ref: '#/components/schemas/DomainUpdateRequestBodyOwner'
-        records:
-          $ref: '#/components/schemas/UpdateDomainRecords'
-    DomainResponse:
-      properties:
-        meta:
-          $ref: '#/components/schemas/DomainMetadata'
-        records:
-          type: object
-      type: object
-      required:
-      - meta
-      - records
-    OperationType:
-      type: string
-      enum:
-      - DOMAIN_CLAIM
-      - DOMAIN_UPDATE
-      - DOMAIN_RETURN
-      - WALLET_CREATE
-      - WALLET_UPDATE
-      - WALLET_VERIFY
-      - ACCOUNT_UPDATE
-    WalletCreateSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/PlatformSubOperationResponse'
-      - type: object
-        properties:
-          result:
-            $ref: '#/components/schemas/WalletCreateResultResponse'
-          type:
-            type: string
-            enum:
-            - WALLET_CREATE
-        required:
-        - type
-    UpdateDomainRecords:
-      allOf:
-      - $ref: '#/components/schemas/DomainRecords'
-      - type: object
-        maxProperties: 500
-    SubOperationTransactionResponse:
-      type: object
-      properties:
-        hash:
-          type: string
-        blockchain:
-          $ref: '#/components/schemas/BlockchainType'
-      required:
-      - blockchain
-    PlatformSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/SubOperationResponse'
-      - type: object
-        properties:
-          '@type':
-            type: string
-            enum:
-            - unstoppabledomains.com/partner.v3.PlatformOperation
-        required:
-        - '@type'
-    OwnerType:
-      type: string
-      enum:
-      - NONE
-      - UD
-      - SELF
-      - EXTERNAL
-      description: '- `NONE`: Domain is not currently owned by anyone
-
-        - `UD`: Domain is owned by a wallet/contract that belongs to Unstoppable Domains
-
-        - `SELF`: Domain is owned by your account. You can manage this domains through the API
-
-        - `EXTERNAL`: Owner doesn''t qualify as any of the above.
-
-        '
-    EvmOwnerAddress:
-      type: string
-      example: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
-      pattern: ^0x[a-fA-F0-9]{40}$
-    DomainRecords_2:
-      properties:
-        domain:
-          type: string
-        records:
-          type: object
-      type: object
-      required:
-      - domain
-      - records
-    TransferSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - TRANSFER
-          parameters:
-            $ref: '#/components/schemas/TransferParametersResponse'
-        required:
-        - type
-        - parameters
-    SubOperationResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          example: bc-2db427bd-5613-40c7-85b1-ab38beed0ed0
-        status:
-          $ref: '#/components/schemas/OperationStatus'
-      required:
-      - status
-      - id
-    MintParametersResponse:
-      type: object
-      properties:
-        initialRecords:
-          $ref: '#/components/schemas/DomainRecords'
-        toAddress:
-          $ref: '#/components/schemas/OwnerAddress'
-      required:
-      - toAddress
-    WebhookCreateSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/PlatformSubOperationResponse'
-      - type: object
-        properties:
-          parameters:
-            $ref: '#/components/schemas/WebhookCreateParametersResponse'
-          result:
-            $ref: '#/components/schemas/WebhookCreateResultResponse'
-          type:
-            type: string
-            enum:
-            - WEBHOOK_CREATE
-        required:
-        - parameters
-        - type
-    OwnerAddress:
-      oneOf:
-      - $ref: '#/components/schemas/EvmOwnerAddress'
-    OperationStatus:
-      type: string
-      enum:
-      - QUEUED
-      - SIGNATURE_REQUIRED
-      - PROCESSING
-      - COMPLETED
-      - FAILED
-      - CANCELLED
-    UpdateRecordsSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - UPDATE_RECORDS
-          parameters:
-            $ref: '#/components/schemas/UpdateRecordsParametersResponse'
-        required:
-        - type
-        - parameters
-    WalletSetDefaultSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/PlatformSubOperationResponse'
-      - type: object
-        properties:
-          parameters:
-            $ref: '#/components/schemas/WalletSetDefaultParametersResponse'
-          type:
-            type: string
-            enum:
-            - WALLET_SET_DEFAULT
-        required:
-        - parameters
-        - type
-    ErrorResponse:
-      oneOf:
-      - $ref: '#/components/schemas/ErrorResponseSingle'
-      - $ref: '#/components/schemas/ErrorResponseMulti'
-    ErrorResponseContextEntityMulti:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - MULTI_VALUE
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
-      required:
-      - type
-      - values
-    BlockchainSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/SubOperationResponse'
-      - type: object
-        properties:
-          '@type':
-            type: string
-            enum:
-            - unstoppabledomains.com/partner.v3.BlockchainOperation
-          transaction:
-            $ref: '#/components/schemas/SubOperationTransactionResponse'
-        required:
-        - '@type'
-    ErrorResponseSingle:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponseContext'
-    DomainsListMeta:
-      properties:
-        nextStartingAfter:
-          type: string
-          minLength: 1
-        sortBy:
-          type: string
-          minLength: 1
-        sortDirection:
-          type: string
-          minLength: 1
-        perPage:
-          maximum: 200
-          type: string
-          minimum: 1
-          minLength: 1
-        hasMore:
-          type: string
-          minLength: 1
-      type: object
-      required:
-      - nextStartingAfter
-      - sortBy
-      - sortDirection
-      - perPage
-      - hasMore
-    DomainName:
-      type: string
-      example: matt.crypto
-    ErrorResponseContextEntitySingle:
-      type: object
-      properties:
-        type:
-          type: string
-        value:
-          type: string
-      required:
-      - type
-      - value
-    DomainRecords:
-      type: object
-      additionalProperties:
-        type: string
-      example:
-        crypto.ETH.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
-        crypto.MATIC.version.MATIC.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e5678'
-        crypto.MATIC.version.ERC20.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e0921'
-    ErrorResponseContext:
-      type: object
-      properties:
-        entities:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponseContextEntity'
-      required:
-      - entities
     WalletCreateResultResponse:
       type: object
       properties:
@@ -699,6 +404,18 @@ components:
           $ref: '#/components/schemas/OwnerAddress'
       required:
       - address
+    DomainOperationResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainOperationResult
+        operation:
+          $ref: '#/components/schemas/OperationCheckResponse'
+      required:
+      - '@type'
+      - operation
     OperationCheckResponse:
       type: object
       properties:
@@ -737,15 +454,128 @@ components:
       - dependencies
       - '@type'
       - lastUpdatedTimestamp
-    OperationPreviewParameter:
-      type: boolean
-      default: false
-      description: 'Allows simulating the operation creation (when set to `true`), without actually starting any processing. This can be used to validate the operation will be permitted and get a preview of the initial outcome.
+    ReturnSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - RETURN
+        required:
+        - type
+    OwnerAddress:
+      oneOf:
+      - $ref: '#/components/schemas/EvmOwnerAddress'
+    OwnerType:
+      type: string
+      enum:
+      - NONE
+      - UD
+      - SELF
+      - EXTERNAL
+      description: '- `NONE`: Domain is not currently owned by anyone
 
+        - `UD`: Domain is owned by a wallet/contract that belongs to Unstoppable Domains
 
-        When used, the operation in the response will have `PREVIEW` for all `id` and `status` values.
+        - `SELF`: Domain is owned by your account. You can manage this domains through the API
+
+        - `EXTERNAL`: Owner doesn''t qualify as any of the above.
 
         '
+    WebhookDeleteSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WebhookDeleteParametersResponse'
+          type:
+            type: string
+            enum:
+            - WEBHOOK_DELETE
+        required:
+        - parameters
+        - type
+    WalletCreateSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          result:
+            $ref: '#/components/schemas/WalletCreateResultResponse'
+          type:
+            type: string
+            enum:
+            - WALLET_CREATE
+        required:
+        - type
+    WebhookCreateParametersResponse:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        url:
+          type: string
+          format: uri
+      required:
+      - type
+      - url
+    OperationStatus:
+      type: string
+      enum:
+      - QUEUED
+      - SIGNATURE_REQUIRED
+      - PROCESSING
+      - COMPLETED
+      - FAILED
+      - CANCELLED
+    WalletSetDefaultParametersResponse:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - address
+    UpdateRecordsParametersResponse:
+      type: object
+      properties:
+        recordUpdates:
+          $ref: '#/components/schemas/DomainRecords'
+        resetRecords:
+          type: boolean
+      required:
+      - recordUpdates
+      - resetRecords
+    ErrorResponseContextEntityMulti:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MULTI_VALUE
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      required:
+      - type
+      - values
+    TransferSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - TRANSFER
+          parameters:
+            $ref: '#/components/schemas/TransferParametersResponse'
+        required:
+        - type
+        - parameters
     TransferParametersResponse:
       type: object
       properties:
@@ -759,31 +589,36 @@ components:
       - fromAddress
       - toAddress
       - resetRecords
-    DomainOperationResponse:
+    ErrorResponseContext:
       type: object
       properties:
-        '@type':
+        entities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntity'
+      required:
+      - entities
+    WebhookDeleteParametersResponse:
+      type: object
+      properties:
+        id:
           type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.DomainOperationResult
-        operation:
-          $ref: '#/components/schemas/OperationCheckResponse'
       required:
-      - '@type'
-      - operation
-    WalletSetDefaultParametersResponse:
+      - id
+    ErrorResponse:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseSingle'
+      - $ref: '#/components/schemas/ErrorResponseMulti'
+    ErrorResponseContextEntitySingle:
       type: object
       properties:
-        address:
-          $ref: '#/components/schemas/OwnerAddress'
+        type:
+          type: string
+        value:
+          type: string
       required:
-      - address
-    BlockchainType:
-      type: string
-      enum:
-      - MATIC
-      - ETH
-      - BASE
+      - type
+      - value
     WebhookCreateResultResponse:
       type: object
       properties:
@@ -791,6 +626,288 @@ components:
           type: string
       required:
       - id
+    WebhookType:
+      type: string
+      enum:
+      - OPERATION_FINISHED
+      - OPERATION_ACTION_REQUIRED
+    BlockchainSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/SubOperationResponse'
+      - type: object
+        properties:
+          '@type':
+            type: string
+            enum:
+            - unstoppabledomains.com/partner.v3.BlockchainOperation
+          transaction:
+            $ref: '#/components/schemas/SubOperationTransactionResponse'
+        required:
+        - '@type'
+    BlockchainType:
+      type: string
+      enum:
+      - MATIC
+      - ETH
+      - BASE
+    MintParametersResponse:
+      type: object
+      properties:
+        initialRecords:
+          $ref: '#/components/schemas/DomainRecords'
+        toAddress:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - toAddress
+    DomainUpdateRequestBodyOwner:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/OwnerType'
+        address:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - type
+      - address
+    UpdateRecordsSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - UPDATE_RECORDS
+          parameters:
+            $ref: '#/components/schemas/UpdateRecordsParametersResponse'
+        required:
+        - type
+        - parameters
+    DomainUpdateRequestBody:
+      type: object
+      properties:
+        owner:
+          $ref: '#/components/schemas/DomainUpdateRequestBodyOwner'
+        records:
+          $ref: '#/components/schemas/UpdateDomainRecords'
+    SubOperationResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: bc-2db427bd-5613-40c7-85b1-ab38beed0ed0
+        status:
+          $ref: '#/components/schemas/OperationStatus'
+      required:
+      - status
+      - id
+    SubOperationTransactionResponse:
+      type: object
+      properties:
+        hash:
+          type: string
+        blockchain:
+          $ref: '#/components/schemas/BlockchainType'
+      required:
+      - blockchain
+    EvmOwnerAddress:
+      type: string
+      example: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+      pattern: ^0x[a-fA-F0-9]{40}$
+    OperationType:
+      type: string
+      enum:
+      - DOMAIN_CLAIM
+      - DOMAIN_UPDATE
+      - DOMAIN_RETURN
+      - WALLET_CREATE
+      - WALLET_UPDATE
+      - WALLET_VERIFY
+      - ACCOUNT_UPDATE
+    DomainRecords:
+      type: object
+      additionalProperties:
+        type: string
+      example:
+        crypto.ETH.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+        crypto.MATIC.version.MATIC.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e5678'
+        crypto.MATIC.version.ERC20.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e0921'
+    MintSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - MINT
+          parameters:
+            $ref: '#/components/schemas/MintParametersResponse'
+        required:
+        - type
+        - parameters
+    DomainName:
+      type: string
+      example: matt.crypto
+    WebhookCreateSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WebhookCreateParametersResponse'
+          result:
+            $ref: '#/components/schemas/WebhookCreateResultResponse'
+          type:
+            type: string
+            enum:
+            - WEBHOOK_CREATE
+        required:
+        - parameters
+        - type
+    ErrorResponseSingle:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
+    ErrorResponseMulti:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - MULTIPLE_ERRORS
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseSingle'
+      required:
+      - code
+      - errors
+    ErrorResponseContextEntity:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
+    PlatformSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/SubOperationResponse'
+      - type: object
+        properties:
+          '@type':
+            type: string
+            enum:
+            - unstoppabledomains.com/partner.v3.PlatformOperation
+        required:
+        - '@type'
+    WalletSetDefaultSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WalletSetDefaultParametersResponse'
+          type:
+            type: string
+            enum:
+            - WALLET_SET_DEFAULT
+        required:
+        - parameters
+        - type
+    UpdateDomainRecords:
+      allOf:
+      - $ref: '#/components/schemas/DomainRecords'
+      - type: object
+        maxProperties: 500
+    OperationPreviewParameter:
+      type: boolean
+      default: false
+      description: 'Allows simulating the operation creation (when set to `true`), without actually starting any processing. This can be used to validate the operation will be permitted and get a preview of the initial outcome.
+
+
+        When used, the operation in the response will have `PREVIEW` for all `id` and `status` values.
+
+        '
+    DomainLatestTransfer:
+      properties:
+        domain:
+          type: string
+        from:
+          minLength: 1
+          type: string
+        to:
+          minLength: 1
+          type: string
+        networkId:
+          minLength: 1
+          type: integer
+        blockNumber:
+          minLength: 1
+          type: integer
+        blockchain:
+          minLength: 1
+          type: string
+      type: object
+      required:
+      - domain
+      - from
+      - to
+      - networkId
+      - blockNumber
+      - blockchain
+    DomainResponse:
+      properties:
+        meta:
+          $ref: '#/components/schemas/DomainMetadata'
+        records:
+          type: object
+      type: object
+      required:
+      - meta
+      - records
+    DomainRecords_2:
+      properties:
+        domain:
+          type: string
+        records:
+          type: object
+      type: object
+      required:
+      - domain
+      - records
+    DomainsListMeta:
+      properties:
+        nextStartingAfter:
+          type: string
+          minLength: 1
+        sortBy:
+          type: string
+          minLength: 1
+        sortDirection:
+          type: string
+          minLength: 1
+        perPage:
+          maximum: 200
+          type: string
+          minimum: 1
+          minLength: 1
+        hasMore:
+          type: string
+          minLength: 1
+      type: object
+      required:
+      - nextStartingAfter
+      - sortBy
+      - sortDirection
+      - perPage
+      - hasMore
     DomainMetadata:
       properties:
         resolver:
@@ -836,91 +953,27 @@ components:
       - type
       - domain
       - reverse
-    ErrorResponseMulti:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - MULTIPLE_ERRORS
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponseContext'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponseSingle'
-      required:
-      - code
-      - errors
-    DomainUpdateRequestBodyOwner:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/OwnerType'
-        address:
-          $ref: '#/components/schemas/OwnerAddress'
-      required:
-      - type
-      - address
-    WebhookDeleteSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/PlatformSubOperationResponse'
-      - type: object
-        properties:
-          parameters:
-            $ref: '#/components/schemas/WebhookDeleteParametersResponse'
-          type:
-            type: string
-            enum:
-            - WEBHOOK_DELETE
-        required:
-        - parameters
-        - type
-    MintSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - MINT
-          parameters:
-            $ref: '#/components/schemas/MintParametersResponse'
-        required:
-        - type
-        - parameters
-    ErrorResponseContextEntity:
-      oneOf:
-      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
-      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
-    WebhookType:
-      type: string
-      enum:
-      - OPERATION_FINISHED
-      - OPERATION_ACTION_REQUIRED
-    ReturnSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - RETURN
-        required:
-        - type
   examples:
-    ConcurrentOperation:
-      description: An operation for the domain is already in progress and must complete before you can start another operation.
-      value:
-        code: CONCURRENT_OPERATION
     UnsupportedBlockchain:
       description: The domain blockchain is not currently supported for this operation.
       value:
         code: UNSUPPORTED_BLOCKCHAIN
+    BlockchainCongestion:
+      description: The blockchain is currently overloaded. Please wait for congestion to improve before trying again.
+      value:
+        code: BLOCKCHAIN_CONGESTION
+    CustodyRequired:
+      description: The domain or wallet is not in your custody.
+      value:
+        code: CUSTODY_REQUIRED
+    NoChange:
+      description: No change would occur by the requested operation.
+      value:
+        code: NO_CHANGE
+    ConcurrentOperation:
+      description: An operation for the domain is already in progress and must complete before you can start another operation.
+      value:
+        code: CONCURRENT_OPERATION
     BadRequest:
       description: Request is malformed or invalid.
       value:
@@ -929,18 +982,6 @@ components:
       description: Validation error due to incorrect parameters.
       value:
         code: VALIDATION
-    BlockchainCongestion:
-      description: The blockchain is currently overloaded. Please wait for congestion to improve before trying again.
-      value:
-        code: BLOCKCHAIN_CONGESTION
-    NoChange:
-      description: No change would occur by the requested operation.
-      value:
-        code: NO_CHANGE
-    CustodyRequired:
-      description: The domain or wallet is not in your custody.
-      value:
-        code: CUSTODY_REQUIRED
   responses:
     502BadGateway:
       description: ''
@@ -960,3 +1001,10 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+    apiKeyAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- unstoppable-domains-partner-api-openapi.yaml
+- unstoppable-domains-resolution-api-openapi.yaml

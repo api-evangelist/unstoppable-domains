@@ -1,18 +1,20 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Web3 Partner API v3 account Cart API
-  version: 3.0.0
+  title: User Cart API
+  description: 'Search, check availability, and purchase traditional DNS domains. This API enables AI assistants to help users find and buy domain names.
+
+
+    When using the API directly, you will need an API key. See [API Key setup](/user-api/overview#api-key-advanced) for instructions.'
+  version: 1.0.0
   contact:
-    name: Unstoppable Domains (Partner Engineering)
-    email: partnerengineering@unstoppabledomains.com
-  description: "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n"
+    name: Unstoppable Domains
+    url: https://unstoppabledomains.com
+    email: support@unstoppabledomains.com
+  x-logo:
+    url: https://unstoppabledomains.com/images/logos/ud-logo-icon.svg
 servers:
-- url: https://api.unstoppabledomains.com/partner/v3
-  description: Production
-- url: https://api.ud-sandbox.com/partner/v3
-  description: Sandbox
-security:
-- bearer: []
+- url: https://api.unstoppabledomains.com
+  description: Production server
 tags:
 - name: Cart
   description: Shopping cart management, payment methods, and checkout (requires authentication)
@@ -427,6 +429,326 @@ paths:
           description: Authentication required
 components:
   schemas:
+    AddPaymentMethodUrlResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Authenticated magic link URL to the payment management page (single-use, valid for 60 seconds)
+        expiresIn:
+          type: number
+          description: Seconds until the magic link expires (URL is single-use)
+        instructions:
+          type: string
+          description: Guidance for the user on how to add a card
+    AddDomainRenewalToCartResponse:
+      type: object
+      description: Response for adding domain renewals to cart
+      properties:
+        addedRenewals:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+              productId:
+                type: number
+              renewalPeriodYears:
+                type: number
+                description: Renewal period in years
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        cart:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+    PaymentMethodsResponse:
+      type: object
+      properties:
+        savedCards:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Payment method ID
+              brand:
+                type: string
+                description: Card brand
+              last4:
+                type: string
+                description: Last 4 digits
+              expMonth:
+                type: number
+              expYear:
+                type: number
+              isExpired:
+                type: boolean
+              isDefault:
+                type: boolean
+        accountBalance:
+          type: object
+          properties:
+            amount:
+              type: number
+              description: Balance in cents
+            amountFormatted:
+              type: string
+        promoCredits:
+          type: object
+          properties:
+            amount:
+              type: number
+              description: Promo credits in cents
+            amountFormatted:
+              type: string
+        summary:
+          type: object
+          properties:
+            hasValidCards:
+              type: boolean
+            validCardCount:
+              type: number
+            hasAccountBalance:
+              type: boolean
+            hasPromoCredits:
+              type: boolean
+            totalCredits:
+              type: number
+              description: Combined account balance + promo credits
+            totalCreditsFormatted:
+              type: string
+            canCheckout:
+              type: boolean
+    AddListedDomainToCartResponse:
+      type: object
+      description: Response for adding marketplace-listed domains to cart
+      properties:
+        addedProducts:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+              productId:
+                type: number
+              purchaseType:
+                type: string
+                enum:
+                - buy_now
+                - lease_to_own
+                description: Type of purchase
+              listingPrice:
+                type: string
+                description: Formatted listing price
+              monthlyPayment:
+                type: string
+                description: Formatted monthly payment (for LTO only)
+              termLength:
+                type: number
+                description: Number of months (for LTO only)
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        cart:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+    CartItem:
+      type: object
+      properties:
+        productId:
+          type: number
+        productCode:
+          type: string
+        productType:
+          type: string
+        domain:
+          type:
+          - string
+          - 'null'
+        originalPrice:
+          type: number
+        originalPriceFormatted:
+          type: string
+        discountAmount:
+          type: number
+        discountAmountFormatted:
+          type: string
+        promoCreditsApplied:
+          type: number
+        accountBalanceApplied:
+          type: number
+        salesTax:
+          type: number
+        fees:
+          type: array
+          items:
+            type: object
+    AddSedoDomainToCartResponse:
+      type: object
+      description: Response for adding Sedo marketplace domains to cart
+      properties:
+        addedProducts:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+              productId:
+                type: number
+              price:
+                type: string
+                description: Formatted price when available
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        cart:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+    CheckoutResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        orderId:
+          type: number
+        paymentId:
+          type: number
+        summary:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            domains:
+              type: array
+              items:
+                type: string
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+            discounts:
+              type: number
+            discountsFormatted:
+              type: string
+            creditsUsed:
+              type: number
+            creditsUsedFormatted:
+              type: string
+            salesTax:
+              type: number
+            salesTaxFormatted:
+              type: string
+            totalCharged:
+              type: number
+            totalChargedFormatted:
+              type: string
+            paymentMethod:
+              type: string
+        note:
+          type: string
+          description: Optional note about contact selection when user has multiple contacts
+    AddAfternicDomainToCartResponse:
+      type: object
+      description: Response for adding Afternic marketplace domains to cart
+      properties:
+        addedProducts:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+              productId:
+                type: number
+              price:
+                type: string
+                description: Formatted price when available
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        cart:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+    CheckoutUrlResponse:
+      type: object
+      properties:
+        checkoutUrl:
+          type: string
+        expiresIn:
+          type: number
+          description: Seconds until the magic link expires (URL is single-use)
+        cartSummary:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+            items:
+              type: array
+              items:
+                type: object
+        discountCode:
+          type:
+          - string
+          - 'null'
+        instructions:
+          type: string
     CartResponse:
       type: object
       properties:
@@ -516,206 +838,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CartItem'
-    CheckoutResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        orderId:
-          type: number
-        paymentId:
-          type: number
-        summary:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            domains:
-              type: array
-              items:
-                type: string
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-            discounts:
-              type: number
-            discountsFormatted:
-              type: string
-            creditsUsed:
-              type: number
-            creditsUsedFormatted:
-              type: string
-            salesTax:
-              type: number
-            salesTaxFormatted:
-              type: string
-            totalCharged:
-              type: number
-            totalChargedFormatted:
-              type: string
-            paymentMethod:
-              type: string
-        note:
-          type: string
-          description: Optional note about contact selection when user has multiple contacts
-    AddAfternicDomainToCartResponse:
-      type: object
-      description: Response for adding Afternic marketplace domains to cart
-      properties:
-        addedProducts:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              success:
-                type: boolean
-              productId:
-                type: number
-              price:
-                type: string
-                description: Formatted price when available
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        cart:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-    AddDomainRenewalToCartResponse:
-      type: object
-      description: Response for adding domain renewals to cart
-      properties:
-        addedRenewals:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              success:
-                type: boolean
-              productId:
-                type: number
-              renewalPeriodYears:
-                type: number
-                description: Renewal period in years
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        cart:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-    AddListedDomainToCartResponse:
-      type: object
-      description: Response for adding marketplace-listed domains to cart
-      properties:
-        addedProducts:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              success:
-                type: boolean
-              productId:
-                type: number
-              purchaseType:
-                type: string
-                enum:
-                - buy_now
-                - lease_to_own
-                description: Type of purchase
-              listingPrice:
-                type: string
-                description: Formatted listing price
-              monthlyPayment:
-                type: string
-                description: Formatted monthly payment (for LTO only)
-              termLength:
-                type: number
-                description: Number of months (for LTO only)
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        cart:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-    CartItem:
-      type: object
-      properties:
-        productId:
-          type: number
-        productCode:
-          type: string
-        productType:
-          type: string
-        domain:
-          type:
-          - string
-          - 'null'
-        originalPrice:
-          type: number
-        originalPriceFormatted:
-          type: string
-        discountAmount:
-          type: number
-        discountAmountFormatted:
-          type: string
-        promoCreditsApplied:
-          type: number
-        accountBalanceApplied:
-          type: number
-        salesTax:
-          type: number
-        fees:
-          type: array
-          items:
-            type: object
-    AddPaymentMethodUrlResponse:
-      type: object
-      properties:
-        url:
-          type: string
-          description: Authenticated magic link URL to the payment management page (single-use, valid for 60 seconds)
-        expiresIn:
-          type: number
-          description: Seconds until the magic link expires (URL is single-use)
-        instructions:
-          type: string
-          description: Guidance for the user on how to add a card
     AddToCartResponse:
       type: object
       properties:
@@ -745,128 +867,8 @@ components:
               type: number
             subtotalFormatted:
               type: string
-    AddSedoDomainToCartResponse:
-      type: object
-      description: Response for adding Sedo marketplace domains to cart
-      properties:
-        addedProducts:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              success:
-                type: boolean
-              productId:
-                type: number
-              price:
-                type: string
-                description: Formatted price when available
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        cart:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-    CheckoutUrlResponse:
-      type: object
-      properties:
-        checkoutUrl:
-          type: string
-        expiresIn:
-          type: number
-          description: Seconds until the magic link expires (URL is single-use)
-        cartSummary:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-            items:
-              type: array
-              items:
-                type: object
-        discountCode:
-          type:
-          - string
-          - 'null'
-        instructions:
-          type: string
-    PaymentMethodsResponse:
-      type: object
-      properties:
-        savedCards:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                description: Payment method ID
-              brand:
-                type: string
-                description: Card brand
-              last4:
-                type: string
-                description: Last 4 digits
-              expMonth:
-                type: number
-              expYear:
-                type: number
-              isExpired:
-                type: boolean
-              isDefault:
-                type: boolean
-        accountBalance:
-          type: object
-          properties:
-            amount:
-              type: number
-              description: Balance in cents
-            amountFormatted:
-              type: string
-        promoCredits:
-          type: object
-          properties:
-            amount:
-              type: number
-              description: Promo credits in cents
-            amountFormatted:
-              type: string
-        summary:
-          type: object
-          properties:
-            hasValidCards:
-              type: boolean
-            validCardCount:
-              type: number
-            hasAccountBalance:
-              type: boolean
-            hasPromoCredits:
-              type: boolean
-            totalCredits:
-              type: number
-              description: Combined account balance + promo credits
-            totalCreditsFormatted:
-              type: string
-            canCheckout:
-              type: boolean
   securitySchemes:
-    bearer:
+    bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
+      description: API key for authenticated operations. Obtain from your Unstoppable Domains account settings.
