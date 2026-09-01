@@ -221,7 +221,7 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
-  - dns-records
+  - DNS Records
   tags_raw:
   - dns-records
   properties:
@@ -306,7 +306,7 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
-  - domain-management
+  - Domain Management
   tags_raw:
   - domain-management
   properties:
@@ -333,7 +333,8 @@ apis:
   description: Domain details/availability lookups and registration.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
-  tags: []
+  tags:
+  - Domain Registration
   tags_raw:
   - domain_registration
   properties:
@@ -363,7 +364,7 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
-  - domain-search
+  - Domain Search
   tags_raw:
   - domain-search
   properties:
@@ -908,7 +909,7 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
-  - suggestions
+  - Suggestions
   tags_raw:
   - suggestions
   properties:
@@ -937,7 +938,7 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
-  - tlds
+  - TLDs
   tags_raw:
   - tlds
   properties:
