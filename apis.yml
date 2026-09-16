@@ -1,5 +1,7 @@
 name: Unstoppable Domains
-description: Web3 domain name service providing REST APIs for resolving crypto domain names, managing NFT domains, reverse lookups, cross-chain address resolution, domain registration, and DNS management across 150+ TLDs on multiple blockchains.
+description: Web3 domain name service providing REST APIs for resolving crypto domain names, managing
+  NFT domains, reverse lookups, cross-chain address resolution, domain registration, and DNS management
+  across 150+ TLDs on multiple blockchains.
 deliveryModel:
   model: saas
   open_source: false
@@ -24,27 +26,30 @@ accessModel:
   - plans
   - authentication
   - security
-  - {url: 'https://unstoppabledomains.com', status: 302, note: 'declared website redirects to https://unstoppable.ai/ — a different registrable domain (unstoppabledomains.com -> unstoppable.ai), possible rename or acquisition (probed 2026-09-03, roadmap#169)'}
+  - url: https://unstoppabledomains.com
+    status: 302
+    note: declared website redirects to https://unstoppable.ai/ — a different registrable domain (unstoppabledomains.com
+      -> unstoppable.ai), possible rename or acquisition (probed 2026-09-03, roadmap#169)
   generated: '2026-09-03'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/unstoppable-domains.png
 url: https://raw.githubusercontent.com/api-evangelist/unstoppable-domains/refs/heads/main/apis.yml
 created: '2026-06-14'
-modified: '2026-06-14'
+modified: '2026-09-16'
 specificationVersion: '0.23'
 aid: unstoppable-domains
 type: Index
 tags:
-  - Web3
-  - Blockchain
-  - Domain Names
-  - NFT Domains
-  - Crypto
-  - Resolution
-  - DNS
-  - Decentralized
-  - Ethereum
-  - Polygon
+- Web3
+- Blockchain
+- Domain Names
+- NFT Domains
+- Crypto
+- Resolution
+- DNS
+- Decentralized
+- Ethereum
+- Polygon
 apis:
 - aid: unstoppable-domains:unstoppable-domains-account-api
   name: Unstoppable Domains account API
@@ -76,8 +81,7 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-ai-lander-api
   name: Unstoppable Domains AI Lander API
-  description: >-
-    Generate, manage, and remove AI-powered landing pages for domains (requires authentication)
+  description: Generate, manage, and remove AI-powered landing pages for domains (requires authentication)
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -155,14 +159,13 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-contacts-api
   name: Unstoppable Domains contacts API
-  description: >-
-    Create and manage ICANN-required contacts for domain registration. Contacts represent individuals
-    or organizations associated with domain roles (owner, admin, tech, billing).
+  description: 'Create and manage ICANN-required contacts for domain registration. Contacts represent
+    individuals or organizations associated with domain roles (owner, admin, tech, billing).
 
 
     New contacts are automatically sent a verification email upon creation. Contacts can be used in domain
     registrations immediately, but domains associated with unverified contacts may become unmanageable
-    after a certain period.
+    after a certain period.'
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -190,8 +193,8 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-dns-management-api
   name: Unstoppable Domains DNS Management API
-  description: >-
-    Manage DNS records, nameservers, and hosting configurations for owned domains (requires authentication)
+  description: Manage DNS records, nameservers, and hosting configurations for owned domains (requires
+    authentication)
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -217,9 +220,8 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-dns-records-api
   name: Unstoppable Domains dns-records API
-  description: >-
-    Create, read, update and delete DNS records for your domains. Also includes DNS metadata, nameserver
-    management, and DNSSEC configuration.
+  description: Create, read, update and delete DNS records for your domains. Also includes DNS metadata,
+    nameserver management, and DNSSEC configuration.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -247,8 +249,8 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-domain-contacts-api
   name: Unstoppable Domains domain-contacts API
-  description: >-
-    View and update the ICANN-required contacts (owner, admin, tech, billing) assigned to a specific domain.
+  description: View and update the ICANN-required contacts (owner, admin, tech, billing) assigned to a
+    specific domain.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -274,9 +276,8 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-domain-flags-api
   name: Unstoppable Domains domain-flags API
-  description: >-
-    View and manage domain flags that control behavior and security settings such as DNS resolution, transfer
-    locks, WHOIS privacy, and more.
+  description: View and manage domain flags that control behavior and security settings such as DNS resolution,
+    transfer locks, WHOIS privacy, and more.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -302,9 +303,8 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-domain-management-api
   name: Unstoppable Domains domain-management API
-  description: >-
-    Comprehensive domain updates — modify nameservers, DNSSEC, contacts, flags, and DNS records in a single
-    request.
+  description: Comprehensive domain updates — modify nameservers, DNSSEC, contacts, flags, and DNS records
+    in a single request.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -360,9 +360,8 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-domain-search-api
   name: Unstoppable Domains domain-search API
-  description: >-
-    Search for domain availability and retrieve details for one or more domains. Use the `$expand` parameter
-    to include registration details and flags in the response.
+  description: Search for domain availability and retrieve details for one or more domains. Use the `$expand`
+    parameter to include registration details and flags in the response.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -390,8 +389,8 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-domain-transfers-api
   name: Unstoppable Domains domain-transfers API
-  description: >-
-    Check transfer eligibility and retrieve authorization codes for transferring domains to another registrar.
+  description: Check transfer eligibility and retrieve authorization codes for transferring domains to
+    another registrar.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -416,7 +415,7 @@ apis:
   - type: APIReference
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-domains-api
-  name: Unstoppable Domains domains API
+  name: Unstoppable Domains API
   description: Manage your custody domains.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
@@ -480,8 +479,7 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-external-wallets-api
   name: Unstoppable Domains external_wallets API
-  description: >-
-    Manage self-custody wallets to allow for management of self-custody domains.
+  description: 'Manage self-custody wallets to allow for management of self-custody domains.
 
 
     ## Verifying Self-Custody Wallets
@@ -508,7 +506,7 @@ apis:
 
     - Externally Owned Accounts (EOAs)
 
-    - [ERC1271](https://eips.ethereum.org/EIPS/eip-1271) Smart Contract wallets deployed on Polygon
+    - [ERC1271](https://eips.ethereum.org/EIPS/eip-1271) Smart Contract wallets deployed on Polygon'
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags: []
@@ -535,9 +533,9 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-hosting-api
   name: Unstoppable Domains hosting API
-  description: >-
-    Configure how your domains serve content on the web. Hosting configurations control what happens when
-    someone visits your domain — whether it redirects to another URL or proxies content from another server.
+  description: 'Configure how your domains serve content on the web. Hosting configurations control what
+    happens when someone visits your domain — whether it redirects to another URL or proxies content from
+    another server.
 
 
     Available hosting types:
@@ -551,7 +549,7 @@ apis:
 
     All hosting configurations require SSL certificate provisioning. When a configuration is created or
     updated, the `certificateStatus` field will be `PENDING` until the certificate is issued and active.
-    This process typically completes within a few minutes but may take longer in some cases.
+    This process typically completes within a few minutes but may take longer in some cases.'
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -605,9 +603,8 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-marketplace-api
   name: Unstoppable Domains marketplace API
-  description: >-
-    Browse and search the Unstoppable Domains secondary marketplace. Retrieve paginated listings of domains
-    available for purchase from existing owners, with filtering by TLD and sorting options.
+  description: Browse and search the Unstoppable Domains secondary marketplace. Retrieve paginated listings
+    of domains available for purchase from existing owners, with filtering by TLD and sorting options.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -635,9 +632,9 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-operations-api
   name: Unstoppable Domains operations API
-  description: >-
-    All asynchronous processes handled by the API are represented as Operations. This includes registering
-    a domain, updating a domain's records, changing a domain's owner, returning a domain and more.
+  description: All asynchronous processes handled by the API are represented as Operations. This includes
+    registering a domain, updating a domain's records, changing a domain's owner, returning a domain and
+    more.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags: []
@@ -744,9 +741,8 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-pricing-api
   name: Unstoppable Domains pricing API
-  description: >-
-    Retrieve pricing information for domain registration, renewal, transfer, and restoration by domain
-    name or TLD.
+  description: Retrieve pricing information for domain registration, renewal, transfer, and restoration
+    by domain name or TLD.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -854,8 +850,7 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-session-api
   name: Unstoppable Domains Session API
-  description: >-
-    Generate authenticated browser URLs for account and checkout flows that require web handoff.
+  description: Generate authenticated browser URLs for account and checkout flows that require web handoff.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -935,8 +930,7 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-tlds-api
   name: Unstoppable Domains tlds API
-  description: >-
-    Browse available top-level domains (TLDs), their details, and DNS security configuration.
+  description: Browse available top-level domains (TLDs), their details, and DNS security configuration.
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -964,12 +958,11 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-wallets-api
   name: Unstoppable Domains wallets API
-  description: >-
-    Manage custody wallets used for storing and managing domains without any signature collection.
+  description: 'Manage custody wallets used for storing and managing domains without any signature collection.
 
 
     These wallets provide the most streamlined way to interact with domains since the initial management
-    request is the only step needed to make changes.
+    request is the only step needed to make changes.'
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -997,11 +990,10 @@ apis:
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 - aid: unstoppable-domains:unstoppable-domains-webhooks-api
   name: Unstoppable Domains webhooks API
-  description: >-
-    Manage webhooks used for asynchronous updates to your server.
+  description: 'Manage webhooks used for asynchronous updates to your server.
 
 
-    You can follow our getting started guide here: [Webhooks in the Partner API](https://docs.unstoppabledomains.com/domain-distribution-and-management/guides/implementing-webhooks/)
+    You can follow our getting started guide here: [Webhooks in the Partner API](https://docs.unstoppabledomains.com/domain-distribution-and-management/guides/implementing-webhooks/)'
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
@@ -1028,45 +1020,45 @@ apis:
   - type: APIReference
     url: https://docs.unstoppabledomains.com/apis/user-api/openapi
 common:
-  - type: CapabilityMap
-    url: capabilities/unstoppable-domains-capability-edges.yml
-    name: Unstoppable Domains Business Capability Map
-  - type: AgenticAccess
-    url: agentic-access/unstoppable-domains-agentic-access.yml
-  - type: VulnerabilityDisclosure
-    url: security/unstoppable-domains-vulnerability-disclosure.yml
-  - type: DomainSecurity
-    url: security/unstoppable-domains-domain-security.yml
-  - type: Authentication
-    url: authentication/unstoppable-domains-authentication.yml
-  - type: Website
-    url: https://unstoppabledomains.com
-  - type: Documentation
-    url: https://docs.unstoppabledomains.com
-  - type: APIReference
-    url: https://docs.unstoppabledomains.com/apis/overview
-  - type: GitHubOrg
-    url: https://github.com/unstoppabledomains
-  - type: Sandbox
-    url: https://api.ud-sandbox.com
-  - type: Authentication
-    url: https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key
-  - type: Pricing
-    url: https://support.unstoppabledomains.com/support/solutions/articles/48001184253-pricing-tiers-for-regular-domains
-  - type: Blog
-    url: https://unstoppabledomains.com/blog
-  - type: Developers
-    url: https://unstoppabledomains.com/developers
-  - type: Plans
-    url: plans/unstoppable-domains-plans-pricing.yml
-  - type: RateLimits
-    url: rate-limits/unstoppable-domains-rate-limits.yml
-  - type: FinOps
-    url: finops/unstoppable-domains-finops.yml
-  - type: X
-    url: https://x.com/unstoppableweb
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/unstoppable-domains
+- type: CapabilityMap
+  url: capabilities/unstoppable-domains-capability-edges.yml
+  name: Unstoppable Domains Business Capability Map
+- type: AgenticAccess
+  url: agentic-access/unstoppable-domains-agentic-access.yml
+- type: VulnerabilityDisclosure
+  url: security/unstoppable-domains-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/unstoppable-domains-domain-security.yml
+- type: Authentication
+  url: authentication/unstoppable-domains-authentication.yml
+- type: Website
+  url: https://unstoppabledomains.com
+- type: Documentation
+  url: https://docs.unstoppabledomains.com
+- type: APIReference
+  url: https://docs.unstoppabledomains.com/apis/overview
+- type: GitHubOrg
+  url: https://github.com/unstoppabledomains
+- type: Sandbox
+  url: https://api.ud-sandbox.com
+- type: Authentication
+  url: https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key
+- type: Pricing
+  url: https://support.unstoppabledomains.com/support/solutions/articles/48001184253-pricing-tiers-for-regular-domains
+- type: Blog
+  url: https://unstoppabledomains.com/blog
+- type: Developers
+  url: https://unstoppabledomains.com/developers
+- type: Plans
+  url: plans/unstoppable-domains-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/unstoppable-domains-rate-limits.yml
+- type: FinOps
+  url: finops/unstoppable-domains-finops.yml
+- type: X
+  url: https://x.com/unstoppableweb
+- type: LinkedIn
+  url: https://www.linkedin.com/company/unstoppable-domains
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
