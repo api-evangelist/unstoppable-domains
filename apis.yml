@@ -854,6 +854,8 @@ apis:
   humanURL: https://docs.unstoppabledomains.com/resolution/overview
   baseURL: https://api.unstoppabledomains.com/resolve
   tags:
+  - Sessions
+  tags_raw:
   - Session
   properties:
   - type: OpenAPI
