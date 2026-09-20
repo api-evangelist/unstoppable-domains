@@ -11,8 +11,20 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 1
+edge_count: 2
 edges:
+- tag: webhooks
+  spec_file: unstoppable-domains-webhooks-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.75
+  evidence: POST /account/webhooks  createWebhook  Register new webhook; DELETE /account/webhooks/{id}
+    deleteWebhook Deregister existing webhook
+  reason: Partner-facing API lets integrating developers register and deregister outbound webhook subscriptions
+    for domain operation events, which is the lifecycle of outbound webhook/event subscriptions in the
+    developer ecosystem capability. Not a business-domain capability of domain registration itself.
+  recovered_from: sweep-20260829T005356Z-edges.json
 - tag: DNS Management
   spec_file: unstoppable-domains-dns-management-api-openapi.yml
   capability_id: BC-600.50
