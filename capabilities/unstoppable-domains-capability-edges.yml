@@ -1,0 +1,26 @@
+slug: unstoppable-domains
+provider: Unstoppable Domains
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Telecommunications
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: DNS Management
+  spec_file: unstoppable-domains-dns-management-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: POST /mcp/v1/actions/ud_dns_records_list dnsRecordsList List DNS records for a domain; ud_dns_nameservers_set_custom
+    Set custom nameservers (bulk); ud_dns_hosting_add Add hosting configuration (bulk)
+  reason: CRUD over DNS records, nameservers and hosting configuration is management of network/internet
+    infrastructure services, which sits under IT Infrastructure Management. Not telecom network configuration
+    (BC-2600.20), which concerns operator network elements.
