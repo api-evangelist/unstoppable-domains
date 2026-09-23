@@ -5,7 +5,7 @@ info:
   contact:
     name: Unstoppable Domains (Partner Engineering)
     email: partnerengineering@unstoppabledomains.com
-  description: "The Resolution Service provides APIs for resolving domain metadata and records from multiple blockchain and naming services. The service currently supports the following naming services:\n    <ul>\n      <li>\n        <p>Unstoppable Domain's <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/uns-architecture-overview\" target=\"_blank\">UNS</a> and <a href=\"https://docs.unstoppabledomains.com/smart-contracts/overview/cns-architecture-overview\" target=\"_blank\">CNS</a> with TLDs:\n<strong>.x</strong>, <strong>.polygon</strong>, <strong>.nft</strong>, <strong>.crypto</strong>, <strong>.blockchain</strong>, <strong>.bitcoin</strong>, <strong>.dao</strong>, <strong>.888</strong>, <strong>.wallet</strong>, <strong>.binanceus</strong>, <strong>.hi</strong>, <strong>.klever</strong>, <strong>.kresus</strong>, <strong>.anime</strong>, <strong>.manga</strong>, <strong>.go</strong>, <strong>.zil</strong></p>\n      </li>\n      <li>\n        <p>Ethereum Naming Service - <a href=\"https://docs.ens.domains/\" target=\"_blank\">ENS</a> with TLDs:\n<strong>.eth</strong></p>\n      </li>\n    </ul>\n    <br></br>\n    The service caches blockchain events in a database for easy retrieval without accessing any blockchain APIs.\n    With the Resolution Service API, you can quickly build applications directly communicating with the blockchain to get UD domain data with a single API request."
+  description: The Resolution Service provides APIs for resolving domain metadata and records from multiple blockchain and naming services.
 servers:
 - url: https://api.unstoppabledomains.com/resolve
   description: Production
@@ -46,6 +46,13 @@ paths:
       - {}
 components:
   schemas:
+    StatusResponse:
+      properties:
+        blockchain:
+          $ref: '#/components/schemas/Blockchains'
+      type: object
+      required:
+      - blockchain
     BlockchainStatus:
       properties:
         isUpToDate:
@@ -65,13 +72,6 @@ components:
       - latestMirroredBlock
       - networkId
       - acceptableDelayInBlocks
-    StatusResponse:
-      properties:
-        blockchain:
-          $ref: '#/components/schemas/Blockchains'
-      type: object
-      required:
-      - blockchain
     Blockchains:
       properties:
         ETH:

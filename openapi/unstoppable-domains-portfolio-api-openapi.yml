@@ -4,7 +4,7 @@ info:
   description: 'Search, check availability, and purchase traditional DNS domains. This API enables AI assistants to help users find and buy domain names.
 
 
-    When using the API directly, you will need an API key. See [API Key setup](/user-api/overview#api-key-advanced) for instructions.'
+    When using the API directly, you will need an API key. See API Key setup for instructions.'
   version: 1.0.0
   contact:
     name: Unstoppable Domains
@@ -157,6 +157,41 @@ paths:
           description: Authentication required
 components:
   schemas:
+    ListDomainsResponse:
+      type: object
+      properties:
+        domains:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioDomain'
+        pagination:
+          type: object
+          properties:
+            page:
+              type: number
+              description: Current page number
+            pageSize:
+              type: number
+              description: Items per page
+            totalPages:
+              type: number
+              description: Total number of pages
+            total:
+              type: number
+              description: Total number of domains
+            hasMore:
+              type: boolean
+              description: Whether more pages exist
+            nextPage:
+              type:
+              - number
+              - 'null'
+              description: Next page number if more results exist, null otherwise
+        truncated:
+          type: boolean
+          description: Whether results were truncated due to size limits
+        truncationMessage:
+          type: string
     GetPortfolioDomainsResponse:
       type: object
       properties:
@@ -546,41 +581,6 @@ components:
               - string
               - 'null'
               description: Subscription expiration date (ISO string)
-    ListDomainsResponse:
-      type: object
-      properties:
-        domains:
-          type: array
-          items:
-            $ref: '#/components/schemas/PortfolioDomain'
-        pagination:
-          type: object
-          properties:
-            page:
-              type: number
-              description: Current page number
-            pageSize:
-              type: number
-              description: Items per page
-            totalPages:
-              type: number
-              description: Total number of pages
-            total:
-              type: number
-              description: Total number of domains
-            hasMore:
-              type: boolean
-              description: Whether more pages exist
-            nextPage:
-              type:
-              - number
-              - 'null'
-              description: Next page number if more results exist, null otherwise
-        truncated:
-          type: boolean
-          description: Whether results were truncated due to size limits
-        truncationMessage:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

@@ -5,7 +5,9 @@ info:
   contact:
     name: Unstoppable Domains (Partner Engineering)
     email: partnerengineering@unstoppabledomains.com
-  description: "# Feature Overview\nThe Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains. The API exposes a RESTful interface for interacting with Web3 domains and the Unstoppable Domains registry.\n- Lookup Domains: Search for specific domains or find suggested alternatives, to determine pricing, availability and on-chain details\n- Registering Domains: Secure domains into your dedicated Custody wallets to maintain the domains on the blockchain\n- Manage Domains: Update records on the blockchain or transfer the domain to external owners, all through a simple API interface\n\n## Custody Solution\nThe API takes the hassle of Web3 out of the equation. Unstoppable Domains will handle all blockchain interactions and concepts, while Partners simply use a RESTful API for managing domains.\n\nSince the domains will be in custody of the Partner, through Unstoppable Domains, the Partner is empowered to make any and all changes to the domains on behalf of their users.\n\nUnder the hood, Unstoppable Domains will manage dedicated custodial wallets for Partner-owned domains. These wallets are not shared between Partners and will uniquely identify the Partner on the various supported blockchains.\n\nShould the need arise to remove domains from custody, this is supported by changing the owner of domains to external owners.\n\n## Payments\nThe API will keep track of a running balance of charges and Unstoppable Domains will periodically invoice Partners to settle that balance. This empowers Partners to build payment processing in a way that works best for them.\n\n\n## Blockchain Support\nDomain details can be viewed across all of our supported blockchains:\n- Ethereum (ETH)\n- Polygon PoS (MATIC)\n- Base (BASE)\n\nDomains can **only be managed on Polygon PoS (MATIC) and Base (BASE)**. Domains on Ethereum (ETH) are readonly, but management support is coming soon.\n\n# Important Concepts\nThe API has some important concepts, in addition to Web3 Domains, that provide added utility, consistency and information.\n\n## Domain Ownership Type\nWeb3 domains exist on the supported Blockchains, and are owned by wallet addresses associated with those Blockchains. \nWe take ownership a step further, to provide improved security and reliability, by including an owner `type` in our ownership data.\nThe result is that a Domain's owner is defined by two values: `address` and `type`\n\nThe owner `type` can be one of the following:\n- `NONE`: Either the domain has never been owned or belongs to a \"burn\" address\n- `UD`: Owned by Unstoppable Domains\n- `SELF`: Domain belongs to a wallet addressed associated with your account, indicating you are able to manage it via the API\n- `EXTERNAL`: Owner doesn't qualify as any of the above. Changing to an `EXTERNAL` owner will result in the domain belonging to an address outside of the management of Unstoppable Domains and we will have no way to recover it.\n\nBy defining an owner in two parts (`address` and `type`) we ensure any irreversible action, such as transferring ownership, is deliberate and intended by requiring both the `address` and `type` in the request.\n\n## Operations\nAll interactions with the API that initiate changes will create an Operation for tracking that change.\nOperations can complete immediately or run in the background over the course of several minutes, depending on the Operation type and current conditions on the Blockchain.\n\nOperations include dependencies that represent the smaller units of work associated with the overall operation. These dependencies can also be tracked through the API and each have their own status and metadata.\n\nYour integration should properly handle and anticipate all of the following possible statuses for Operations and their dependencies:\n- `QUEUED` : The Operation has not started processing yet, but should be started shortly\n- `PROCESSING` : The Operation has started, often involving sending transactions to the Blockchain\n- `SIGNATURE_REQUIRED`: The operation is awaiting a signature in order to continue processing. This is only relevant to Self-Custody domain management.\n- `COMPLETED` : The Operation has finished processing successfully\n- `FAILED` : The Operation has finished processing and has either fully or partially failed\n- `CANCELLED` : The Operation has been cancelled, usually due to a failure with a sibling dependency\n\nSee the [Operations](/openapi/partner/v3/#tag/operations) API for additional information.\n\n## Wallets\nDomains ownership on the Blockchain is handled by associating a Domain with an \"address\". These addresses are typically managed by Wallets (usually in the form of an application on your computer or mobile device) that manage the private key for the public \"address\".\n\nThe API provides endpoints for creating/managing Wallets within your account to enable you to handle Domain ownership distribution in whatever way works for you. Any Domain that is owned by one of your account's Wallets is fully in your control to manage.\n\nSee the [Wallets](/openapi/partner/v3/#tag/wallets) API for additional information.\n\n# Get Access\nSee our quickstart guide for getting your Partner API key: [Set up Partner API Access](https://docs.unstoppabledomains.com/domain-distribution-and-management/quickstart/retrieve-an-api-key/)\n\nIf you have any questions, contact our [Partner Engineering Team](mailto:partnerengineering@unstoppabledomains.com?subject=Partner%20API%20v3%20Inquiry) to help with API access or learn more.\n"
+  description: '# Feature Overview
+
+    The Web3 Partner API v3 provides you with the ability to lookup, register and manage Web3 domains.'
 servers:
 - url: https://api.unstoppabledomains.com/partner/v3
   description: Production
@@ -16,33 +18,7 @@ security:
 tags:
 - name: external_wallets
   x-displayName: Self-Custody Wallets
-  description: 'Manage self-custody wallets to allow for management of self-custody domains.
-
-
-    ## Verifying Self-Custody Wallets
-
-    Before you can initiate self-custody operations, you must first [verify the self-custody wallet](/openapi/partner/v3/#operation/getExternalWalletVerification) (only needs to be done once per wallet).
-
-
-    This involves:
-
-    1. [Fetching a verification message to sign](/openapi/partner/v3/#operation/getExternalWalletVerification)
-
-    2. Collecting a `personal_sign` signature from the wallet owner
-
-    3. [Submitting the signature](/openapi/partner/v3/#operation/postExternalWalletVerification) to register the verified wallet
-
-
-    After verifying a wallet, it will be returned by the Single-Wallet and Wallet List routes, with the type of `EXTERNAL`.
-
-
-    ## Supported Self-Custody Wallets
-
-    - Externally Owned Accounts (EOAs)
-
-    - [ERC1271](https://eips.ethereum.org/EIPS/eip-1271) Smart Contract wallets deployed on Polygon
-
-    '
+  description: Manage self-custody wallets to allow for management of self-custody domains.
 paths:
   /account/wallets/{address}/verification:
     get:
@@ -51,9 +27,7 @@ paths:
       description: 'In order to use an self-custody wallet within the API, you must first use it to sign a verification message. This endpoint will provide the specific substring that needs to be signed.
 
 
-        The response `message` is meant to be included in `personal_sign` request for the wallet owner to sign. The exact message that is signed simply needs to include the response `message`, so you can include some human-friendly text, as well.
-
-        '
+        The response `message` is meant to be included in `personal_sign` request for the wallet owner to sign. The exact message that is signed simply needs to include the response `message`, so you can include some human-friendly text, as well.'
       parameters:
       - name: address
         required: true
@@ -83,12 +57,10 @@ paths:
     post:
       operationId: postExternalWalletVerification
       summary: Submit signed wallet verification
-      description: 'After signing the [verification message](/openapi/partner/v3/#operation/getExternalWalletVerification), submit the signature to have the self-custody wallet registered as a verified external wallet for management operations.
+      description: 'After signing the verification message, submit the signature to have the self-custody wallet registered as a verified external wallet for management operations.
 
 
-        If the message the owner signed was not the exact `message` from the [verification response](/openapi/partner/v3/#operation/getExternalWalletVerification), you must also provide the exact message in the request body. It should be the non-hex string used in the `personal_sign` request.
-
-        '
+        If the message the owner signed was not the exact `message` from the verification response, you must also provide the exact message in the request body. It should be the non-hex string used in the `personal_sign` request.'
       parameters:
       - name: address
         required: true
@@ -125,9 +97,7 @@ paths:
     get:
       operationId: getExternalWallets
       summary: Get list of self-custody wallets
-      description: 'These wallets are verified `EXTERNAL` wallets that you can use for initiating self-custody domain operations. Any operation initiated for one of these wallets requires an external signature.
-
-        '
+      description: These wallets are verified `EXTERNAL` wallets that you can use for initiating self-custody domain operations. Any operation initiated for one of these wallets requires an external signature.
       parameters:
       - name: $cursor
         required: false
@@ -169,9 +139,7 @@ paths:
       description: 'Get details for a single self-custody wallet that has verified for your account.
 
 
-        Include the `?$expand=primaryDomain` to include the wallet''s Primary Domain (also known as the Reverse Resolution) in the response.
-
-        '
+        Include the `?$expand=primaryDomain` to include the wallet''s Primary Domain (also known as the Reverse Resolution) in the response.'
       parameters:
       - name: address
         required: true
@@ -211,9 +179,7 @@ paths:
         To clear the Primary Domain for a wallet, pass a `null` value for the `primaryDomain` property within the request body.
 
 
-        **Note**: This will create an operation that requires a signature from the self-custody wallet owner.
-
-        '
+        **Note**: This will create an operation that requires a signature from the self-custody wallet owner.'
       parameters:
       - name: address
         required: true
@@ -255,7 +221,42 @@ paths:
       tags:
       - external_wallets
 components:
+  examples:
+    ValidationError:
+      description: Validation error due to incorrect parameters.
+      value:
+        code: VALIDATION
+    BadRequest:
+      description: Request is malformed or invalid.
+      value:
+        code: BAD_REQUEST
+    NoChange:
+      description: No change would occur by the requested operation.
+      value:
+        code: NO_CHANGE
+    WalletAlreadyVerified:
+      description: External wallet has already been verified
+      value:
+        code: WALLET_ALREADY_VERIFIED
   schemas:
+    SubOperationResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: bc-2db427bd-5613-40c7-85b1-ab38beed0ed0
+        status:
+          $ref: '#/components/schemas/OperationStatus'
+      required:
+      - status
+      - id
+    WebhookDeleteParametersResponse:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+      - id
     WalletCreateResultResponse:
       type: object
       properties:
@@ -263,18 +264,168 @@ components:
           $ref: '#/components/schemas/OwnerAddress'
       required:
       - address
-    WalletUpdateResponse:
+    ErrorResponseMulti:
       type: object
       properties:
-        '@type':
+        code:
           type: string
           enum:
-          - unstoppabledomains.com/partner.v3.WalletUpdateResult
-        operation:
-          $ref: '#/components/schemas/OperationCheckResponse'
+          - MULTIPLE_ERRORS
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseSingle'
       required:
-      - '@type'
-      - operation
+      - code
+      - errors
+    WalletSetDefaultParametersResponse:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - address
+    TransferParametersResponse:
+      type: object
+      properties:
+        fromAddress:
+          $ref: '#/components/schemas/OwnerAddress'
+        toAddress:
+          $ref: '#/components/schemas/OwnerAddress'
+        resetRecords:
+          type: boolean
+      required:
+      - fromAddress
+      - toAddress
+      - resetRecords
+    MintSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - MINT
+          parameters:
+            $ref: '#/components/schemas/MintParametersResponse'
+        required:
+        - type
+        - parameters
+    UpdateRecordsParametersResponse:
+      type: object
+      properties:
+        recordUpdates:
+          $ref: '#/components/schemas/DomainRecords'
+        resetRecords:
+          type: boolean
+      required:
+      - recordUpdates
+      - resetRecords
+    WalletCreateSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          result:
+            $ref: '#/components/schemas/WalletCreateResultResponse'
+          type:
+            type: string
+            enum:
+            - WALLET_CREATE
+        required:
+        - type
+    WalletSetDefaultSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WalletSetDefaultParametersResponse'
+          type:
+            type: string
+            enum:
+            - WALLET_SET_DEFAULT
+        required:
+        - parameters
+        - type
+    PlatformSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/SubOperationResponse'
+      - type: object
+        properties:
+          '@type':
+            type: string
+            enum:
+            - unstoppabledomains.com/partner.v3.PlatformOperation
+        required:
+        - '@type'
+    ErrorResponse:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseSingle'
+      - $ref: '#/components/schemas/ErrorResponseMulti'
+    WebhookCreateParametersResponse:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        url:
+          type: string
+          format: uri
+      required:
+      - type
+      - url
+    ErrorResponseContextEntity:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
+    OwnerAddress:
+      oneOf:
+      - $ref: '#/components/schemas/EvmOwnerAddress'
+    WebhookCreateSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WebhookCreateParametersResponse'
+          result:
+            $ref: '#/components/schemas/WebhookCreateResultResponse'
+          type:
+            type: string
+            enum:
+            - WEBHOOK_CREATE
+        required:
+        - parameters
+        - type
+    ErrorResponseContextEntityMulti:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MULTI_VALUE
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      required:
+      - type
+      - values
+    ErrorResponseContextEntitySingle:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+      required:
+      - type
+      - value
     OperationCheckResponse:
       type: object
       properties:
@@ -313,58 +464,6 @@ components:
       - dependencies
       - '@type'
       - lastUpdatedTimestamp
-    ReturnSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - RETURN
-        required:
-        - type
-    OwnerAddress:
-      oneOf:
-      - $ref: '#/components/schemas/EvmOwnerAddress'
-    WebhookDeleteSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/PlatformSubOperationResponse'
-      - type: object
-        properties:
-          parameters:
-            $ref: '#/components/schemas/WebhookDeleteParametersResponse'
-          type:
-            type: string
-            enum:
-            - WEBHOOK_DELETE
-        required:
-        - parameters
-        - type
-    WalletCreateSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/PlatformSubOperationResponse'
-      - type: object
-        properties:
-          result:
-            $ref: '#/components/schemas/WalletCreateResultResponse'
-          type:
-            type: string
-            enum:
-            - WALLET_CREATE
-        required:
-        - type
-    WebhookCreateParametersResponse:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/WebhookType'
-        url:
-          type: string
-          format: uri
-      required:
-      - type
-      - url
     OperationStatus:
       type: string
       enum:
@@ -374,64 +473,34 @@ components:
       - COMPLETED
       - FAILED
       - CANCELLED
-    WalletSetDefaultParametersResponse:
+    WalletListResponse:
       type: object
       properties:
-        address:
-          $ref: '#/components/schemas/OwnerAddress'
-      required:
-      - address
-    UpdateRecordsParametersResponse:
-      type: object
-      properties:
-        recordUpdates:
-          $ref: '#/components/schemas/DomainRecords'
-        resetRecords:
-          type: boolean
-      required:
-      - recordUpdates
-      - resetRecords
-    ErrorResponseContextEntityMulti:
-      type: object
-      properties:
-        type:
+        '@type':
           type: string
           enum:
-          - MULTI_VALUE
-        values:
+          - unstoppabledomains.com/partner.v3.CursorList
+        items:
           type: array
           items:
-            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+            $ref: '#/components/schemas/MinimalWalletResponse'
+        next:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/CursorListResponseNext'
       required:
-      - type
-      - values
-    TransferSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - TRANSFER
-          parameters:
-            $ref: '#/components/schemas/TransferParametersResponse'
-        required:
-        - type
-        - parameters
-    TransferParametersResponse:
+      - '@type'
+      - items
+      - next
+    ErrorResponseSingle:
       type: object
       properties:
-        fromAddress:
-          $ref: '#/components/schemas/OwnerAddress'
-        toAddress:
-          $ref: '#/components/schemas/OwnerAddress'
-        resetRecords:
-          type: boolean
-      required:
-      - fromAddress
-      - toAddress
-      - resetRecords
+        code:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
     ErrorResponseContext:
       type: object
       properties:
@@ -441,13 +510,6 @@ components:
             $ref: '#/components/schemas/ErrorResponseContextEntity'
       required:
       - entities
-    WebhookDeleteParametersResponse:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-      - id
     MinimalWalletResponse:
       type: object
       properties:
@@ -470,32 +532,26 @@ components:
       - '@type'
       - address
       - type
-    ErrorResponse:
-      oneOf:
-      - $ref: '#/components/schemas/ErrorResponseSingle'
-      - $ref: '#/components/schemas/ErrorResponseMulti'
-    ErrorResponseContextEntitySingle:
-      type: object
-      properties:
-        type:
-          type: string
-        value:
-          type: string
-      required:
-      - type
-      - value
-    WebhookCreateResultResponse:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-      - id
-    WebhookType:
+    TransferSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - TRANSFER
+          parameters:
+            $ref: '#/components/schemas/TransferParametersResponse'
+        required:
+        - type
+        - parameters
+    BlockchainType:
       type: string
       enum:
-      - OPERATION_FINISHED
-      - OPERATION_ACTION_REQUIRED
+      - MATIC
+      - ETH
+      - BASE
     BlockchainSubOperationResponse:
       allOf:
       - $ref: '#/components/schemas/SubOperationResponse'
@@ -509,21 +565,58 @@ components:
             $ref: '#/components/schemas/SubOperationTransactionResponse'
         required:
         - '@type'
-    BlockchainType:
-      type: string
-      enum:
-      - MATIC
-      - ETH
-      - BASE
-    MintParametersResponse:
+    DomainRecords:
+      type: object
+      additionalProperties:
+        type: string
+      example:
+        crypto.ETH.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+        crypto.MATIC.version.MATIC.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e5678'
+        crypto.MATIC.version.ERC20.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e0921'
+    WalletGenerateVerificationResponse:
       type: object
       properties:
-        initialRecords:
-          $ref: '#/components/schemas/DomainRecords'
-        toAddress:
-          $ref: '#/components/schemas/OwnerAddress'
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.WalletUnsignedVerification
+        message:
+          type: string
       required:
-      - toAddress
+      - '@type'
+      - message
+    WebhookType:
+      type: string
+      enum:
+      - OPERATION_FINISHED
+      - OPERATION_ACTION_REQUIRED
+    WebhookDeleteSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WebhookDeleteParametersResponse'
+          type:
+            type: string
+            enum:
+            - WEBHOOK_DELETE
+        required:
+        - parameters
+        - type
+    OperationType:
+      type: string
+      enum:
+      - DOMAIN_CLAIM
+      - DOMAIN_UPDATE
+      - DOMAIN_RETURN
+      - WALLET_CREATE
+      - WALLET_UPDATE
+      - WALLET_VERIFY
+      - ACCOUNT_UPDATE
+    DomainName:
+      type: string
+      example: matt.crypto
     UpdateRecordsSubOperationResponse:
       allOf:
       - $ref: '#/components/schemas/BlockchainSubOperationResponse'
@@ -538,6 +631,21 @@ components:
         required:
         - type
         - parameters
+    ReturnSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - RETURN
+        required:
+        - type
+    EvmOwnerAddress:
+      type: string
+      example: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+      pattern: ^0x[a-fA-F0-9]{40}$
     WalletVerificationRequestBody:
       type: object
       properties:
@@ -549,16 +657,12 @@ components:
           maxLength: 2000
       required:
       - signature
-    SubOperationResponse:
+    WebhookCreateResultResponse:
       type: object
       properties:
         id:
           type: string
-          example: bc-2db427bd-5613-40c7-85b1-ab38beed0ed0
-        status:
-          $ref: '#/components/schemas/OperationStatus'
       required:
-      - status
       - id
     SubOperationTransactionResponse:
       type: object
@@ -569,52 +673,31 @@ components:
           $ref: '#/components/schemas/BlockchainType'
       required:
       - blockchain
-    EvmOwnerAddress:
-      type: string
-      example: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
-      pattern: ^0x[a-fA-F0-9]{40}$
-    OperationType:
-      type: string
-      enum:
-      - DOMAIN_CLAIM
-      - DOMAIN_UPDATE
-      - DOMAIN_RETURN
-      - WALLET_CREATE
-      - WALLET_UPDATE
-      - WALLET_VERIFY
-      - ACCOUNT_UPDATE
-    DomainRecords:
+    WalletUpdateRequestBody:
       type: object
-      additionalProperties:
-        type: string
-      example:
-        crypto.ETH.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
-        crypto.MATIC.version.MATIC.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e5678'
-        crypto.MATIC.version.ERC20.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e0921'
-    MintSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - MINT
-          parameters:
-            $ref: '#/components/schemas/MintParametersResponse'
-        required:
-        - type
-        - parameters
-    DomainName:
-      type: string
-      example: matt.crypto
-    WalletVerificationResponse:
+      properties:
+        primaryDomain:
+          oneOf:
+          - $ref: '#/components/schemas/DomainName'
+          - type: 'null'
+      required:
+      - primaryDomain
+    MintParametersResponse:
+      type: object
+      properties:
+        initialRecords:
+          $ref: '#/components/schemas/DomainRecords'
+        toAddress:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - toAddress
+    WalletUpdateResponse:
       type: object
       properties:
         '@type':
           type: string
           enum:
-          - unstoppabledomains.com/partner.v3.WalletVerificationResult
+          - unstoppabledomains.com/partner.v3.WalletUpdateResult
         operation:
           $ref: '#/components/schemas/OperationCheckResponse'
       required:
@@ -629,135 +712,18 @@ components:
           - type: 'null'
       required:
       - $cursor
-    WebhookCreateSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/PlatformSubOperationResponse'
-      - type: object
-        properties:
-          parameters:
-            $ref: '#/components/schemas/WebhookCreateParametersResponse'
-          result:
-            $ref: '#/components/schemas/WebhookCreateResultResponse'
-          type:
-            type: string
-            enum:
-            - WEBHOOK_CREATE
-        required:
-        - parameters
-        - type
-    WalletListResponse:
+    WalletVerificationResponse:
       type: object
       properties:
         '@type':
           type: string
           enum:
-          - unstoppabledomains.com/partner.v3.CursorList
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/MinimalWalletResponse'
-        next:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/CursorListResponseNext'
+          - unstoppabledomains.com/partner.v3.WalletVerificationResult
+        operation:
+          $ref: '#/components/schemas/OperationCheckResponse'
       required:
       - '@type'
-      - items
-      - next
-    WalletGenerateVerificationResponse:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.WalletUnsignedVerification
-        message:
-          type: string
-      required:
-      - '@type'
-      - message
-    ErrorResponseSingle:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponseContext'
-    ErrorResponseMulti:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - MULTIPLE_ERRORS
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponseContext'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponseSingle'
-      required:
-      - code
-      - errors
-    ErrorResponseContextEntity:
-      oneOf:
-      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
-      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
-    WalletUpdateRequestBody:
-      type: object
-      properties:
-        primaryDomain:
-          oneOf:
-          - $ref: '#/components/schemas/DomainName'
-          - type: 'null'
-      required:
-      - primaryDomain
-    PlatformSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/SubOperationResponse'
-      - type: object
-        properties:
-          '@type':
-            type: string
-            enum:
-            - unstoppabledomains.com/partner.v3.PlatformOperation
-        required:
-        - '@type'
-    WalletSetDefaultSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/PlatformSubOperationResponse'
-      - type: object
-        properties:
-          parameters:
-            $ref: '#/components/schemas/WalletSetDefaultParametersResponse'
-          type:
-            type: string
-            enum:
-            - WALLET_SET_DEFAULT
-        required:
-        - parameters
-        - type
-  examples:
-    WalletAlreadyVerified:
-      description: External wallet has already been verified
-      value:
-        code: WALLET_ALREADY_VERIFIED
-    NoChange:
-      description: No change would occur by the requested operation.
-      value:
-        code: NO_CHANGE
-    BadRequest:
-      description: Request is malformed or invalid.
-      value:
-        code: BAD_REQUEST
-    ValidationError:
-      description: Validation error due to incorrect parameters.
-      value:
-        code: VALIDATION
+      - operation
   securitySchemes:
     bearer:
       type: http

@@ -7,25 +7,7 @@ info:
     email: partnerengineering@unstoppabledomains.com
   description: '# Feature Overview
 
-    The Reseller API provides domain reseller partners with the ability to search, register and manage traditional DNS domains. The API exposes a RESTful interface for domain registration, DNS management, and domain lifecycle operations.
-
-    - **Domain Discovery**: Search for specific domains or find suggested alternatives, determine pricing, availability and registration details
-
-    - **Domain Registration**: Register domains with full control over registration period, contacts, and initial DNS configuration
-
-    - **DNS Management**: Create, update and delete DNS records for your domains
-
-    - **Domain Lifecycle**: Manage renewals, transfers, contacts, and domain flags through a simple API interface
-
-    - **Marketplace**: Browse secondary marketplace listings to find premium domains available for purchase from existing owners
-
-
-    For access, authentication, environments, and your first request, start with the [Quick Start](/apis/reseller/quick-start).
-
-
-    For implementation guidance on operations, flags, registration flows, contact management, DNS management, webhooks, and lifecycle operations, see the [Implementation Guide](/apis/reseller/implementation-guide).
-
-    '
+    The Reseller API provides domain reseller partners with the ability to search, register and manage traditional DNS domains.'
 servers:
 - url: https://api.unstoppabledomains.com/partner/v3
   description: Production
@@ -87,9 +69,7 @@ paths:
       tags:
       - tlds
       summary: Get TLD DNSSEC configuration
-      description: 'Retrieve the supported DNSSEC algorithms and digest types for the specified TLD.
-
-        '
+      description: Retrieve the supported DNSSEC algorithms and digest types for the specified TLD.
   /tlds:
     get:
       operationId: getTldList
@@ -122,9 +102,7 @@ paths:
       tags:
       - tlds
       summary: List available TLDs
-      description: 'Retrieve a list of all available top-level domains (TLDs) including their naming system and registration availability.
-
-        '
+      description: Retrieve a list of all available top-level domains (TLDs) including their naming system and registration availability.
   /tlds/{tld}:
     get:
       operationId: getSingleTld
@@ -175,78 +153,9 @@ paths:
       tags:
       - tlds
       summary: Get TLD details
-      description: 'Retrieve details for a specific top-level domain (TLD) including its naming system and registration availability.
-
-        '
+      description: Retrieve details for a specific top-level domain (TLD) including its naming system and registration availability.
 components:
   schemas:
-    DnssecAlgorithm:
-      type: integer
-      enum:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-      - 8
-      - 10
-      - 12
-      - 13
-      - 14
-      - 15
-      - 16
-      - 17
-      - 23
-      - 252
-      - 253
-      - 254
-      description: DNSSEC algorithm identifier (RFC 8624)
-    TldDnsSecurityConfigurationDnssecDigestTypeResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/DnssecDigestType'
-        name:
-          type: string
-      required:
-      - id
-      - name
-    TldResponse:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.Tld
-        name:
-          type: string
-        namingSystem:
-          enum:
-          - UNS
-          - ICANN
-          - ENS
-          type: string
-        canRegister:
-          type: boolean
-      required:
-      - '@type'
-      - name
-      - namingSystem
-      - canRegister
-    TldDnsSecurityConfigurationResponse:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.TldDnsSecurityConfiguration
-        dnssec:
-          $ref: '#/components/schemas/TldDnsSecurityConfigurationDnssecResponse'
-      required:
-      - '@type'
-      - dnssec
     ErrorResponse:
       type: object
       description: Standard error response
@@ -272,6 +181,51 @@ components:
             - code
       required:
       - code
+    TldResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.Tld
+        name:
+          type: string
+        namingSystem:
+          enum:
+          - UNS
+          - ICANN
+          - ENS
+          type: string
+        canRegister:
+          type: boolean
+      required:
+      - '@type'
+      - name
+      - namingSystem
+      - canRegister
+    DnssecAlgorithm:
+      type: integer
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 10
+      - 12
+      - 13
+      - 14
+      - 15
+      - 16
+      - 17
+      - 23
+      - 252
+      - 253
+      - 254
+      description: DNSSEC algorithm identifier (RFC 8624)
     TldDnsSecurityConfigurationDnssecResponse:
       type: object
       properties:
@@ -289,6 +243,18 @@ components:
       - supported
       - algorithms
       - digestTypes
+    TldDnsSecurityConfigurationResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.TldDnsSecurityConfiguration
+        dnssec:
+          $ref: '#/components/schemas/TldDnsSecurityConfigurationDnssecResponse'
+      required:
+      - '@type'
+      - dnssec
     TldListResponse:
       type: object
       properties:
@@ -308,6 +274,16 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/DnssecAlgorithm'
+        name:
+          type: string
+      required:
+      - id
+      - name
+    TldDnsSecurityConfigurationDnssecDigestTypeResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/DnssecDigestType'
         name:
           type: string
       required:

@@ -4,7 +4,7 @@ info:
   description: 'Search, check availability, and purchase traditional DNS domains. This API enables AI assistants to help users find and buy domain names.
 
 
-    When using the API directly, you will need an API key. See [API Key setup](/user-api/overview#api-key-advanced) for instructions.'
+    When using the API directly, you will need an API key. See API Key setup for instructions.'
   version: 1.0.0
   contact:
     name: Unstoppable Domains
@@ -441,30 +441,14 @@ components:
         instructions:
           type: string
           description: Guidance for the user on how to add a card
-    AddDomainRenewalToCartResponse:
+    RemoveFromCartResponse:
       type: object
-      description: Response for adding domain renewals to cart
       properties:
-        addedRenewals:
+        removedProductIds:
           type: array
           items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              success:
-                type: boolean
-              productId:
-                type: number
-              renewalPeriodYears:
-                type: number
-                description: Renewal period in years
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
+            type: number
+        removedCount:
           type: number
         cart:
           type: object
@@ -475,65 +459,41 @@ components:
               type: number
             subtotalFormatted:
               type: string
-    PaymentMethodsResponse:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/CartItem'
+    CartItem:
       type: object
       properties:
-        savedCards:
+        productId:
+          type: number
+        productCode:
+          type: string
+        productType:
+          type: string
+        domain:
+          type:
+          - string
+          - 'null'
+        originalPrice:
+          type: number
+        originalPriceFormatted:
+          type: string
+        discountAmount:
+          type: number
+        discountAmountFormatted:
+          type: string
+        promoCreditsApplied:
+          type: number
+        accountBalanceApplied:
+          type: number
+        salesTax:
+          type: number
+        fees:
           type: array
           items:
             type: object
-            properties:
-              id:
-                type: string
-                description: Payment method ID
-              brand:
-                type: string
-                description: Card brand
-              last4:
-                type: string
-                description: Last 4 digits
-              expMonth:
-                type: number
-              expYear:
-                type: number
-              isExpired:
-                type: boolean
-              isDefault:
-                type: boolean
-        accountBalance:
-          type: object
-          properties:
-            amount:
-              type: number
-              description: Balance in cents
-            amountFormatted:
-              type: string
-        promoCredits:
-          type: object
-          properties:
-            amount:
-              type: number
-              description: Promo credits in cents
-            amountFormatted:
-              type: string
-        summary:
-          type: object
-          properties:
-            hasValidCards:
-              type: boolean
-            validCardCount:
-              type: number
-            hasAccountBalance:
-              type: boolean
-            hasPromoCredits:
-              type: boolean
-            totalCredits:
-              type: number
-              description: Combined account balance + promo credits
-            totalCreditsFormatted:
-              type: string
-            canCheckout:
-              type: boolean
     AddListedDomainToCartResponse:
       type: object
       description: Response for adding marketplace-listed domains to cart
@@ -580,40 +540,36 @@ components:
               type: number
             subtotalFormatted:
               type: string
-    CartItem:
+    CheckoutUrlResponse:
       type: object
       properties:
-        productId:
+        checkoutUrl:
+          type: string
+        expiresIn:
           type: number
-        productCode:
-          type: string
-        productType:
-          type: string
-        domain:
+          description: Seconds until the magic link expires (URL is single-use)
+        cartSummary:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+            items:
+              type: array
+              items:
+                type: object
+        discountCode:
           type:
           - string
           - 'null'
-        originalPrice:
-          type: number
-        originalPriceFormatted:
+        instructions:
           type: string
-        discountAmount:
-          type: number
-        discountAmountFormatted:
-          type: string
-        promoCreditsApplied:
-          type: number
-        accountBalanceApplied:
-          type: number
-        salesTax:
-          type: number
-        fees:
-          type: array
-          items:
-            type: object
-    AddSedoDomainToCartResponse:
+    AddAfternicDomainToCartResponse:
       type: object
-      description: Response for adding Sedo marketplace domains to cart
+      description: Response for adding Afternic marketplace domains to cart
       properties:
         addedProducts:
           type: array
@@ -688,9 +644,68 @@ components:
         note:
           type: string
           description: Optional note about contact selection when user has multiple contacts
-    AddAfternicDomainToCartResponse:
+    PaymentMethodsResponse:
       type: object
-      description: Response for adding Afternic marketplace domains to cart
+      properties:
+        savedCards:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Payment method ID
+              brand:
+                type: string
+                description: Card brand
+              last4:
+                type: string
+                description: Last 4 digits
+              expMonth:
+                type: number
+              expYear:
+                type: number
+              isExpired:
+                type: boolean
+              isDefault:
+                type: boolean
+        accountBalance:
+          type: object
+          properties:
+            amount:
+              type: number
+              description: Balance in cents
+            amountFormatted:
+              type: string
+        promoCredits:
+          type: object
+          properties:
+            amount:
+              type: number
+              description: Promo credits in cents
+            amountFormatted:
+              type: string
+        summary:
+          type: object
+          properties:
+            hasValidCards:
+              type: boolean
+            validCardCount:
+              type: number
+            hasAccountBalance:
+              type: boolean
+            hasPromoCredits:
+              type: boolean
+            totalCredits:
+              type: number
+              description: Combined account balance + promo credits
+            totalCreditsFormatted:
+              type: string
+            canCheckout:
+              type: boolean
+    AddSedoDomainToCartResponse:
+      type: object
+      description: Response for adding Sedo marketplace domains to cart
       properties:
         addedProducts:
           type: array
@@ -722,33 +737,6 @@ components:
               type: number
             subtotalFormatted:
               type: string
-    CheckoutUrlResponse:
-      type: object
-      properties:
-        checkoutUrl:
-          type: string
-        expiresIn:
-          type: number
-          description: Seconds until the magic link expires (URL is single-use)
-        cartSummary:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-            items:
-              type: array
-              items:
-                type: object
-        discountCode:
-          type:
-          - string
-          - 'null'
-        instructions:
-          type: string
     CartResponse:
       type: object
       properties:
@@ -816,28 +804,6 @@ components:
           type: number
         totalDiscountsFormatted:
           type: string
-    RemoveFromCartResponse:
-      type: object
-      properties:
-        removedProductIds:
-          type: array
-          items:
-            type: number
-        removedCount:
-          type: number
-        cart:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-            items:
-              type: array
-              items:
-                $ref: '#/components/schemas/CartItem'
     AddToCartResponse:
       type: object
       properties:
@@ -854,6 +820,40 @@ components:
                 type: string
               productId:
                 type: number
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        cart:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+    AddDomainRenewalToCartResponse:
+      type: object
+      description: Response for adding domain renewals to cart
+      properties:
+        addedRenewals:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+              productId:
+                type: number
+              renewalPeriodYears:
+                type: number
+                description: Renewal period in years
+              error:
+                type: string
         successCount:
           type: number
         failureCount:

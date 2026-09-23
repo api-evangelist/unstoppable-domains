@@ -13,10 +13,8 @@ servers:
 - url: https://api.unstoppabledomains.com
   description: Production server
 tags:
-- name: marketplace
-  description: 'Browse and search the Unstoppable Domains secondary marketplace. Retrieve paginated listings of domains available for purchase from existing owners, with filtering by TLD and sorting options.
-
-    '
+- name: Marketplace
+  description: Browse and search the Unstoppable Domains secondary marketplace. Retrieve paginated listings of domains available for purchase from existing owners, with filtering by TLD and sorting options.
   x-displayName: Marketplace
 paths:
   /marketplace/domains/listings:
@@ -105,14 +103,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       tags:
-      - marketplace
+      - Marketplace
       summary: List marketplace domain listings
       description: 'Retrieve a paginated list of domains currently listed for sale on the Unstoppable Domains secondary marketplace. Use this endpoint to browse available domains, filter by TLD, and sort by price, name, or listing date.
 
 
-        Results are paginated — use the `$page` and `perPage` parameters to navigate through results.
-
-        '
+        Results are paginated — use the `$page` and `perPage` parameters to navigate through results.'
       security:
       - bearer: []
     servers:
@@ -126,7 +122,7 @@ paths:
       summary: Create marketplace listings
       description: List one or more domains for sale on the marketplace. Supports buy-now pricing, offers, and lease-to-own options.
       tags:
-      - marketplace
+      - Marketplace
       security:
       - bearerAuth: []
       requestBody:
@@ -204,7 +200,7 @@ paths:
       summary: Update marketplace listings
       description: Update price, settings, or options for existing listings.
       tags:
-      - marketplace
+      - Marketplace
       security:
       - bearerAuth: []
       requestBody:
@@ -283,7 +279,7 @@ paths:
       summary: Cancel marketplace listings
       description: Cancel one or more active marketplace listings.
       tags:
-      - marketplace
+      - Marketplace
       security:
       - bearerAuth: []
       requestBody:
@@ -320,7 +316,7 @@ paths:
       summary: List marketplace offers
       description: List incoming offers on domains you own. Filter by domain or status.
       tags:
-      - marketplace
+      - Marketplace
       security:
       - bearerAuth: []
       requestBody:
@@ -360,7 +356,7 @@ paths:
       summary: Respond to marketplace offers
       description: Accept or reject incoming offers on your domains.
       tags:
-      - marketplace
+      - Marketplace
       security:
       - bearerAuth: []
       requestBody:
@@ -404,28 +400,6 @@ paths:
       description: Production server
 components:
   schemas:
-    MarketplaceDomainsListingsResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/MarketplaceDomainsListingItemResponse'
-        next:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/PaginatedListResponseNext'
-      required:
-      - items
-      - next
-    MarketplaceDomainsListingOwnerResponse:
-      type: object
-      properties:
-        address:
-          type: string
-          description: Wallet address of the domain owner
-      required:
-      - address
     PaginatedListResponseNext:
       type: object
       properties:
@@ -433,30 +407,6 @@ components:
           type: integer
         limit:
           type: integer
-    MarketplaceDomainsListingItemResponse:
-      type: object
-      properties:
-        domain:
-          type: string
-          description: The domain name listed for sale
-        status:
-          type: string
-          description: Current listing status
-        listPrice:
-          $ref: '#/components/schemas/MarketplaceDomainsListingListPriceResponse'
-        payout:
-          $ref: '#/components/schemas/MarketplaceDomainsListingPayoutResponse'
-        owner:
-          $ref: '#/components/schemas/MarketplaceDomainsListingOwnerResponse'
-        expiresAt:
-          type: number
-          description: Unix timestamp when the listing expires (if applicable)
-      required:
-      - domain
-      - status
-      - listPrice
-      - payout
-      - owner
     ErrorResponse:
       type: object
       description: Standard error response
@@ -490,6 +440,28 @@ components:
           description: Wallet address designated to receive the payout
       required:
       - address
+    MarketplaceDomainsListingOwnerResponse:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Wallet address of the domain owner
+      required:
+      - address
+    MarketplaceDomainsListingsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketplaceDomainsListingItemResponse'
+        next:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/PaginatedListResponseNext'
+      required:
+      - items
+      - next
     MarketplaceDomainsListingListPriceResponse:
       type: object
       properties:
@@ -498,6 +470,30 @@ components:
           description: Listing price in USD cents
       required:
       - usdCents
+    MarketplaceDomainsListingItemResponse:
+      type: object
+      properties:
+        domain:
+          type: string
+          description: The domain name listed for sale
+        status:
+          type: string
+          description: Current listing status
+        listPrice:
+          $ref: '#/components/schemas/MarketplaceDomainsListingListPriceResponse'
+        payout:
+          $ref: '#/components/schemas/MarketplaceDomainsListingPayoutResponse'
+        owner:
+          $ref: '#/components/schemas/MarketplaceDomainsListingOwnerResponse'
+        expiresAt:
+          type: number
+          description: Unix timestamp when the listing expires (if applicable)
+      required:
+      - domain
+      - status
+      - listPrice
+      - payout
+      - owner
     UpdateListingResponse:
       type: object
       properties:
@@ -528,7 +524,7 @@ components:
           type: boolean
         signatureNote:
           type: string
-    RespondToOfferResponse:
+    CreateListingResponse:
       type: object
       properties:
         results:
@@ -536,20 +532,16 @@ components:
           items:
             type: object
             properties:
-              offerId:
-                type: number
               domainName:
-                type: string
-              action:
                 type: string
               success:
                 type: boolean
-              priceInCents:
+              listingId:
                 type: number
-              priceFormatted:
+              status:
                 type: string
-              newStatus:
-                type: string
+              isLazy:
+                type: boolean
               error:
                 type: string
         successCount:
@@ -561,28 +553,6 @@ components:
         signatureRequired:
           type: boolean
         signatureNote:
-          type: string
-    CancelListingResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              listingId:
-                type: number
-              domainName:
-                type: string
-              success:
-                type: boolean
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        message:
           type: string
     ListOffersResponse:
       type: object
@@ -632,7 +602,7 @@ components:
         truncationMessage:
           type: string
           description: Optional message providing details about the truncation
-    CreateListingResponse:
+    CancelListingResponse:
       type: object
       properties:
         results:
@@ -640,16 +610,42 @@ components:
           items:
             type: object
             properties:
+              listingId:
+                type: number
               domainName:
                 type: string
               success:
                 type: boolean
-              listingId:
-                type: number
-              status:
+              error:
                 type: string
-              isLazy:
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        message:
+          type: string
+    RespondToOfferResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              offerId:
+                type: number
+              domainName:
+                type: string
+              action:
+                type: string
+              success:
                 type: boolean
+              priceInCents:
+                type: number
+              priceFormatted:
+                type: string
+              newStatus:
+                type: string
               error:
                 type: string
         successCount:

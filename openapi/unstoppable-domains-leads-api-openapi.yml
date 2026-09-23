@@ -4,7 +4,7 @@ info:
   description: 'Search, check availability, and purchase traditional DNS domains. This API enables AI assistants to help users find and buy domain names.
 
 
-    When using the API directly, you will need an API key. See [API Key setup](/user-api/overview#api-key-advanced) for instructions.'
+    When using the API directly, you will need an API key. See API Key setup for instructions.'
   version: 1.0.0
   contact:
     name: Unstoppable Domains
@@ -165,6 +165,48 @@ paths:
           description: Authentication required
 components:
   schemas:
+    LeadMessageSendResponse:
+      type: object
+      properties:
+        message:
+          type: object
+          properties:
+            id:
+              type: number
+              description: Message ID
+            content:
+              type: string
+            senderUserId:
+              type: number
+            createdAt:
+              type: string
+        conversationId:
+          type: number
+    LeadMessagesListResponse:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                description: Message ID
+              content:
+                type: string
+              senderUserId:
+                type: number
+              createdAt:
+                type: string
+        hasMore:
+          type: boolean
+        nextCursor:
+          type:
+          - string
+          - 'null'
+        conversationId:
+          type: number
     ContactSellerResponse:
       type: object
       properties:
@@ -197,31 +239,6 @@ components:
               description: True if returning existing conversation
         message:
           type: string
-    LeadMessagesListResponse:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: number
-                description: Message ID
-              content:
-                type: string
-              senderUserId:
-                type: number
-              createdAt:
-                type: string
-        hasMore:
-          type: boolean
-        nextCursor:
-          type:
-          - string
-          - 'null'
-        conversationId:
-          type: number
     LeadsListResponse:
       type: object
       properties:
@@ -271,23 +288,6 @@ components:
         take:
           type: number
           description: Number of items returned
-    LeadMessageSendResponse:
-      type: object
-      properties:
-        message:
-          type: object
-          properties:
-            id:
-              type: number
-              description: Message ID
-            content:
-              type: string
-            senderUserId:
-              type: number
-            createdAt:
-              type: string
-        conversationId:
-          type: number
   securitySchemes:
     bearerAuth:
       type: http

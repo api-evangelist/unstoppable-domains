@@ -7,25 +7,7 @@ info:
     email: partnerengineering@unstoppabledomains.com
   description: '# Feature Overview
 
-    The Reseller API provides domain reseller partners with the ability to search, register and manage traditional DNS domains. The API exposes a RESTful interface for domain registration, DNS management, and domain lifecycle operations.
-
-    - **Domain Discovery**: Search for specific domains or find suggested alternatives, determine pricing, availability and registration details
-
-    - **Domain Registration**: Register domains with full control over registration period, contacts, and initial DNS configuration
-
-    - **DNS Management**: Create, update and delete DNS records for your domains
-
-    - **Domain Lifecycle**: Manage renewals, transfers, contacts, and domain flags through a simple API interface
-
-    - **Marketplace**: Browse secondary marketplace listings to find premium domains available for purchase from existing owners
-
-
-    For access, authentication, environments, and your first request, start with the [Quick Start](/apis/reseller/quick-start).
-
-
-    For implementation guidance on operations, flags, registration flows, contact management, DNS management, webhooks, and lifecycle operations, see the [Implementation Guide](/apis/reseller/implementation-guide).
-
-    '
+    The Reseller API provides domain reseller partners with the ability to search, register and manage traditional DNS domains.'
 servers:
 - url: https://api.unstoppabledomains.com/partner/v3
   description: Production
@@ -35,9 +17,7 @@ security:
 - bearer: []
 tags:
 - name: domain-transfers
-  description: 'Check transfer eligibility and retrieve authorization codes for transferring domains to another registrar.
-
-    '
+  description: Check transfer eligibility and retrieve authorization codes for transferring domains to another registrar.
   x-displayName: Transfers
 paths:
   /domains/{name}/dns/authorization-code:
@@ -89,9 +69,7 @@ paths:
       tags:
       - domain-transfers
       summary: Get transfer authorization code
-      description: 'Retrieve the authorization (EPP) code required to transfer the domain to another registrar. The domain must be eligible for transfer before requesting this code.
-
-        '
+      description: Retrieve the authorization (EPP) code required to transfer the domain to another registrar. The domain must be eligible for transfer before requesting this code.
   /domains/{name}/dns/transfers/inbound-eligibility:
     post:
       operationId: postDomainDnsTransferInboundEligibility
@@ -153,11 +131,55 @@ paths:
       tags:
       - domain-transfers
       summary: Check inbound transfer eligibility
-      description: 'Check whether a domain is eligible for inbound transfer to your account. Provide the authorization code to validate the transfer.
-
-        '
+      description: Check whether a domain is eligible for inbound transfer to your account. Provide the authorization code to validate the transfer.
 components:
   schemas:
+    DomainDnsTransferInboundEligibilityRequestBody:
+      type: object
+      properties:
+        authorizationCode:
+          type: string
+          minLength: 3
+          maxLength: 250
+      required:
+      - authorizationCode
+    DomainTransferAuthorizationCodeResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.ICannDomainTransferAuthorizationCode
+        code:
+          type: string
+      required:
+      - '@type'
+      - code
+    ErrorResponse:
+      type: object
+      description: Standard error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: VALIDATION
+        message:
+          type: string
+          description: Human-readable error description
+        errors:
+          type: array
+          description: Individual errors when code is MULTIPLE_ERRORS
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+            required:
+            - code
+      required:
+      - code
     DomainDnsTransferInboundEligibilityResponse:
       type: object
       properties:
@@ -187,52 +209,6 @@ components:
       required:
       - isEligible
       - reasons
-    ErrorResponse:
-      type: object
-      description: Standard error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: VALIDATION
-        message:
-          type: string
-          description: Human-readable error description
-        errors:
-          type: array
-          description: Individual errors when code is MULTIPLE_ERRORS
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-              message:
-                type: string
-            required:
-            - code
-      required:
-      - code
-    DomainDnsTransferInboundEligibilityRequestBody:
-      type: object
-      properties:
-        authorizationCode:
-          type: string
-          minLength: 3
-          maxLength: 250
-      required:
-      - authorizationCode
-    DomainTransferAuthorizationCodeResponse:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.ICannDomainTransferAuthorizationCode
-        code:
-          type: string
-      required:
-      - '@type'
-      - code
   securitySchemes:
     bearer:
       scheme: bearer

@@ -4,7 +4,7 @@ info:
   description: 'Search, check availability, and purchase traditional DNS domains. This API enables AI assistants to help users find and buy domain names.
 
 
-    When using the API directly, you will need an API key. See [API Key setup](/user-api/overview#api-key-advanced) for instructions.'
+    When using the API directly, you will need an API key. See API Key setup for instructions.'
   version: 1.0.0
   contact:
     name: Unstoppable Domains
@@ -577,206 +577,6 @@ paths:
           description: Authentication required
 components:
   schemas:
-    DnsNameserversListResponse:
-      type: object
-      properties:
-        domain:
-          type: string
-        nameservers:
-          type: array
-          items:
-            type: string
-          description: List of nameserver hostnames
-        isUsingDefaultNameservers:
-          type: boolean
-          description: True if using UD default nameservers
-        dnssec:
-          type:
-          - object
-          - 'null'
-          properties:
-            enabled:
-              type: boolean
-            records:
-              type: array
-              items:
-                type: object
-                properties:
-                  keyTag:
-                    type: number
-                  algorithm:
-                    type: number
-                  digestType:
-                    type: number
-                  digest:
-                    type: string
-    DnsHostingListResponse:
-      type: object
-      properties:
-        domain:
-          type: string
-        configs:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                enum:
-                - GCS_HOSTED
-                - LISTING_PAGE
-                - REDIRECT_301
-                - REDIRECT_302
-                - REVERSE_PROXY
-                - UD_PROFILE
-                - STOREFRONT
-              subName:
-                type:
-                - string
-                - 'null'
-                description: Subdomain (null for root)
-              targetUrl:
-                type:
-                - string
-                - 'null'
-                description: Destination URL (for redirects and reverse proxy)
-              status:
-                type: string
-              certificateStatus:
-                type:
-                - string
-                - 'null'
-        pagination:
-          type: object
-          properties:
-            hasMore:
-              type: boolean
-            nextCursor:
-              type:
-              - string
-              - 'null'
-    PendingOperationsResponse:
-      type: object
-      description: Bulk response for pending operations across multiple domains
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              success:
-                type: boolean
-                description: Whether the lookup succeeded
-              hasPendingOperations:
-                type: boolean
-                description: Whether any operations are still in progress
-              operations:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      description: Operation ID
-                    type:
-                      type: string
-                      description: Operation type
-                    status:
-                      type: string
-                      description: UserOperationStatus string, e.g. PENDING, PENDING_SIGNATURE, COMPLETED, FAILED
-                    createdAt:
-                      type: string
-                    updatedAt:
-                      type: string
-                    originOperationId:
-                      type:
-                      - string
-                      - 'null'
-                      description: ID of the originating operation, if any
-                    errorCode:
-                      type:
-                      - string
-                      - 'null'
-                      description: Error code if the operation failed, otherwise null
-              error:
-                type: string
-                description: Error message (if lookup failed)
-        successCount:
-          type: number
-          description: Number of domains successfully queried
-        failureCount:
-          type: number
-          description: Number of domains that failed lookup
-        summary:
-          type: object
-          description: Aggregate summary across all domains
-          properties:
-            totalPendingCount:
-              type: number
-              description: Total pending operations across all domains
-            domainsWithPending:
-              type: array
-              items:
-                type: string
-              description: List of domain names with pending operations
-    BulkDnsOperationResponse:
-      type: object
-      description: Response for bulk DNS operations (nameservers, hosting). Contains results per domain with success/failure tracking.
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              success:
-                type: boolean
-                description: Whether the operation succeeded
-              operationId:
-                type: string
-                description: Track with ud_domain_pending_operations (if successful)
-              nameservers:
-                type: array
-                items:
-                  type: string
-                description: Configured nameservers (for nameserver operations)
-              hasDnssec:
-                type: boolean
-                description: Whether DNSSEC is configured (for nameserver operations)
-              config:
-                type: object
-                description: Hosting config (for hosting operations)
-                properties:
-                  type:
-                    type: string
-                  subName:
-                    type:
-                    - string
-                    - 'null'
-                  targetUrl:
-                    type:
-                    - string
-                    - 'null'
-              subName:
-                type: string
-                description: Subdomain removed (for hosting remove operations)
-              deletedAll:
-                type: boolean
-                description: Whether all configs were removed (for hosting remove)
-              error:
-                type: string
-                description: Error message (if failed)
-        successCount:
-          type: number
-          description: Number of successful operations
-        failureCount:
-          type: number
-          description: Number of failed operations
     DnsRecordsListResponse:
       type: object
       properties:
@@ -853,6 +653,206 @@ components:
             message:
               type: string
               description: Human-readable explanation and suggested next steps
+    DnsHostingListResponse:
+      type: object
+      properties:
+        domain:
+          type: string
+        configs:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - GCS_HOSTED
+                - LISTING_PAGE
+                - REDIRECT_301
+                - REDIRECT_302
+                - REVERSE_PROXY
+                - UD_PROFILE
+                - STOREFRONT
+              subName:
+                type:
+                - string
+                - 'null'
+                description: Subdomain (null for root)
+              targetUrl:
+                type:
+                - string
+                - 'null'
+                description: Destination URL (for redirects and reverse proxy)
+              status:
+                type: string
+              certificateStatus:
+                type:
+                - string
+                - 'null'
+        pagination:
+          type: object
+          properties:
+            hasMore:
+              type: boolean
+            nextCursor:
+              type:
+              - string
+              - 'null'
+    BulkDnsOperationResponse:
+      type: object
+      description: Response for bulk DNS operations (nameservers, hosting). Contains results per domain with success/failure tracking.
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+                description: Whether the operation succeeded
+              operationId:
+                type: string
+                description: Track with ud_domain_pending_operations (if successful)
+              nameservers:
+                type: array
+                items:
+                  type: string
+                description: Configured nameservers (for nameserver operations)
+              hasDnssec:
+                type: boolean
+                description: Whether DNSSEC is configured (for nameserver operations)
+              config:
+                type: object
+                description: Hosting config (for hosting operations)
+                properties:
+                  type:
+                    type: string
+                  subName:
+                    type:
+                    - string
+                    - 'null'
+                  targetUrl:
+                    type:
+                    - string
+                    - 'null'
+              subName:
+                type: string
+                description: Subdomain removed (for hosting remove operations)
+              deletedAll:
+                type: boolean
+                description: Whether all configs were removed (for hosting remove)
+              error:
+                type: string
+                description: Error message (if failed)
+        successCount:
+          type: number
+          description: Number of successful operations
+        failureCount:
+          type: number
+          description: Number of failed operations
+    PendingOperationsResponse:
+      type: object
+      description: Bulk response for pending operations across multiple domains
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+                description: Whether the lookup succeeded
+              hasPendingOperations:
+                type: boolean
+                description: Whether any operations are still in progress
+              operations:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Operation ID
+                    type:
+                      type: string
+                      description: Operation type
+                    status:
+                      type: string
+                      description: UserOperationStatus string, e.g. PENDING, PENDING_SIGNATURE, COMPLETED, FAILED
+                    createdAt:
+                      type: string
+                    updatedAt:
+                      type: string
+                    originOperationId:
+                      type:
+                      - string
+                      - 'null'
+                      description: ID of the originating operation, if any
+                    errorCode:
+                      type:
+                      - string
+                      - 'null'
+                      description: Error code if the operation failed, otherwise null
+              error:
+                type: string
+                description: Error message (if lookup failed)
+        successCount:
+          type: number
+          description: Number of domains successfully queried
+        failureCount:
+          type: number
+          description: Number of domains that failed lookup
+        summary:
+          type: object
+          description: Aggregate summary across all domains
+          properties:
+            totalPendingCount:
+              type: number
+              description: Total pending operations across all domains
+            domainsWithPending:
+              type: array
+              items:
+                type: string
+              description: List of domain names with pending operations
+    DnsNameserversListResponse:
+      type: object
+      properties:
+        domain:
+          type: string
+        nameservers:
+          type: array
+          items:
+            type: string
+          description: List of nameserver hostnames
+        isUsingDefaultNameservers:
+          type: boolean
+          description: True if using UD default nameservers
+        dnssec:
+          type:
+          - object
+          - 'null'
+          properties:
+            enabled:
+              type: boolean
+            records:
+              type: array
+              items:
+                type: object
+                properties:
+                  keyTag:
+                    type: number
+                  algorithm:
+                    type: number
+                  digestType:
+                    type: number
+                  digest:
+                    type: string
   securitySchemes:
     bearerAuth:
       type: http

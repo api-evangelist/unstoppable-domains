@@ -11,7 +11,7 @@ servers:
 security:
 - bearer: []
 tags:
-- name: suggestions
+- name: Suggestions
   x-displayName: Suggestions
   description: Suggestions for finding available domains
 paths:
@@ -69,55 +69,19 @@ paths:
                 ValidationError:
                   $ref: '#/components/examples/ValidationError'
       tags:
-      - suggestions
+      - Suggestions
     servers:
     - url: https://api.unstoppabledomains.com/partner/v3
       description: Production
     - url: https://api.ud-sandbox.com/partner/v3
       description: Sandbox
 components:
+  examples:
+    ValidationError:
+      description: Validation error due to incorrect parameters.
+      value:
+        code: VALIDATION
   schemas:
-    SuggestionsResponseItem:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.DomainSuggestion
-        name:
-          $ref: '#/components/schemas/DomainName'
-        price:
-          $ref: '#/components/schemas/DomainPriceResponse'
-      required:
-      - name
-      - price
-      - '@type'
-    DomainPriceItemResponse:
-      type: object
-      properties:
-        usdCents:
-          type: number
-          example: 1000
-      required:
-      - usdCents
-    ErrorResponseContext:
-      type: object
-      properties:
-        entities:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponseContextEntity'
-      required:
-      - entities
-    ErrorResponseSingle:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponseContext'
     ErrorResponse:
       oneOf:
       - $ref: '#/components/schemas/ErrorResponseSingle'
@@ -140,20 +104,6 @@ components:
       required:
       - code
       - errors
-    ErrorResponseContextEntity:
-      oneOf:
-      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
-      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
-    ErrorResponseContextEntitySingle:
-      type: object
-      properties:
-        type:
-          type: string
-        value:
-          type: string
-      required:
-      - type
-      - value
     SuggestionsResponse:
       type: object
       properties:
@@ -168,6 +118,18 @@ components:
       required:
       - items
       - '@type'
+    DomainPriceItemResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+          example: 1000
+      required:
+      - usdCents
+    ErrorResponseContextEntity:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
     DomainPriceType:
       type: string
       enum:
@@ -175,6 +137,16 @@ components:
       - PREMIUM
       - DEFERRED
       description: "- `STANDARD`: Domain is priced using the default, standard pricing algorithm\n- `PREMIUM`: Domain is considered premium by the registry and pricing may differ from the standard pricing\n- `DEFERRED`: Domain pricing is not available and an additional request is needed to determine pricing. \n  - This can be a limitation of the bulk domain searches due to constraints with checking prices for some registries\n  - When requesting a single domain the price will always be included (if available) and this status will not be returned\n"
+    ErrorResponseContextEntitySingle:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+      required:
+      - type
+      - value
     ErrorResponseContextEntityMulti:
       type: object
       properties:
@@ -189,9 +161,21 @@ components:
       required:
       - type
       - values
-    DomainName:
-      type: string
-      example: matt.crypto
+    SuggestionsResponseItem:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainSuggestion
+        name:
+          $ref: '#/components/schemas/DomainName'
+        price:
+          $ref: '#/components/schemas/DomainPriceResponse'
+      required:
+      - name
+      - price
+      - '@type'
     DomainPriceResponse:
       type: object
       properties:
@@ -205,32 +189,27 @@ components:
       - type
       - listPrice
       - subTotal
-    SuggestionsResponseItem_2:
+    ErrorResponseSingle:
       type: object
       properties:
-        '@type':
+        code:
           type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.DomainSuggestion
-        name:
+        message:
           type: string
-        price:
-          $ref: '#/components/schemas/DomainPriceResponse_2'
-      required:
-      - '@type'
-      - name
-      - price
-    DomainPriceAdjustmentResponse:
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
+    ErrorResponseContext:
       type: object
       properties:
-        usdCents:
-          type: number
-        type:
-          type: string
-          enum: []
+        entities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntity'
       required:
-      - usdCents
-      - type
+      - entities
+    DomainName:
+      type: string
+      example: matt.crypto
     ErrorResponse_2:
       type: object
       description: Standard error response
@@ -270,13 +249,17 @@ components:
       required:
       - '@type'
       - items
-    PriceItemResponse:
+    DomainPriceAdjustmentResponse:
       type: object
       properties:
         usdCents:
           type: number
+        type:
+          type: string
+          enum: []
       required:
       - usdCents
+      - type
     DomainPriceResponse_2:
       type: object
       properties:
@@ -300,11 +283,28 @@ components:
       - type
       - listPrice
       - subTotal
-  examples:
-    ValidationError:
-      description: Validation error due to incorrect parameters.
-      value:
-        code: VALIDATION
+    SuggestionsResponseItem_2:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainSuggestion
+        name:
+          type: string
+        price:
+          $ref: '#/components/schemas/DomainPriceResponse_2'
+      required:
+      - '@type'
+      - name
+      - price
+    PriceItemResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+      required:
+      - usdCents
   securitySchemes:
     bearer:
       type: http

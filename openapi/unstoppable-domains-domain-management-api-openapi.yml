@@ -13,10 +13,8 @@ servers:
 - url: https://api.unstoppabledomains.com
   description: Production server
 tags:
-- name: domain-management
-  description: 'Comprehensive domain updates — modify nameservers, DNSSEC, contacts, flags, and DNS records in a single request.
-
-    '
+- name: Domain Management
+  description: Comprehensive domain updates — modify nameservers, DNSSEC, contacts, flags, and DNS records in a single request.
   x-displayName: Domain Management
 paths:
   /domains/{name}:
@@ -25,7 +23,7 @@ paths:
       summary: Update a domain
       description: Comprehensive domain update — modify nameservers, DNSSEC, contacts, flags, and DNS records in a single operation. All fields are optional; only include the sections you want to change. Returns an operation that tracks all the resulting changes.
       tags:
-      - domain-management
+      - Domain Management
       parameters:
       - name: name
         required: true
@@ -96,7 +94,7 @@ paths:
       summary: Enable or disable auto renewal for ICANN DNS domains
       description: Enable or disable auto renewal for ICANN DNS domains (.com, .net, .org, .io, etc.). When enabled, domains will be automatically renewed before expiration using the saved payment method. User must own the domains and have a valid payment method on file. Use ud_cart_get_payment_methods to retrieve available payment methods.
       tags:
-      - domain-management
+      - Domain Management
       security:
       - bearerAuth: []
       requestBody:
@@ -149,7 +147,7 @@ paths:
       summary: Add tags to domains
       description: Add tags to domains in your portfolio. Creates new tags automatically if they don't exist. Supports bulk operations for up to 50 domains.
       tags:
-      - domain-management
+      - Domain Management
       security:
       - bearerAuth: []
       requestBody:
@@ -203,7 +201,7 @@ paths:
       summary: Remove tags from domains
       description: Remove tags from domains in your portfolio. Supports bulk operations for up to 50 domains.
       tags:
-      - domain-management
+      - Domain Management
       security:
       - bearerAuth: []
       requestBody:
@@ -256,7 +254,7 @@ paths:
       summary: Update domain flags
       description: Update domain flags (WHOIS privacy, transfer lock) for domains in your portfolio. Supports bulk operations for up to 50 domains.
       tags:
-      - domain-management
+      - Domain Management
       security:
       - bearerAuth: []
       requestBody:
@@ -320,7 +318,7 @@ paths:
       summary: Push domains to another user
       description: Push domains to another Unstoppable Domains user. Requires MFA (two-factor authentication) verification. The recipient must accept the transfer.
       tags:
-      - domain-management
+      - Domain Management
       security:
       - bearerAuth: []
       requestBody:
@@ -369,93 +367,6 @@ paths:
       description: Production server
 components:
   schemas:
-    PlatformOperationDomainDnsSecuritySetDnssec:
-      type: object
-      description: Configures DNSSEC DS records at the registry for a domain
-      properties:
-        id:
-          type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - DOMAIN_DNS_SECURITY_SET_DNSSEC
-        parameters:
-          type: object
-          properties:
-            domain:
-              type: string
-              description: Domain name
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
-      required:
-      - id
-      - '@type'
-      - status
-      - type
-      - parameters
-    DomainDnsRecordCreateRequestBody:
-      type: object
-      properties:
-        subName:
-          type: string
-          description: Subdomain name (e.g., "www", "mail"). Omit or leave empty for the apex domain.
-        type:
-          enum:
-          - A
-          - AAAA
-          - ALIAS
-          - CAA
-          - CNAME
-          - DNSKEY
-          - DS
-          - HTTPS
-          - IPSECKEY
-          - MX
-          - NAPTR
-          - NS
-          - PTR
-          - SOA
-          - SPF
-          - SRV
-          - SSHFP
-          - SVCB
-          - TLSA
-          - TXT
-          type: string
-          description: DNS record type. Case-insensitive — values are uppercased automatically.
-        values:
-          minItems: 1
-          type: array
-          items:
-            type: string
-            maxLength: 1000
-        ttl:
-          type: number
-          maximum: 2147483647
-          minimum: 1
-        $upsert:
-          enum:
-          - REPLACE
-          - APPEND
-          - DISALLOWED
-          type: string
-          description: 'Upsert mode for handling conflicts with existing records. Case-insensitive. REPLACE: overwrite existing record values. APPEND: add values to existing record. DISALLOWED: fail if record exists.'
-        $forceCompatibility:
-          type: boolean
-          default: false
-      required:
-      - type
-      - values
-      - ttl
-      - $forceCompatibility
-      description: Create a DNS record. The `type` and `$upsert` fields are case-insensitive (automatically uppercased).
     DomainFlagUpdateRequestBody:
       type: object
       properties:
@@ -472,85 +383,262 @@ components:
         DNS_WHOIS_PROXY:
           $ref: '#/components/schemas/DomainFlagUpdateRequestBodyFlag'
       description: Update domain flag settings. Only include the flags you want to change — omitted flags remain unchanged.
-    DomainOperationResponse:
+    PlatformOperationWebhookCreate:
       type: object
+      description: Creates a webhook subscription
       properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.DomainOperationResult
-        operation:
-          $ref: '#/components/schemas/OperationCheckResponse'
-      required:
-      - '@type'
-      - operation
-    OperationCheckResponse:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.Operation
         id:
           type: string
-          description: Operation ID
-          pattern: ^op-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
-          example: op-a1b2c3d4-e5f6-7890-abcd-ef1234567890
-        status:
-          enum:
-          - PREVIEW
-          - QUEUED
-          - PROCESSING
-          - FAILED
-          - COMPLETED
-          - CANCELLED
-          - AWAITING_UPDATES
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
           type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
         type:
           type: string
           enum:
-          - ADMIN_GENERIC
-          - DOMAIN_ADMIN_UPDATE
-          - DOMAIN_RENEW
-          - ACCOUNT_UPDATE
-          - DOMAIN_DNS_RECORD_CREATE
-          - DOMAIN_DNS_RECORD_UPDATE
-          - DOMAIN_DNS_RECORD_DELETE
-          - DOMAIN_DNS_RECORD_BATCH
-          - DOMAIN_DNS_SECURITY_ENABLE
-          - DOMAIN_DNS_SECURITY_DELETE
-          - DOMAIN_DNS_NAME_SERVER_UPDATE
-          - DOMAIN_HOSTING_UPDATE
-          - DOMAIN_HOSTING_DISABLE
-          - DOMAIN_TRANSFER_OUT
-          - DOMAIN_TRANSFER_OUT_TOGGLE
-          - DOMAIN_FLAGS_UPDATE
-          - DOMAIN_CONTACTS_UPDATE
-          - CONTACT_CREATE
-          - DOMAIN_SUGGESTION_CREATE
-          - DOMAIN_SUGGESTION_REFRESH
-          - DOMAIN_ADMIN_DNS_ZONE_MIGRATE
-        domain:
-          type: string
-        createdAtTimestamp:
-          type: number
-        lastUpdatedTimestamp:
-          type: number
-        validUntilTimestamp:
-          type: number
-        dependencies:
-          type: array
-          description: List of platform operation dependencies that make up this operation
-          items:
-            $ref: '#/components/schemas/PlatformOperationDependency'
+          - WEBHOOK_CREATE
+        parameters:
+          type: object
+          properties:
+            url:
+              type: string
+              description: Webhook callback URL
+              example: https://example.com/webhooks
+            type:
+              $ref: '#/components/schemas/WebhookType'
+          required:
+          - url
+          - type
+        result:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the created webhook
+          required:
+          - id
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
       required:
-      - '@type'
       - id
+      - '@type'
       - status
       - type
-      - createdAtTimestamp
-      - lastUpdatedTimestamp
-      - dependencies
+      - parameters
+    DomainOwnerContactTldSpecificRequestBody:
+      type: object
+      properties:
+        ca:
+          $ref: '#/components/schemas/DomainContactCiraRequestBody'
+      description: TLD-specific owner contact data. Currently only `.ca` (CIRA) is supported. Include the relevant TLD key only when registering a domain under that TLD.
+    DomainFlagStatus:
+      type: string
+      enum:
+      - ENABLED
+      - DISABLED
+    PlatformOperationDomainSetNameServers:
+      type: object
+      description: Sets the nameservers for a domain (external nameservers or revert to UD-managed)
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_SET_NAMESERVERS
+        parameters:
+          type: object
+          properties:
+            items:
+              type: array
+              items:
+                type: string
+              description: Nameserver hostnames
+              example:
+              - ns1.example.com
+              - ns2.example.com
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    CiraCanadianPresenceRequirement:
+      type: string
+      enum:
+      - CCT
+      - LGR
+      - RES
+      - ABO
+      - CCO
+      - ASS
+      - PRT
+      - TDM
+      - TRD
+      - PLT
+      - TRS
+      - LAM
+      - EDU
+      - HOP
+      - GOV
+      - INB
+      - OMK
+      - MAJ
+      description: CIRA Canadian Presence Requirement category
+    DomainUpdateDnssecConfig:
+      type: object
+      description: DNSSEC configuration for UD-managed nameservers. Enable or disable DNSSEC signing.
+      properties:
+        enabled:
+          type: boolean
+          description: Set to `true` to enable DNSSEC, `false` to disable.
+        $forceCompatibility:
+          type: boolean
+          default: false
+          description: Force compatibility mode when enabling DNSSEC.
+      required:
+      - enabled
+    DomainOwnerContactRequestBody:
+      type: object
+      properties:
+        tldData:
+          $ref: '#/components/schemas/DomainOwnerContactTldSpecificRequestBody'
+          description: TLD-specific data required for certain TLDs (e.g., CIRA requirements for .ca). Only applicable when creating a new contact (id is absent).
+        id:
+          type: string
+          description: Existing contact ID. When provided, all other fields are ignored.
+          pattern: ^ct-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+          example: ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        firstName:
+          type: string
+          maxLength: 100
+        lastName:
+          type: string
+          maxLength: 100
+        organization:
+          type: string
+          maxLength: 100
+        countryCode:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (e.g., "US", "CA", "GB"). Required when creating a new contact.
+        street:
+          type: string
+          maxLength: 100
+        city:
+          type: string
+          maxLength: 100
+        postalCode:
+          type: string
+          description: Postal/ZIP code. Validated against the provided countryCode. Required when creating a new contact.
+        stateProvince:
+          type: string
+          description: State or province. Validated against the provided countryCode. Required when creating a new contact.
+        phone:
+          $ref: '#/components/schemas/ContactPhoneRequestBody'
+        email:
+          type: string
+          maxLength: 100
+          format: email
+      description: 'Provide EITHER an existing contact `id` (format: `ct-<uuid>`) OR the full set of inline contact fields to create a new contact. When `id` is provided, all other fields are ignored. When `id` is absent, the following fields are required: firstName, lastName, countryCode, street, city, postalCode, stateProvince, phone, email. For the owner (registrant) contact, an optional `tldData` field can provide TLD-specific data (e.g., CIRA requirements for .ca domains) when creating a new contact.'
+    DomainUpdateRequestBody:
+      type: object
+      description: Comprehensive domain update — change nameservers, DNSSEC, contacts, flags, and DNS records in a single request. All fields are optional; only include sections you want to change.
+      properties:
+        nameservers:
+          $ref: '#/components/schemas/DomainUpdateNameserversConfig'
+        dnssec:
+          $ref: '#/components/schemas/DomainUpdateDnssecConfig'
+        contacts:
+          $ref: '#/components/schemas/DomainContactUpdatesRequestBody'
+        flags:
+          $ref: '#/components/schemas/DomainFlagUpdateRequestBody'
+        records:
+          $ref: '#/components/schemas/DomainUpdateRecordsConfig'
+    DnssecAlgorithm:
+      type: integer
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 10
+      - 12
+      - 13
+      - 14
+      - 15
+      - 16
+      - 17
+      - 23
+      - 252
+      - 253
+      - 254
+      description: DNSSEC algorithm identifier (RFC 8624)
+    DomainUpdateRecordItem:
+      type: object
+      description: Update an existing DNS record by ID.
+      properties:
+        id:
+          type: string
+          pattern: ^rr-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+          description: DNS record ID to update.
+          example: rr-a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        values:
+          type: array
+          items:
+            type: string
+          description: Updated record values.
+        ttl:
+          type: number
+          minimum: 1
+          maximum: 2147483647
+          description: Updated TTL in seconds.
+        $forceCompatibility:
+          type: boolean
+          default: false
+          description: Force compatibility mode.
+      required:
+      - id
+    ErrorResponse:
+      type: object
+      description: Standard error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: VALIDATION
+        message:
+          type: string
+          description: Human-readable error description
+        errors:
+          type: array
+          description: Individual errors when code is MULTIPLE_ERRORS
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+            required:
+            - code
+      required:
+      - code
     PlatformOperationStatus:
       type: string
       enum:
@@ -562,94 +650,6 @@ components:
       - CANCELLED
       - AWAITING_UPDATES
       description: Status of a platform operation dependency
-    PlatformOperationDnsRecordUpdate:
-      type: object
-      description: Updates an existing DNS record
-      properties:
-        id:
-          type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - DNS_RECORD_UPDATE
-        parameters:
-          type: object
-          properties:
-            id:
-              type: string
-              description: DNS record ID to update
-            values:
-              type: array
-              items:
-                type: string
-            ttl:
-              type: integer
-              description: Time-to-live in seconds
-          required:
-          - id
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
-      required:
-      - id
-      - '@type'
-      - status
-      - type
-      - parameters
-    ContactPhoneRequestBody:
-      type: object
-      properties:
-        number:
-          type: string
-          minLength: 6
-          maxLength: 14
-          description: Phone number digits (numeric string, 6-14 characters).
-        dialingPrefix:
-          type: string
-          description: International dialing prefix (e.g., "+1" for US/CA, "+44" for UK).
-          example: '+1'
-      required:
-      - number
-      - dialingPrefix
-      description: Phone number with international dialing prefix.
-    PlatformOperationDomainFlagLockUpdate:
-      type: object
-      description: Updates domain flag lock settings (e.g., transfer lock, delete lock)
-      properties:
-        id:
-          type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - DOMAIN_FLAG_LOCK_UPDATE
-        parameters:
-          type: object
-          properties:
-            locks:
-              $ref: '#/components/schemas/DomainFlagLocks'
-            policyLocks:
-              $ref: '#/components/schemas/DomainFlagLocks'
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
-      required:
-      - id
-      - '@type'
-      - status
-      - type
-      - parameters
     PlatformOperationDomainRegister:
       type: object
       description: Registers a new domain with the specified owner contact and optional role contacts
@@ -735,9 +735,190 @@ components:
       - status
       - type
       - parameters
-    PlatformOperationDomainSetNameServers:
+    OperationCheckResponse:
       type: object
-      description: Sets the nameservers for a domain (external nameservers or revert to UD-managed)
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.Operation
+        id:
+          type: string
+          description: Operation ID
+          pattern: ^op-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+          example: op-a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        status:
+          enum:
+          - PREVIEW
+          - QUEUED
+          - PROCESSING
+          - FAILED
+          - COMPLETED
+          - CANCELLED
+          - AWAITING_UPDATES
+          type: string
+        type:
+          type: string
+          enum:
+          - ADMIN_GENERIC
+          - DOMAIN_ADMIN_UPDATE
+          - DOMAIN_RENEW
+          - ACCOUNT_UPDATE
+          - DOMAIN_DNS_RECORD_CREATE
+          - DOMAIN_DNS_RECORD_UPDATE
+          - DOMAIN_DNS_RECORD_DELETE
+          - DOMAIN_DNS_RECORD_BATCH
+          - DOMAIN_DNS_SECURITY_ENABLE
+          - DOMAIN_DNS_SECURITY_DELETE
+          - DOMAIN_DNS_NAME_SERVER_UPDATE
+          - DOMAIN_HOSTING_UPDATE
+          - DOMAIN_HOSTING_DISABLE
+          - DOMAIN_TRANSFER_OUT
+          - DOMAIN_TRANSFER_OUT_TOGGLE
+          - DOMAIN_FLAGS_UPDATE
+          - DOMAIN_CONTACTS_UPDATE
+          - CONTACT_CREATE
+          - DOMAIN_SUGGESTION_CREATE
+          - DOMAIN_SUGGESTION_REFRESH
+          - DOMAIN_ADMIN_DNS_ZONE_MIGRATE
+        domain:
+          type: string
+        createdAtTimestamp:
+          type: number
+        lastUpdatedTimestamp:
+          type: number
+        validUntilTimestamp:
+          type: number
+        dependencies:
+          type: array
+          description: List of platform operation dependencies that make up this operation
+          items:
+            $ref: '#/components/schemas/PlatformOperationDependency'
+      required:
+      - '@type'
+      - id
+      - status
+      - type
+      - createdAtTimestamp
+      - lastUpdatedTimestamp
+      - dependencies
+    CiraLanguageCode:
+      type: string
+      enum:
+      - en_US
+      - fr_CA
+      - en
+      - fr
+      description: CIRA preferred language code
+    DomainUpdateRecordsConfig:
+      type: object
+      description: Batch DNS record operations. Create, update, and/or delete records in a single request.
+      properties:
+        create:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainDnsRecordCreateRequestBody'
+          description: Records to create.
+        update:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainUpdateRecordItem'
+          description: Records to update by ID.
+        delete:
+          type: array
+          items:
+            type: string
+            pattern: ^rr-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+          description: Record IDs to delete.
+    DomainOperationResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainOperationResult
+        operation:
+          $ref: '#/components/schemas/OperationCheckResponse'
+      required:
+      - '@type'
+      - operation
+    DomainUpdateNameserversConfig:
+      type: object
+      description: Nameserver configuration. Provide `items` to switch to custom nameservers, or set `$revertToManaged` to switch back to UD-managed nameservers. These options are mutually exclusive.
+      properties:
+        items:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          maxItems: 20
+          uniqueItems: true
+          description: Custom nameserver hostnames.
+          example:
+          - ns1.example.com
+          - ns2.example.com
+        dnssec:
+          $ref: '#/components/schemas/DomainDnsSecruityCreateRequestBodyDnssec'
+        $revertToManaged:
+          type: boolean
+          description: Set to `true` to revert to UD-managed nameservers. Mutually exclusive with `items`.
+    DomainContactUpdatesRequestBody:
+      type: object
+      properties:
+        owner:
+          $ref: '#/components/schemas/DomainOwnerContactRequestBody'
+        admin:
+          $ref: '#/components/schemas/DomainContactRequestBody'
+        tech:
+          $ref: '#/components/schemas/DomainContactRequestBody'
+        billing:
+          $ref: '#/components/schemas/DomainContactRequestBody'
+      description: Update contact assignments for domain roles. Each role accepts either an existing contact ID or inline contact fields to create a new contact. Only include roles you want to update — omitted roles remain unchanged.
+    ContactPhoneRequestBody:
+      type: object
+      properties:
+        number:
+          type: string
+          minLength: 6
+          maxLength: 14
+          description: Phone number digits (numeric string, 6-14 characters).
+        dialingPrefix:
+          type: string
+          description: International dialing prefix (e.g., "+1" for US/CA, "+44" for UK).
+          example: '+1'
+      required:
+      - number
+      - dialingPrefix
+      description: Phone number with international dialing prefix.
+    DnssecDigestType:
+      type: integer
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      description: DNSSEC digest type identifier (RFC 8624)
+    DomainContactCiraRequestBody:
+      type: object
+      properties:
+        registrantAgreementAcknowledged:
+          type: boolean
+          description: Must be `true` to acknowledge the CIRA registrant agreement. Submitting `false` will fail validation.
+          const: true
+        preferredLanguageCode:
+          $ref: '#/components/schemas/CiraLanguageCode'
+        canadianPresenceRequirement:
+          $ref: '#/components/schemas/CiraCanadianPresenceRequirement'
+      required:
+      - registrantAgreementAcknowledged
+      - preferredLanguageCode
+      - canadianPresenceRequirement
+      description: CIRA-specific data required for .ca domain registration. All fields are required.
+    PlatformOperationDnsRecordUpdate:
+      type: object
+      description: Updates an existing DNS record
       properties:
         id:
           type: string
@@ -751,18 +932,22 @@ components:
         type:
           type: string
           enum:
-          - DOMAIN_SET_NAMESERVERS
+          - DNS_RECORD_UPDATE
         parameters:
           type: object
           properties:
-            items:
+            id:
+              type: string
+              description: DNS record ID to update
+            values:
               type: array
               items:
                 type: string
-              description: Nameserver hostnames
-              example:
-              - ns1.example.com
-              - ns2.example.com
+            ttl:
+              type: integer
+              description: Time-to-live in seconds
+          required:
+          - id
         error:
           $ref: '#/components/schemas/OperationDependencyError'
       required:
@@ -771,19 +956,70 @@ components:
       - status
       - type
       - parameters
-    ContactAssignment:
+    PlatformOperationDnsRecordDelete:
       type: object
-      description: Reference to an existing or newly created contact
+      description: Deletes a DNS record
       properties:
-        new:
-          type: boolean
-          description: Whether this contact is being newly created as part of this operation
         id:
           type: string
-          description: Contact ID (present when new is false)
-          example: con_abc12345-1234-1234-1234-abc123456789
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DNS_RECORD_DELETE
+        parameters:
+          type: object
+          properties:
+            id:
+              type: string
+              description: DNS record ID to delete
+          required:
+          - id
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
       required:
-      - new
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    PlatformOperationDomainDnsSecuritySetDnssec:
+      type: object
+      description: Configures DNSSEC DS records at the registry for a domain
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_DNS_SECURITY_SET_DNSSEC
+        parameters:
+          type: object
+          properties:
+            domain:
+              type: string
+              description: Domain name
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
     PlatformOperationDomainDnsSecurityDeleteDnssec:
       type: object
       description: Removes DNSSEC DS records from the registry for a domain
@@ -815,200 +1051,23 @@ components:
       - status
       - type
       - parameters
-    DomainOwnerContactRequestBody:
-      type: object
-      properties:
-        tldData:
-          $ref: '#/components/schemas/DomainOwnerContactTldSpecificRequestBody'
-          description: TLD-specific data required for certain TLDs (e.g., CIRA requirements for .ca). Only applicable when creating a new contact (id is absent).
-        id:
-          type: string
-          description: Existing contact ID. When provided, all other fields are ignored.
-          pattern: ^ct-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
-          example: ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890
-        firstName:
-          type: string
-          maxLength: 100
-        lastName:
-          type: string
-          maxLength: 100
-        organization:
-          type: string
-          maxLength: 100
-        countryCode:
-          type: string
-          description: ISO 3166-1 alpha-2 country code (e.g., "US", "CA", "GB"). Required when creating a new contact.
-        street:
-          type: string
-          maxLength: 100
-        city:
-          type: string
-          maxLength: 100
-        postalCode:
-          type: string
-          description: Postal/ZIP code. Validated against the provided countryCode. Required when creating a new contact.
-        stateProvince:
-          type: string
-          description: State or province. Validated against the provided countryCode. Required when creating a new contact.
-        phone:
-          $ref: '#/components/schemas/ContactPhoneRequestBody'
-        email:
-          type: string
-          maxLength: 100
-          format: email
-      description: 'Provide EITHER an existing contact `id` (format: `ct-<uuid>`) OR the full set of inline contact fields to create a new contact. When `id` is provided, all other fields are ignored. When `id` is absent, the following fields are required: firstName, lastName, countryCode, street, city, postalCode, stateProvince, phone, email. For the owner (registrant) contact, an optional `tldData` field can provide TLD-specific data (e.g., CIRA requirements for .ca domains) when creating a new contact.'
-    ErrorResponse:
-      type: object
-      description: Standard error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: VALIDATION
-        message:
-          type: string
-          description: Human-readable error description
-        errors:
-          type: array
-          description: Individual errors when code is MULTIPLE_ERRORS
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-              message:
-                type: string
-            required:
-            - code
-      required:
-      - code
-    WebhookType:
+    ContactPurpose:
       type: string
       enum:
-      - OPERATION_FINISHED
-      - OPERATION_ACTION_REQUIRED
-      - OPERATION_CREATED
-    DnsRecordType:
-      type: string
-      enum:
-      - A
-      - AAAA
-      - ALIAS
-      - CAA
-      - CNAME
-      - DNSKEY
-      - DS
-      - HTTPS
-      - IPSECKEY
-      - MX
-      - NAPTR
-      - NS
-      - PTR
-      - SOA
-      - SPF
-      - SRV
-      - SSHFP
-      - SVCB
-      - TLSA
-      - TXT
-    DnssecDigestType:
-      type: integer
-      enum:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      description: DNSSEC digest type identifier (RFC 8624)
-    DomainUpdateDnssecConfig:
+      - OWNER
+      - ADMIN
+      - TECH
+      - BILLING
+    NonRegistrantContacts:
       type: object
-      description: DNSSEC configuration for UD-managed nameservers. Enable or disable DNSSEC signing.
+      description: Non-registrant contact role assignments (admin, billing, tech)
       properties:
-        enabled:
-          type: boolean
-          description: Set to `true` to enable DNSSEC, `false` to disable.
-        $forceCompatibility:
-          type: boolean
-          default: false
-          description: Force compatibility mode when enabling DNSSEC.
-      required:
-      - enabled
-    PlatformOperationWebhookDelete:
-      type: object
-      description: Deletes a webhook subscription
-      properties:
-        id:
-          type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - WEBHOOK_DELETE
-        parameters:
-          type: object
-          properties:
-            id:
-              type: string
-              description: Webhook ID to delete
-          required:
-          - id
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
-      required:
-      - id
-      - '@type'
-      - status
-      - type
-      - parameters
-    DomainFlagStatus:
-      type: string
-      enum:
-      - ENABLED
-      - DISABLED
-    DomainUpdateRequestBody:
-      type: object
-      description: Comprehensive domain update — change nameservers, DNSSEC, contacts, flags, and DNS records in a single request. All fields are optional; only include sections you want to change.
-      properties:
-        nameservers:
-          $ref: '#/components/schemas/DomainUpdateNameserversConfig'
-        dnssec:
-          $ref: '#/components/schemas/DomainUpdateDnssecConfig'
-        contacts:
-          $ref: '#/components/schemas/DomainContactUpdatesRequestBody'
-        flags:
-          $ref: '#/components/schemas/DomainFlagUpdateRequestBody'
-        records:
-          $ref: '#/components/schemas/DomainUpdateRecordsConfig'
-    DnssecAlgorithm:
-      type: integer
-      enum:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-      - 8
-      - 10
-      - 12
-      - 13
-      - 14
-      - 15
-      - 16
-      - 17
-      - 23
-      - 252
-      - 253
-      - 254
-      description: DNSSEC algorithm identifier (RFC 8624)
+        admin:
+          $ref: '#/components/schemas/ContactAssignment'
+        billing:
+          $ref: '#/components/schemas/ContactAssignment'
+        tech:
+          $ref: '#/components/schemas/ContactAssignment'
     PlatformOperationDomainDnsContactSet:
       type: object
       description: Updates contact role assignments for the domain
@@ -1045,14 +1104,235 @@ components:
       - status
       - type
       - parameters
-    CiraLanguageCode:
+    ContactAssignment:
+      type: object
+      description: Reference to an existing or newly created contact
+      properties:
+        new:
+          type: boolean
+          description: Whether this contact is being newly created as part of this operation
+        id:
+          type: string
+          description: Contact ID (present when new is false)
+          example: con_abc12345-1234-1234-1234-abc123456789
+      required:
+      - new
+    OperationDependencyError:
+      type: object
+      description: Error details for a failed operation dependency
+      properties:
+        code:
+          type: string
+          description: Error code identifying the failure type
+        message:
+          type: string
+          description: Human-readable error description
+      required:
+      - code
+      - message
+    DnsRecordType:
       type: string
       enum:
-      - en_US
-      - fr_CA
-      - en
-      - fr
-      description: CIRA preferred language code
+      - A
+      - AAAA
+      - ALIAS
+      - CAA
+      - CNAME
+      - DNSKEY
+      - DS
+      - HTTPS
+      - IPSECKEY
+      - MX
+      - NAPTR
+      - NS
+      - PTR
+      - SOA
+      - SPF
+      - SRV
+      - SSHFP
+      - SVCB
+      - TLSA
+      - TXT
+    DomainDnsSecruityCreateRequestBodyDnssec:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainDnsSecruityCreateRequestBodyDnssecItem'
+      required:
+      - items
+    DomainFlagLocks:
+      type: object
+      description: Map of domain flag names to boolean lock values. Keys are DomainFlagType values.
+      additionalProperties:
+        type: boolean
+      example:
+        DNS_TRANSFER_OUT: true
+        DNS_DELETE: false
+    WebhookType:
+      type: string
+      enum:
+      - OPERATION_FINISHED
+      - OPERATION_ACTION_REQUIRED
+      - OPERATION_CREATED
+    DomainContactRequestBody:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Existing contact ID. When provided, all other fields are ignored.
+          pattern: ^ct-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+          example: ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        firstName:
+          type: string
+          maxLength: 100
+        lastName:
+          type: string
+          maxLength: 100
+        organization:
+          type: string
+          maxLength: 100
+        countryCode:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (e.g., "US", "CA", "GB"). Required when creating a new contact.
+        street:
+          type: string
+          maxLength: 100
+        city:
+          type: string
+          maxLength: 100
+        postalCode:
+          type: string
+          description: Postal/ZIP code. Validated against the provided countryCode. Required when creating a new contact.
+        stateProvince:
+          type: string
+          description: State or province. Validated against the provided countryCode. Required when creating a new contact.
+        phone:
+          $ref: '#/components/schemas/ContactPhoneRequestBody'
+        email:
+          type: string
+          maxLength: 100
+          format: email
+      description: 'Provide EITHER an existing contact `id` (format: `ct-<uuid>`) OR the full set of inline contact fields to create a new contact. When `id` is provided, all other fields are ignored. When `id` is absent, the following fields are required: firstName, lastName, countryCode, street, city, postalCode, stateProvince, phone, email.'
+    DomainDnsSecruityCreateRequestBodyDnssecItem:
+      type: object
+      properties:
+        keyTag:
+          type: number
+          minimum: 0
+          maximum: 65535
+        algorithm:
+          $ref: '#/components/schemas/DnssecAlgorithm'
+        digestType:
+          $ref: '#/components/schemas/DnssecDigestType'
+        digest:
+          type: string
+          minLength: 1
+          maxLength: 120
+      required:
+      - keyTag
+      - algorithm
+      - digestType
+      - digest
+    PlatformOperationWebhookDelete:
+      type: object
+      description: Deletes a webhook subscription
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - WEBHOOK_DELETE
+        parameters:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Webhook ID to delete
+          required:
+          - id
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    PlatformOperationDependency:
+      description: A platform operation dependency. Discriminated by the `type` field — each type has its own `parameters` and `result` shape.
+      oneOf:
+      - $ref: '#/components/schemas/PlatformOperationDomainRegister'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsRenew'
+      - $ref: '#/components/schemas/PlatformOperationDnsRecordCreate'
+      - $ref: '#/components/schemas/PlatformOperationDnsRecordUpdate'
+      - $ref: '#/components/schemas/PlatformOperationDnsRecordDelete'
+      - $ref: '#/components/schemas/PlatformOperationDomainSetNameServers'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecuritySetDnssec'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecurityDeleteDnssec'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecurityUpdateZone'
+      - $ref: '#/components/schemas/PlatformOperationDomainFlagLockUpdate'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsContactSet'
+      - $ref: '#/components/schemas/PlatformOperationContactCreate'
+      - $ref: '#/components/schemas/PlatformOperationWebhookCreate'
+      - $ref: '#/components/schemas/PlatformOperationWebhookDelete'
+      discriminator:
+        propertyName: type
+        mapping:
+          DOMAIN_REGISTER: '#/components/schemas/PlatformOperationDomainRegister'
+          DOMAIN_DNS_RENEW: '#/components/schemas/PlatformOperationDomainDnsRenew'
+          DNS_RECORD_CREATE: '#/components/schemas/PlatformOperationDnsRecordCreate'
+          DNS_RECORD_UPDATE: '#/components/schemas/PlatformOperationDnsRecordUpdate'
+          DNS_RECORD_DELETE: '#/components/schemas/PlatformOperationDnsRecordDelete'
+          DOMAIN_SET_NAMESERVERS: '#/components/schemas/PlatformOperationDomainSetNameServers'
+          DOMAIN_DNS_SECURITY_SET_DNSSEC: '#/components/schemas/PlatformOperationDomainDnsSecuritySetDnssec'
+          DOMAIN_DNS_SECURITY_DELETE_DNSSEC: '#/components/schemas/PlatformOperationDomainDnsSecurityDeleteDnssec'
+          DOMAIN_DNS_SECURITY_UPDATE_ZONE: '#/components/schemas/PlatformOperationDomainDnsSecurityUpdateZone'
+          DOMAIN_FLAG_LOCK_UPDATE: '#/components/schemas/PlatformOperationDomainFlagLockUpdate'
+          DOMAIN_DNS_CONTACT_SET: '#/components/schemas/PlatformOperationDomainDnsContactSet'
+          CONTACT_CREATE: '#/components/schemas/PlatformOperationContactCreate'
+          WEBHOOK_CREATE: '#/components/schemas/PlatformOperationWebhookCreate'
+          WEBHOOK_DELETE: '#/components/schemas/PlatformOperationWebhookDelete'
+    PlatformOperationDomainDnsSecurityUpdateZone:
+      type: object
+      description: Updates the DNS zone configuration for DNSSEC signing
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_DNS_SECURITY_UPDATE_ZONE
+        parameters:
+          type: object
+          properties:
+            domain:
+              type: string
+              description: Domain name
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
     PlatformOperationDomainDnsRenew:
       type: object
       description: Renews a domain for the specified period
@@ -1087,6 +1367,94 @@ components:
       - status
       - type
       - parameters
+    PlatformOperationDomainFlagLockUpdate:
+      type: object
+      description: Updates domain flag lock settings (e.g., transfer lock, delete lock)
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_FLAG_LOCK_UPDATE
+        parameters:
+          type: object
+          properties:
+            locks:
+              $ref: '#/components/schemas/DomainFlagLocks'
+            policyLocks:
+              $ref: '#/components/schemas/DomainFlagLocks'
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    DomainDnsRecordCreateRequestBody:
+      type: object
+      properties:
+        subName:
+          type: string
+          description: Subdomain name (e.g., "www", "mail"). Omit or leave empty for the apex domain.
+        type:
+          enum:
+          - A
+          - AAAA
+          - ALIAS
+          - CAA
+          - CNAME
+          - DNSKEY
+          - DS
+          - HTTPS
+          - IPSECKEY
+          - MX
+          - NAPTR
+          - NS
+          - PTR
+          - SOA
+          - SPF
+          - SRV
+          - SSHFP
+          - SVCB
+          - TLSA
+          - TXT
+          type: string
+          description: DNS record type. Case-insensitive — values are uppercased automatically.
+        values:
+          minItems: 1
+          type: array
+          items:
+            type: string
+            maxLength: 1000
+        ttl:
+          type: number
+          maximum: 2147483647
+          minimum: 1
+        $upsert:
+          enum:
+          - REPLACE
+          - APPEND
+          - DISALLOWED
+          type: string
+          description: 'Upsert mode for handling conflicts with existing records. Case-insensitive. REPLACE: overwrite existing record values. APPEND: add values to existing record. DISALLOWED: fail if record exists.'
+        $forceCompatibility:
+          type: boolean
+          default: false
+      required:
+      - type
+      - values
+      - ttl
+      - $forceCompatibility
+      description: Create a DNS record. The `type` and `$upsert` fields are case-insensitive (automatically uppercased).
     PlatformOperationDnsRecordCreate:
       type: object
       description: Creates a new DNS record for the domain
@@ -1143,277 +1511,6 @@ components:
       - status
       - type
       - parameters
-    PlatformOperationDnsRecordDelete:
-      type: object
-      description: Deletes a DNS record
-      properties:
-        id:
-          type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - DNS_RECORD_DELETE
-        parameters:
-          type: object
-          properties:
-            id:
-              type: string
-              description: DNS record ID to delete
-          required:
-          - id
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
-      required:
-      - id
-      - '@type'
-      - status
-      - type
-      - parameters
-    OperationDependencyError:
-      type: object
-      description: Error details for a failed operation dependency
-      properties:
-        code:
-          type: string
-          description: Error code identifying the failure type
-        message:
-          type: string
-          description: Human-readable error description
-      required:
-      - code
-      - message
-    DomainUpdateNameserversConfig:
-      type: object
-      description: Nameserver configuration. Provide `items` to switch to custom nameservers, or set `$revertToManaged` to switch back to UD-managed nameservers. These options are mutually exclusive.
-      properties:
-        items:
-          type: array
-          items:
-            type: string
-          minItems: 1
-          maxItems: 20
-          uniqueItems: true
-          description: Custom nameserver hostnames.
-          example:
-          - ns1.example.com
-          - ns2.example.com
-        dnssec:
-          $ref: '#/components/schemas/DomainDnsSecruityCreateRequestBodyDnssec'
-        $revertToManaged:
-          type: boolean
-          description: Set to `true` to revert to UD-managed nameservers. Mutually exclusive with `items`.
-    PlatformOperationWebhookCreate:
-      type: object
-      description: Creates a webhook subscription
-      properties:
-        id:
-          type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - WEBHOOK_CREATE
-        parameters:
-          type: object
-          properties:
-            url:
-              type: string
-              description: Webhook callback URL
-              example: https://example.com/webhooks
-            type:
-              $ref: '#/components/schemas/WebhookType'
-          required:
-          - url
-          - type
-        result:
-          type: object
-          properties:
-            id:
-              type: string
-              description: ID of the created webhook
-          required:
-          - id
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
-      required:
-      - id
-      - '@type'
-      - status
-      - type
-      - parameters
-    DomainOwnerContactTldSpecificRequestBody:
-      type: object
-      properties:
-        ca:
-          $ref: '#/components/schemas/DomainContactCiraRequestBody'
-      description: TLD-specific owner contact data. Currently only `.ca` (CIRA) is supported. Include the relevant TLD key only when registering a domain under that TLD.
-    PlatformOperationDependency:
-      description: A platform operation dependency. Discriminated by the `type` field — each type has its own `parameters` and `result` shape.
-      oneOf:
-      - $ref: '#/components/schemas/PlatformOperationDomainRegister'
-      - $ref: '#/components/schemas/PlatformOperationDomainDnsRenew'
-      - $ref: '#/components/schemas/PlatformOperationDnsRecordCreate'
-      - $ref: '#/components/schemas/PlatformOperationDnsRecordUpdate'
-      - $ref: '#/components/schemas/PlatformOperationDnsRecordDelete'
-      - $ref: '#/components/schemas/PlatformOperationDomainSetNameServers'
-      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecuritySetDnssec'
-      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecurityDeleteDnssec'
-      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecurityUpdateZone'
-      - $ref: '#/components/schemas/PlatformOperationDomainFlagLockUpdate'
-      - $ref: '#/components/schemas/PlatformOperationDomainDnsContactSet'
-      - $ref: '#/components/schemas/PlatformOperationContactCreate'
-      - $ref: '#/components/schemas/PlatformOperationWebhookCreate'
-      - $ref: '#/components/schemas/PlatformOperationWebhookDelete'
-      discriminator:
-        propertyName: type
-        mapping:
-          DOMAIN_REGISTER: '#/components/schemas/PlatformOperationDomainRegister'
-          DOMAIN_DNS_RENEW: '#/components/schemas/PlatformOperationDomainDnsRenew'
-          DNS_RECORD_CREATE: '#/components/schemas/PlatformOperationDnsRecordCreate'
-          DNS_RECORD_UPDATE: '#/components/schemas/PlatformOperationDnsRecordUpdate'
-          DNS_RECORD_DELETE: '#/components/schemas/PlatformOperationDnsRecordDelete'
-          DOMAIN_SET_NAMESERVERS: '#/components/schemas/PlatformOperationDomainSetNameServers'
-          DOMAIN_DNS_SECURITY_SET_DNSSEC: '#/components/schemas/PlatformOperationDomainDnsSecuritySetDnssec'
-          DOMAIN_DNS_SECURITY_DELETE_DNSSEC: '#/components/schemas/PlatformOperationDomainDnsSecurityDeleteDnssec'
-          DOMAIN_DNS_SECURITY_UPDATE_ZONE: '#/components/schemas/PlatformOperationDomainDnsSecurityUpdateZone'
-          DOMAIN_FLAG_LOCK_UPDATE: '#/components/schemas/PlatformOperationDomainFlagLockUpdate'
-          DOMAIN_DNS_CONTACT_SET: '#/components/schemas/PlatformOperationDomainDnsContactSet'
-          CONTACT_CREATE: '#/components/schemas/PlatformOperationContactCreate'
-          WEBHOOK_CREATE: '#/components/schemas/PlatformOperationWebhookCreate'
-          WEBHOOK_DELETE: '#/components/schemas/PlatformOperationWebhookDelete'
-    DomainFlagLocks:
-      type: object
-      description: Map of domain flag names to boolean lock values. Keys are DomainFlagType values.
-      additionalProperties:
-        type: boolean
-      example:
-        DNS_TRANSFER_OUT: true
-        DNS_DELETE: false
-    DomainContactCiraRequestBody:
-      type: object
-      properties:
-        registrantAgreementAcknowledged:
-          type: boolean
-          description: Must be `true` to acknowledge the CIRA registrant agreement. Submitting `false` will fail validation.
-          const: true
-        preferredLanguageCode:
-          $ref: '#/components/schemas/CiraLanguageCode'
-        canadianPresenceRequirement:
-          $ref: '#/components/schemas/CiraCanadianPresenceRequirement'
-      required:
-      - registrantAgreementAcknowledged
-      - preferredLanguageCode
-      - canadianPresenceRequirement
-      description: CIRA-specific data required for .ca domain registration. All fields are required.
-    NonRegistrantContacts:
-      type: object
-      description: Non-registrant contact role assignments (admin, billing, tech)
-      properties:
-        admin:
-          $ref: '#/components/schemas/ContactAssignment'
-        billing:
-          $ref: '#/components/schemas/ContactAssignment'
-        tech:
-          $ref: '#/components/schemas/ContactAssignment'
-    DomainDnsSecruityCreateRequestBodyDnssec:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainDnsSecruityCreateRequestBodyDnssecItem'
-      required:
-      - items
-    DomainUpdateRecordItem:
-      type: object
-      description: Update an existing DNS record by ID.
-      properties:
-        id:
-          type: string
-          pattern: ^rr-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
-          description: DNS record ID to update.
-          example: rr-a1b2c3d4-e5f6-7890-abcd-ef1234567890
-        values:
-          type: array
-          items:
-            type: string
-          description: Updated record values.
-        ttl:
-          type: number
-          minimum: 1
-          maximum: 2147483647
-          description: Updated TTL in seconds.
-        $forceCompatibility:
-          type: boolean
-          default: false
-          description: Force compatibility mode.
-      required:
-      - id
-    DomainUpdateRecordsConfig:
-      type: object
-      description: Batch DNS record operations. Create, update, and/or delete records in a single request.
-      properties:
-        create:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainDnsRecordCreateRequestBody'
-          description: Records to create.
-        update:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainUpdateRecordItem'
-          description: Records to update by ID.
-        delete:
-          type: array
-          items:
-            type: string
-            pattern: ^rr-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
-          description: Record IDs to delete.
-    DomainDnsSecruityCreateRequestBodyDnssecItem:
-      type: object
-      properties:
-        keyTag:
-          type: number
-          minimum: 0
-          maximum: 65535
-        algorithm:
-          $ref: '#/components/schemas/DnssecAlgorithm'
-        digestType:
-          $ref: '#/components/schemas/DnssecDigestType'
-        digest:
-          type: string
-          minLength: 1
-          maxLength: 120
-      required:
-      - keyTag
-      - algorithm
-      - digestType
-      - digest
-    DomainContactUpdatesRequestBody:
-      type: object
-      properties:
-        owner:
-          $ref: '#/components/schemas/DomainOwnerContactRequestBody'
-        admin:
-          $ref: '#/components/schemas/DomainContactRequestBody'
-        tech:
-          $ref: '#/components/schemas/DomainContactRequestBody'
-        billing:
-          $ref: '#/components/schemas/DomainContactRequestBody'
-      description: Update contact assignments for domain roles. Each role accepts either an existing contact ID or inline contact fields to create a new contact. Only include roles you want to update — omitted roles remain unchanged.
     DomainFlagUpdateRequestBodyFlag:
       type: object
       properties:
@@ -1421,167 +1518,6 @@ components:
           $ref: '#/components/schemas/DomainFlagStatus'
       required:
       - status
-    DomainContactRequestBody:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Existing contact ID. When provided, all other fields are ignored.
-          pattern: ^ct-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
-          example: ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890
-        firstName:
-          type: string
-          maxLength: 100
-        lastName:
-          type: string
-          maxLength: 100
-        organization:
-          type: string
-          maxLength: 100
-        countryCode:
-          type: string
-          description: ISO 3166-1 alpha-2 country code (e.g., "US", "CA", "GB"). Required when creating a new contact.
-        street:
-          type: string
-          maxLength: 100
-        city:
-          type: string
-          maxLength: 100
-        postalCode:
-          type: string
-          description: Postal/ZIP code. Validated against the provided countryCode. Required when creating a new contact.
-        stateProvince:
-          type: string
-          description: State or province. Validated against the provided countryCode. Required when creating a new contact.
-        phone:
-          $ref: '#/components/schemas/ContactPhoneRequestBody'
-        email:
-          type: string
-          maxLength: 100
-          format: email
-      description: 'Provide EITHER an existing contact `id` (format: `ct-<uuid>`) OR the full set of inline contact fields to create a new contact. When `id` is provided, all other fields are ignored. When `id` is absent, the following fields are required: firstName, lastName, countryCode, street, city, postalCode, stateProvince, phone, email.'
-    PlatformOperationDomainDnsSecurityUpdateZone:
-      type: object
-      description: Updates the DNS zone configuration for DNSSEC signing
-      properties:
-        id:
-          type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - DOMAIN_DNS_SECURITY_UPDATE_ZONE
-        parameters:
-          type: object
-          properties:
-            domain:
-              type: string
-              description: Domain name
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
-      required:
-      - id
-      - '@type'
-      - status
-      - type
-      - parameters
-    ContactPurpose:
-      type: string
-      enum:
-      - OWNER
-      - ADMIN
-      - TECH
-      - BILLING
-    CiraCanadianPresenceRequirement:
-      type: string
-      enum:
-      - CCT
-      - LGR
-      - RES
-      - ABO
-      - CCO
-      - ASS
-      - PRT
-      - TDM
-      - TRD
-      - PLT
-      - TRS
-      - LAM
-      - EDU
-      - HOP
-      - GOV
-      - INB
-      - OMK
-      - MAJ
-      description: CIRA Canadian Presence Requirement category
-    AutoRenewalUpdateResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              success:
-                type: boolean
-                description: Whether the operation succeeded
-              error:
-                type: string
-                description: Error message if failed
-          description: Results for each domain
-        successCount:
-          type: number
-          description: Number of successful updates
-        failureCount:
-          type: number
-          description: Number of failed updates
-    PushDomainsResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Whether any domains were successfully pushed
-        pushedDomains:
-          type: array
-          items:
-            type: string
-          description: Domains that were successfully initiated for push
-        failedDomains:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              reason:
-                type: string
-                enum:
-                - not_owned
-                - not_dns
-                - pending_push
-                - expired
-                - ineligible
-                description: Reason the domain could not be pushed
-              message:
-                type: string
-                description: Human-readable error message
-          description: Domains that could not be pushed with reasons
-        targetAccountId:
-          type: string
-          description: The target account ID
-        message:
-          type: string
-          description: Human-readable summary message
     AddDomainTagsResponse:
       type: object
       properties:
@@ -1674,6 +1610,68 @@ components:
         failureCount:
           type: number
           description: Number of domains that failed
+    AutoRenewalUpdateResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+                description: Whether the operation succeeded
+              error:
+                type: string
+                description: Error message if failed
+          description: Results for each domain
+        successCount:
+          type: number
+          description: Number of successful updates
+        failureCount:
+          type: number
+          description: Number of failed updates
+    PushDomainsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether any domains were successfully pushed
+        pushedDomains:
+          type: array
+          items:
+            type: string
+          description: Domains that were successfully initiated for push
+        failedDomains:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              reason:
+                type: string
+                enum:
+                - not_owned
+                - not_dns
+                - pending_push
+                - expired
+                - ineligible
+                description: Reason the domain could not be pushed
+              message:
+                type: string
+                description: Human-readable error message
+          description: Domains that could not be pushed with reasons
+        targetAccountId:
+          type: string
+          description: The target account ID
+        message:
+          type: string
+          description: Human-readable summary message
   securitySchemes:
     bearer:
       scheme: bearer
