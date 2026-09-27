@@ -156,53 +156,18 @@ paths:
       description: Retrieve details for a specific top-level domain (TLD) including its naming system and registration availability.
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      description: Standard error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: VALIDATION
-        message:
-          type: string
-          description: Human-readable error description
-        errors:
-          type: array
-          description: Individual errors when code is MULTIPLE_ERRORS
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-              message:
-                type: string
-            required:
-            - code
-      required:
-      - code
-    TldResponse:
+    TldDnsSecurityConfigurationResponse:
       type: object
       properties:
         '@type':
           type: string
           enum:
-          - unstoppabledomains.com/partner.v3.Tld
-        name:
-          type: string
-        namingSystem:
-          enum:
-          - UNS
-          - ICANN
-          - ENS
-          type: string
-        canRegister:
-          type: boolean
+          - unstoppabledomains.com/partner.v3.TldDnsSecurityConfiguration
+        dnssec:
+          $ref: '#/components/schemas/TldDnsSecurityConfigurationDnssecResponse'
       required:
       - '@type'
-      - name
-      - namingSystem
-      - canRegister
+      - dnssec
     DnssecAlgorithm:
       type: integer
       enum:
@@ -243,18 +208,6 @@ components:
       - supported
       - algorithms
       - digestTypes
-    TldDnsSecurityConfigurationResponse:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.TldDnsSecurityConfiguration
-        dnssec:
-          $ref: '#/components/schemas/TldDnsSecurityConfigurationDnssecResponse'
-      required:
-      - '@type'
-      - dnssec
     TldListResponse:
       type: object
       properties:
@@ -269,6 +222,38 @@ components:
       required:
       - '@type'
       - items
+    TldResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.Tld
+        name:
+          type: string
+        namingSystem:
+          enum:
+          - UNS
+          - ICANN
+          - ENS
+          type: string
+        canRegister:
+          type: boolean
+      required:
+      - '@type'
+      - name
+      - namingSystem
+      - canRegister
+    DnssecDigestType:
+      type: integer
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      description: DNSSEC digest type identifier (RFC 8624)
     TldDnsSecurityConfigurationDnssecAlgorithmResponse:
       type: object
       properties:
@@ -289,16 +274,31 @@ components:
       required:
       - id
       - name
-    DnssecDigestType:
-      type: integer
-      enum:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      description: DNSSEC digest type identifier (RFC 8624)
+    ErrorResponse:
+      type: object
+      description: Standard error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: VALIDATION
+        message:
+          type: string
+          description: Human-readable error description
+        errors:
+          type: array
+          description: Individual errors when code is MULTIPLE_ERRORS
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+            required:
+            - code
+      required:
+      - code
   securitySchemes:
     bearer:
       scheme: bearer

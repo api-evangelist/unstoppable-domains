@@ -76,34 +76,14 @@ paths:
     - url: https://api.ud-sandbox.com/partner/v3
       description: Sandbox
 components:
-  examples:
-    ValidationError:
-      description: Validation error due to incorrect parameters.
-      value:
-        code: VALIDATION
   schemas:
-    ErrorResponse:
-      oneOf:
-      - $ref: '#/components/schemas/ErrorResponseSingle'
-      - $ref: '#/components/schemas/ErrorResponseMulti'
-    ErrorResponseMulti:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - MULTIPLE_ERRORS
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponseContext'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponseSingle'
-      required:
-      - code
-      - errors
+    DomainPriceType:
+      type: string
+      enum:
+      - STANDARD
+      - PREMIUM
+      - DEFERRED
+      description: "- `STANDARD`: Domain is priced using the default, standard pricing algorithm\n- `PREMIUM`: Domain is considered premium by the registry and pricing may differ from the standard pricing\n- `DEFERRED`: Domain pricing is not available and an additional request is needed to determine pricing. \n  - This can be a limitation of the bulk domain searches due to constraints with checking prices for some registries\n  - When requesting a single domain the price will always be included (if available) and this status will not be returned\n"
     SuggestionsResponse:
       type: object
       properties:
@@ -118,25 +98,6 @@ components:
       required:
       - items
       - '@type'
-    DomainPriceItemResponse:
-      type: object
-      properties:
-        usdCents:
-          type: number
-          example: 1000
-      required:
-      - usdCents
-    ErrorResponseContextEntity:
-      oneOf:
-      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
-      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
-    DomainPriceType:
-      type: string
-      enum:
-      - STANDARD
-      - PREMIUM
-      - DEFERRED
-      description: "- `STANDARD`: Domain is priced using the default, standard pricing algorithm\n- `PREMIUM`: Domain is considered premium by the registry and pricing may differ from the standard pricing\n- `DEFERRED`: Domain pricing is not available and an additional request is needed to determine pricing. \n  - This can be a limitation of the bulk domain searches due to constraints with checking prices for some registries\n  - When requesting a single domain the price will always be included (if available) and this status will not be returned\n"
     ErrorResponseContextEntitySingle:
       type: object
       properties:
@@ -147,20 +108,6 @@ components:
       required:
       - type
       - value
-    ErrorResponseContextEntityMulti:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - MULTI_VALUE
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
-      required:
-      - type
-      - values
     SuggestionsResponseItem:
       type: object
       properties:
@@ -198,6 +145,35 @@ components:
           type: string
         context:
           $ref: '#/components/schemas/ErrorResponseContext'
+    DomainPriceItemResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+          example: 1000
+      required:
+      - usdCents
+    ErrorResponseMulti:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - MULTIPLE_ERRORS
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseSingle'
+      required:
+      - code
+      - errors
+    DomainName:
+      type: string
+      example: matt.crypto
     ErrorResponseContext:
       type: object
       properties:
@@ -207,9 +183,87 @@ components:
             $ref: '#/components/schemas/ErrorResponseContextEntity'
       required:
       - entities
-    DomainName:
-      type: string
-      example: matt.crypto
+    ErrorResponseContextEntityMulti:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MULTI_VALUE
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      required:
+      - type
+      - values
+    ErrorResponse:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseSingle'
+      - $ref: '#/components/schemas/ErrorResponseMulti'
+    ErrorResponseContextEntity:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
+    SuggestionsResponse_2:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.List
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SuggestionsResponseItem_2'
+      required:
+      - '@type'
+      - items
+    PriceItemResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+      required:
+      - usdCents
+    SuggestionsResponseItem_2:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainSuggestion
+        name:
+          type: string
+        price:
+          $ref: '#/components/schemas/DomainPriceResponse_2'
+      required:
+      - '@type'
+      - name
+      - price
+    DomainPriceResponse_2:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - STANDARD
+          - PREMIUM
+          - DEFERRED
+        listPrice:
+          $ref: '#/components/schemas/PriceItemResponse'
+        adjustments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainPriceAdjustmentResponse'
+        subTotal:
+          $ref: '#/components/schemas/PriceItemResponse'
+        validUntilTimestamp:
+          type: number
+      required:
+      - type
+      - listPrice
+      - subTotal
     ErrorResponse_2:
       type: object
       description: Standard error response
@@ -235,20 +289,6 @@ components:
             - code
       required:
       - code
-    SuggestionsResponse_2:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.List
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/SuggestionsResponseItem_2'
-      required:
-      - '@type'
-      - items
     DomainPriceAdjustmentResponse:
       type: object
       properties:
@@ -260,51 +300,11 @@ components:
       required:
       - usdCents
       - type
-    DomainPriceResponse_2:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - STANDARD
-          - PREMIUM
-          - DEFERRED
-        listPrice:
-          $ref: '#/components/schemas/PriceItemResponse'
-        adjustments:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainPriceAdjustmentResponse'
-        subTotal:
-          $ref: '#/components/schemas/PriceItemResponse'
-        validUntilTimestamp:
-          type: number
-      required:
-      - type
-      - listPrice
-      - subTotal
-    SuggestionsResponseItem_2:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.DomainSuggestion
-        name:
-          type: string
-        price:
-          $ref: '#/components/schemas/DomainPriceResponse_2'
-      required:
-      - '@type'
-      - name
-      - price
-    PriceItemResponse:
-      type: object
-      properties:
-        usdCents:
-          type: number
-      required:
-      - usdCents
+  examples:
+    ValidationError:
+      description: Validation error due to incorrect parameters.
+      value:
+        code: VALIDATION
   securitySchemes:
     bearer:
       type: http

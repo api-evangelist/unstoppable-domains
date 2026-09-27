@@ -269,77 +269,39 @@ components:
       - min
       - max
       - increments
-    DomainFlagStatus:
-      type: string
-      enum:
-      - ENABLED
-      - DISABLED
-    DomainFlagConfigurationResponse:
+    MultipleDomainSearchResponse:
       type: object
       properties:
         '@type':
           type: string
           enum:
-          - unstoppabledomains.com/partner.v3.DomainFlag
-        status:
-          $ref: '#/components/schemas/DomainFlagStatus'
-        readonly:
-          $ref: '#/components/schemas/DomainFlagConfigurationReadonlyResponse'
+          - unstoppabledomains.com/partner.v3.List
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainSearchResponse'
       required:
       - '@type'
-      - status
-    DomainPostRegistrationPricingResponse:
+      - items
+    PriceItemResponse:
       type: object
       properties:
-        renewal:
-          $ref: '#/components/schemas/DomainPriceResponse'
-    DomainRegistrationStatus:
-      type: string
-      enum:
-      - REGISTERED
-      - REGISTERED_EXTERNAL
-      - PENDING
-      - EXPIRED_GRACE_PERIOD
-      - EXPIRED_REDEMPTION_PERIOD
-      - EXPIRED_PENDING_DELETE
-      - INACTIVE
-    ErrorResponse:
+        usdCents:
+          type: number
+      required:
+      - usdCents
+    DomainFlagConfigurationReadonlyResponse:
       type: object
-      description: Standard error response
       properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: VALIDATION
-        message:
-          type: string
-          description: Human-readable error description
-        errors:
+        state:
+          type: boolean
+        reasons:
           type: array
-          description: Individual errors when code is MULTIPLE_ERRORS
           items:
             type: object
-            properties:
-              code:
-                type: string
-              message:
-                type: string
-            required:
-            - code
       required:
-      - code
-    DomainRegistrationIcannResponse:
-      type: object
-      properties:
-        registrar:
-          $ref: '#/components/schemas/DomainRegistrationIcannRegistrarResponse'
-        ownershipVerification:
-          type: string
-          enum:
-          - COMPLETED
-          - REVERIFICATION_REQUIRED
-      required:
-      - registrar
+      - state
+      - reasons
     DomainFlagsSubResponse:
       type: object
       properties:
@@ -365,13 +327,181 @@ components:
       - DNS_RENEW
       - DNS_WHOIS_PROXY
       - DNS_UNS_TOKENIZATION
-    PriceItemResponse:
+    DomainPostRegistrationPricingResponse:
       type: object
       properties:
-        usdCents:
+        renewal:
+          $ref: '#/components/schemas/DomainPriceResponse'
+    DomainRegistrationIcannResponse:
+      type: object
+      properties:
+        registrar:
+          $ref: '#/components/schemas/DomainRegistrationIcannRegistrarResponse'
+        ownershipVerification:
+          type: string
+          enum:
+          - COMPLETED
+          - REVERIFICATION_REQUIRED
+      required:
+      - registrar
+    DomainAvailabilityRegistrationConstraintsResponse:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/IcannDomainRenewalInfoPeriodResponse'
+      required:
+      - period
+    DomainFlagStatus:
+      type: string
+      enum:
+      - ENABLED
+      - DISABLED
+    DomainExpandField:
+      type: string
+      enum:
+      - registration
+      - flags
+    DomainAvailabilityConstraintsResponse:
+      type: object
+      properties:
+        registration:
+          $ref: '#/components/schemas/DomainAvailabilityRegistrationConstraintsResponse'
+    DomainRegistrationStatus:
+      type: string
+      enum:
+      - REGISTERED
+      - REGISTERED_EXTERNAL
+      - PENDING
+      - EXPIRED_GRACE_PERIOD
+      - EXPIRED_REDEMPTION_PERIOD
+      - EXPIRED_PENDING_DELETE
+      - INACTIVE
+    DomainPriceResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - STANDARD
+          - PREMIUM
+          - DEFERRED
+        listPrice:
+          $ref: '#/components/schemas/PriceItemResponse'
+        adjustments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainPriceAdjustmentResponse'
+        subTotal:
+          $ref: '#/components/schemas/PriceItemResponse'
+        validUntilTimestamp:
           type: number
       required:
-      - usdCents
+      - type
+      - listPrice
+      - subTotal
+    ErrorResponse:
+      type: object
+      description: Standard error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: VALIDATION
+        message:
+          type: string
+          description: Human-readable error description
+        errors:
+          type: array
+          description: Individual errors when code is MULTIPLE_ERRORS
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+            required:
+            - code
+      required:
+      - code
+    DomainRegistrationResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/DomainRegistrationStatus'
+        tokenId:
+          type: string
+        tokenType:
+          type: string
+          enum:
+          - ERC721
+          - ERC1155
+          - ENSRecord
+          - TOKEN2022
+        pricing:
+          $ref: '#/components/schemas/DomainPostRegistrationPricingResponse'
+        registryCreatedDate:
+          type: string
+        expirationDate:
+          type: string
+        expirationGracePeriodDate:
+          type: string
+        deletionAtTimestamp:
+          type: number
+        icann:
+          $ref: '#/components/schemas/DomainRegistrationIcannResponse'
+    DomainSearchResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.Domain
+        name:
+          type: string
+        owner:
+          $ref: '#/components/schemas/DomainOwnerResponse'
+        availability:
+          $ref: '#/components/schemas/SingleDomainAvailabilityResponse'
+        registration:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/DomainRegistrationResponse'
+        flags:
+          $ref: '#/components/schemas/DomainFlagsSubResponse'
+      required:
+      - '@type'
+      - name
+      - owner
+      - availability
+    DomainOfferPriceResponse:
+      type: object
+      properties:
+        min:
+          $ref: '#/components/schemas/DomainPriceResponse'
+      required:
+      - min
+    DomainAvailabilityAdditionalPricingResponse:
+      type: object
+      properties:
+        extendedRegistration:
+          $ref: '#/components/schemas/DomainPriceResponse'
+        transfer:
+          $ref: '#/components/schemas/DomainPriceResponse'
+    DomainFlagConfigurationResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainFlag
+        status:
+          $ref: '#/components/schemas/DomainFlagStatus'
+        readonly:
+          $ref: '#/components/schemas/DomainFlagConfigurationReadonlyResponse'
+      required:
+      - '@type'
+      - status
     DomainOwnerResponse:
       type: object
       properties:
@@ -385,11 +515,6 @@ components:
           type: string
       required:
       - type
-    DomainExpandField:
-      type: string
-      enum:
-      - registration
-      - flags
     SingleDomainAvailabilityResponse:
       type: object
       properties:
@@ -429,106 +554,6 @@ components:
       required:
       - source
       - status
-    DomainRegistrationResponse:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/DomainRegistrationStatus'
-        tokenId:
-          type: string
-        tokenType:
-          type: string
-          enum:
-          - ERC721
-          - ERC1155
-          - ENSRecord
-          - TOKEN2022
-        pricing:
-          $ref: '#/components/schemas/DomainPostRegistrationPricingResponse'
-        registryCreatedDate:
-          type: string
-        expirationDate:
-          type: string
-        expirationGracePeriodDate:
-          type: string
-        deletionAtTimestamp:
-          type: number
-        icann:
-          $ref: '#/components/schemas/DomainRegistrationIcannResponse'
-    DomainFlagConfigurationReadonlyResponse:
-      type: object
-      properties:
-        state:
-          type: boolean
-        reasons:
-          type: array
-          items:
-            type: object
-      required:
-      - state
-      - reasons
-    DomainPriceAdjustmentResponse:
-      type: object
-      properties:
-        usdCents:
-          type: number
-        type:
-          type: string
-          enum: []
-      required:
-      - usdCents
-      - type
-    DomainPriceResponse:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - STANDARD
-          - PREMIUM
-          - DEFERRED
-        listPrice:
-          $ref: '#/components/schemas/PriceItemResponse'
-        adjustments:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainPriceAdjustmentResponse'
-        subTotal:
-          $ref: '#/components/schemas/PriceItemResponse'
-        validUntilTimestamp:
-          type: number
-      required:
-      - type
-      - listPrice
-      - subTotal
-    DomainAvailabilityRegistrationConstraintsResponse:
-      type: object
-      properties:
-        period:
-          $ref: '#/components/schemas/IcannDomainRenewalInfoPeriodResponse'
-      required:
-      - period
-    MultipleDomainSearchResponse:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.List
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainSearchResponse'
-      required:
-      - '@type'
-      - items
-    DomainOfferPriceResponse:
-      type: object
-      properties:
-        min:
-          $ref: '#/components/schemas/DomainPriceResponse'
-      required:
-      - min
     DomainRegistrationIcannRegistrarResponse:
       type: object
       properties:
@@ -540,42 +565,17 @@ components:
           - NONE
       required:
       - type
-    DomainAvailabilityAdditionalPricingResponse:
+    DomainPriceAdjustmentResponse:
       type: object
       properties:
-        extendedRegistration:
-          $ref: '#/components/schemas/DomainPriceResponse'
-        transfer:
-          $ref: '#/components/schemas/DomainPriceResponse'
-    DomainAvailabilityConstraintsResponse:
-      type: object
-      properties:
-        registration:
-          $ref: '#/components/schemas/DomainAvailabilityRegistrationConstraintsResponse'
-    DomainSearchResponse:
-      type: object
-      properties:
-        '@type':
+        usdCents:
+          type: number
+        type:
           type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.Domain
-        name:
-          type: string
-        owner:
-          $ref: '#/components/schemas/DomainOwnerResponse'
-        availability:
-          $ref: '#/components/schemas/SingleDomainAvailabilityResponse'
-        registration:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/DomainRegistrationResponse'
-        flags:
-          $ref: '#/components/schemas/DomainFlagsSubResponse'
+          enum: []
       required:
-      - '@type'
-      - name
-      - owner
-      - availability
+      - usdCents
+      - type
     DomainResult:
       type: object
       properties:
@@ -651,6 +651,17 @@ components:
         purchaseUrl:
           type: string
           description: Direct purchase URL (only for available domains)
+    TldListResponse:
+      type: object
+      properties:
+        tlds:
+          type: array
+          items:
+            type: string
+          description: Array of supported TLD extensions (e.g., ["com", "io", "org"])
+        count:
+          type: number
+          description: Total number of supported TLDs
     SearchDomainsResponse:
       type: object
       properties:
@@ -723,17 +734,6 @@ components:
         truncationMessage:
           type: string
           description: Message explaining truncation
-    TldListResponse:
-      type: object
-      properties:
-        tlds:
-          type: array
-          items:
-            type: string
-          description: Array of supported TLD extensions (e.g., ["com", "io", "org"])
-        count:
-          type: number
-          description: Total number of supported TLDs
   securitySchemes:
     bearer:
       scheme: bearer

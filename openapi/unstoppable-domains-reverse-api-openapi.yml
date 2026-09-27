@@ -199,6 +199,19 @@ components:
       - type
       - domain
       - reverse
+    BulkReverseQueryResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainResponse'
+        meta:
+          type: object
+          items:
+            $ref: '#/components/schemas/DomainsListMeta'
+      required:
+      - data
     BulkReverseQueryParams:
       properties:
         addresses:
@@ -248,19 +261,6 @@ components:
       required:
       - meta
       - records
-    BulkReverseQueryResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainResponse'
-        meta:
-          type: object
-          items:
-            $ref: '#/components/schemas/DomainsListMeta'
-      required:
-      - data
   securitySchemes:
     apiKeyAuth:
       type: http

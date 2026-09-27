@@ -134,52 +134,6 @@ paths:
       description: Check whether a domain is eligible for inbound transfer to your account. Provide the authorization code to validate the transfer.
 components:
   schemas:
-    DomainDnsTransferInboundEligibilityRequestBody:
-      type: object
-      properties:
-        authorizationCode:
-          type: string
-          minLength: 3
-          maxLength: 250
-      required:
-      - authorizationCode
-    DomainTransferAuthorizationCodeResponse:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.ICannDomainTransferAuthorizationCode
-        code:
-          type: string
-      required:
-      - '@type'
-      - code
-    ErrorResponse:
-      type: object
-      description: Standard error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: VALIDATION
-        message:
-          type: string
-          description: Human-readable error description
-        errors:
-          type: array
-          description: Individual errors when code is MULTIPLE_ERRORS
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-              message:
-                type: string
-            required:
-            - code
-      required:
-      - code
     DomainDnsTransferInboundEligibilityResponse:
       type: object
       properties:
@@ -209,6 +163,52 @@ components:
       required:
       - isEligible
       - reasons
+    DomainDnsTransferInboundEligibilityRequestBody:
+      type: object
+      properties:
+        authorizationCode:
+          type: string
+          minLength: 3
+          maxLength: 250
+      required:
+      - authorizationCode
+    ErrorResponse:
+      type: object
+      description: Standard error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: VALIDATION
+        message:
+          type: string
+          description: Human-readable error description
+        errors:
+          type: array
+          description: Individual errors when code is MULTIPLE_ERRORS
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+            required:
+            - code
+      required:
+      - code
+    DomainTransferAuthorizationCodeResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.ICannDomainTransferAuthorizationCode
+        code:
+          type: string
+      required:
+      - '@type'
+      - code
   securitySchemes:
     bearer:
       scheme: bearer

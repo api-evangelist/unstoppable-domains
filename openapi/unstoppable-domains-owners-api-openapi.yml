@@ -60,6 +60,77 @@ paths:
       - Owners
 components:
   schemas:
+    DomainPriceType:
+      type: string
+      enum:
+      - STANDARD
+      - PREMIUM
+      - DEFERRED
+      description: "- `STANDARD`: Domain is priced using the default, standard pricing algorithm\n- `PREMIUM`: Domain is considered premium by the registry and pricing may differ from the standard pricing\n- `DEFERRED`: Domain pricing is not available and an additional request is needed to determine pricing. \n  - This can be a limitation of the bulk domain searches due to constraints with checking prices for some registries\n  - When requesting a single domain the price will always be included (if available) and this status will not be returned\n"
+    OwnerAddress:
+      oneOf:
+      - $ref: '#/components/schemas/EvmOwnerAddress'
+    DomainAvailabilityResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/DomainAvailabilityStatus'
+        price:
+          $ref: '#/components/schemas/DomainPriceResponse'
+        issuer:
+          $ref: '#/components/schemas/DomainOwnerResponse'
+      required:
+      - status
+    DomainAvailabilityStatus:
+      type: string
+      enum:
+      - AVAILABLE
+      - AVAILABLE_FROM_ISSUER
+      - REGISTERED
+      - PROTECTED
+      - COMING_SOON
+      - DISALLOWED
+      - RESERVED
+      - EXCEEDS_PRICE_LIMIT
+      description: "- `AVAILABLE`: Domain is available for registering\n- `AVAILABLE_FROM_ISSUER`: Domain is available for registering from an external issuer. \n  - This status is deprecated as it is only relevant to subdomains that have a verified, self-custodied parent domain\n- `EXCEEDS_PRICE_LIMIT`: Domain is available for registering, but exceeds the price limit on your account.\n  - In this situation you can contact your AM to facilitate a private sale or use our [Affiliate Program](https://unstoppabledomains.com/affiliate-registration) to refer users to our website for checkout  \n- `REGISTERED`: Domain belongs to an owner and is not available for registering\n- `PROTECTED`: Domain is being protected by Unstoppable Domains and is not available for general registering\n- `RESERVED`: Domain is being reserved by Unstoppable Domains and is not available for general registering\n- `COMING_SOON`: Domain is temporarily unavailable but will be available in the future\n- `DISALLOWED`: Domain is currently not allowed to be registered\n"
+    DomainRegistrationResponse:
+      type: object
+      properties:
+        tokenId:
+          type: string
+        tokenType:
+          type: string
+          enum:
+          - ERC721
+          - ERC1155
+      required:
+      - tokenId
+    DomainPriceResponse:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/DomainPriceType'
+        listPrice:
+          $ref: '#/components/schemas/DomainPriceItemResponse'
+        subTotal:
+          $ref: '#/components/schemas/DomainPriceItemResponse'
+      required:
+      - type
+      - listPrice
+      - subTotal
+    EvmOwnerAddress:
+      type: string
+      example: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+      pattern: ^0x[a-fA-F0-9]{40}$
+    CursorListResponseNext:
+      type: object
+      properties:
+        $cursor:
+          oneOf:
+          - type: string
+          - type: 'null'
+      required:
+      - $cursor
     DomainSearchListResponse:
       type: object
       properties:
@@ -79,22 +150,6 @@ components:
       - '@type'
       - items
       - next
-    DomainAvailabilityStatus:
-      type: string
-      enum:
-      - AVAILABLE
-      - AVAILABLE_FROM_ISSUER
-      - REGISTERED
-      - PROTECTED
-      - COMING_SOON
-      - DISALLOWED
-      - RESERVED
-      - EXCEEDS_PRICE_LIMIT
-      description: "- `AVAILABLE`: Domain is available for registering\n- `AVAILABLE_FROM_ISSUER`: Domain is available for registering from an external issuer. \n  - This status is deprecated as it is only relevant to subdomains that have a verified, self-custodied parent domain\n- `EXCEEDS_PRICE_LIMIT`: Domain is available for registering, but exceeds the price limit on your account.\n  - In this situation you can contact your AM to facilitate a private sale or use our [Affiliate Program](https://unstoppabledomains.com/affiliate-registration) to refer users to our website for checkout  \n- `REGISTERED`: Domain belongs to an owner and is not available for registering\n- `PROTECTED`: Domain is being protected by Unstoppable Domains and is not available for general registering\n- `RESERVED`: Domain is being reserved by Unstoppable Domains and is not available for general registering\n- `COMING_SOON`: Domain is temporarily unavailable but will be available in the future\n- `DISALLOWED`: Domain is currently not allowed to be registered\n"
-    EvmOwnerAddress:
-      type: string
-      example: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
-      pattern: ^0x[a-fA-F0-9]{40}$
     DomainPriceItemResponse:
       type: object
       properties:
@@ -103,17 +158,30 @@ components:
           example: 1000
       required:
       - usdCents
-    DomainAvailabilityResponse:
+    DomainRecords:
       type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/DomainAvailabilityStatus'
-        price:
-          $ref: '#/components/schemas/DomainPriceResponse'
-        issuer:
-          $ref: '#/components/schemas/DomainOwnerResponse'
-      required:
-      - status
+      additionalProperties:
+        type: string
+      example:
+        crypto.ETH.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+        crypto.MATIC.version.MATIC.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e5678'
+        crypto.MATIC.version.ERC20.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e0921'
+    OwnerType:
+      type: string
+      enum:
+      - NONE
+      - UD
+      - SELF
+      - EXTERNAL
+      description: '- `NONE`: Domain is not currently owned by anyone
+
+        - `UD`: Domain is owned by a wallet/contract that belongs to Unstoppable Domains
+
+        - `SELF`: Domain is owned by your account. You can manage this domains through the API
+
+        - `EXTERNAL`: Owner doesn''t qualify as any of the above.
+
+        '
     MinimalDomainSearchResponse:
       type: object
       properties:
@@ -148,53 +216,6 @@ components:
       required:
       - '@type'
       - name
-    DomainPriceType:
-      type: string
-      enum:
-      - STANDARD
-      - PREMIUM
-      - DEFERRED
-      description: "- `STANDARD`: Domain is priced using the default, standard pricing algorithm\n- `PREMIUM`: Domain is considered premium by the registry and pricing may differ from the standard pricing\n- `DEFERRED`: Domain pricing is not available and an additional request is needed to determine pricing. \n  - This can be a limitation of the bulk domain searches due to constraints with checking prices for some registries\n  - When requesting a single domain the price will always be included (if available) and this status will not be returned\n"
-    DomainRecords:
-      type: object
-      additionalProperties:
-        type: string
-      example:
-        crypto.ETH.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
-        crypto.MATIC.version.MATIC.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e5678'
-        crypto.MATIC.version.ERC20.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e0921'
-    DomainPriceResponse:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/DomainPriceType'
-        listPrice:
-          $ref: '#/components/schemas/DomainPriceItemResponse'
-        subTotal:
-          $ref: '#/components/schemas/DomainPriceItemResponse'
-      required:
-      - type
-      - listPrice
-      - subTotal
-    OwnerAddress:
-      oneOf:
-      - $ref: '#/components/schemas/EvmOwnerAddress'
-    OwnerType:
-      type: string
-      enum:
-      - NONE
-      - UD
-      - SELF
-      - EXTERNAL
-      description: '- `NONE`: Domain is not currently owned by anyone
-
-        - `UD`: Domain is owned by a wallet/contract that belongs to Unstoppable Domains
-
-        - `SELF`: Domain is owned by your account. You can manage this domains through the API
-
-        - `EXTERNAL`: Owner doesn''t qualify as any of the above.
-
-        '
     DomainOwnerResponse:
       type: object
       properties:
@@ -204,27 +225,6 @@ components:
           $ref: '#/components/schemas/OwnerAddress'
       required:
       - type
-    CursorListResponseNext:
-      type: object
-      properties:
-        $cursor:
-          oneOf:
-          - type: string
-          - type: 'null'
-      required:
-      - $cursor
-    DomainRegistrationResponse:
-      type: object
-      properties:
-        tokenId:
-          type: string
-        tokenType:
-          type: string
-          enum:
-          - ERC721
-          - ERC1155
-      required:
-      - tokenId
   securitySchemes:
     bearer:
       type: http
