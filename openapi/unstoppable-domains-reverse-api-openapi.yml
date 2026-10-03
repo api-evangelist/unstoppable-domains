@@ -154,6 +154,45 @@ paths:
           type: number
 components:
   schemas:
+    BulkReverseQueryParams:
+      properties:
+        addresses:
+          items:
+            pattern: ^0x[a-fA-F0-9]{40}$
+            type: string
+          type: array
+          uniqueItems: true
+          maxItems: 1000
+          minItems: 1
+      type: object
+      required:
+      - addresses
+    DomainsListMeta:
+      properties:
+        nextStartingAfter:
+          type: string
+          minLength: 1
+        sortBy:
+          type: string
+          minLength: 1
+        sortDirection:
+          type: string
+          minLength: 1
+        perPage:
+          maximum: 200
+          type: string
+          minimum: 1
+          minLength: 1
+        hasMore:
+          type: string
+          minLength: 1
+      type: object
+      required:
+      - nextStartingAfter
+      - sortBy
+      - sortDirection
+      - perPage
+      - hasMore
     DomainMetadata:
       properties:
         resolver:
@@ -199,6 +238,16 @@ components:
       - type
       - domain
       - reverse
+    DomainResponse:
+      properties:
+        meta:
+          $ref: '#/components/schemas/DomainMetadata'
+        records:
+          type: object
+      type: object
+      required:
+      - meta
+      - records
     BulkReverseQueryResponse:
       type: object
       properties:
@@ -212,55 +261,6 @@ components:
             $ref: '#/components/schemas/DomainsListMeta'
       required:
       - data
-    BulkReverseQueryParams:
-      properties:
-        addresses:
-          items:
-            pattern: ^0x[a-fA-F0-9]{40}$
-            type: string
-          type: array
-          uniqueItems: true
-          maxItems: 1000
-          minItems: 1
-      type: object
-      required:
-      - addresses
-    DomainsListMeta:
-      properties:
-        nextStartingAfter:
-          type: string
-          minLength: 1
-        sortBy:
-          type: string
-          minLength: 1
-        sortDirection:
-          type: string
-          minLength: 1
-        perPage:
-          maximum: 200
-          type: string
-          minimum: 1
-          minLength: 1
-        hasMore:
-          type: string
-          minLength: 1
-      type: object
-      required:
-      - nextStartingAfter
-      - sortBy
-      - sortDirection
-      - perPage
-      - hasMore
-    DomainResponse:
-      properties:
-        meta:
-          $ref: '#/components/schemas/DomainMetadata'
-        records:
-          type: object
-      type: object
-      required:
-      - meta
-      - records
   securitySchemes:
     apiKeyAuth:
       type: http

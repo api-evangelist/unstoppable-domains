@@ -182,31 +182,6 @@ components:
               type: string
         conversationId:
           type: number
-    LeadMessagesListResponse:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: number
-                description: Message ID
-              content:
-                type: string
-              senderUserId:
-                type: number
-              createdAt:
-                type: string
-        hasMore:
-          type: boolean
-        nextCursor:
-          type:
-          - string
-          - 'null'
-        conversationId:
-          type: number
     ContactSellerResponse:
       type: object
       properties:
@@ -239,6 +214,31 @@ components:
               description: True if returning existing conversation
         message:
           type: string
+    LeadMessagesListResponse:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                description: Message ID
+              content:
+                type: string
+              senderUserId:
+                type: number
+              createdAt:
+                type: string
+        hasMore:
+          type: boolean
+        nextCursor:
+          type:
+          - string
+          - 'null'
+        conversationId:
+          type: number
     LeadsListResponse:
       type: object
       properties:

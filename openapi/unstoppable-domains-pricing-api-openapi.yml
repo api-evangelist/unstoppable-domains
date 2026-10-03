@@ -168,32 +168,20 @@ components:
       - min
       - max
       - increments
-    PriceItemResponse:
-      type: object
-      properties:
-        usdCents:
-          type: number
-      required:
-      - usdCents
-    DomainDnsPricingResponse:
+    TldDnsPricingListResponse:
       type: object
       properties:
         '@type':
           type: string
           enum:
-          - unstoppabledomains.com/partner.v3.DomainDnsPricing
-        registration:
-          $ref: '#/components/schemas/DomainPriceResponse'
-        renewal:
-          $ref: '#/components/schemas/DomainPriceResponse'
-        transfer:
-          $ref: '#/components/schemas/DomainPriceResponse'
-        restoration:
-          $ref: '#/components/schemas/DomainPriceResponse'
-        constraints:
-          $ref: '#/components/schemas/DomainAvailabilityConstraintsResponse'
+          - unstoppabledomains.com/partner.v3.List
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TldDnsPricingResponse'
       required:
       - '@type'
+      - items
     TldDnsPricingResponse:
       type: object
       properties:
@@ -216,50 +204,6 @@ components:
       required:
       - '@type'
       - name
-    DomainPriceResponse:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - STANDARD
-          - PREMIUM
-          - DEFERRED
-        listPrice:
-          $ref: '#/components/schemas/PriceItemResponse'
-        adjustments:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainPriceAdjustmentResponse'
-        subTotal:
-          $ref: '#/components/schemas/PriceItemResponse'
-        validUntilTimestamp:
-          type: number
-      required:
-      - type
-      - listPrice
-      - subTotal
-    TldDnsPricingListResponse:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.List
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/TldDnsPricingResponse'
-      required:
-      - '@type'
-      - items
-    DomainAvailabilityRegistrationConstraintsResponse:
-      type: object
-      properties:
-        period:
-          $ref: '#/components/schemas/IcannDomainRenewalInfoPeriodResponse'
-      required:
-      - period
     ErrorResponse:
       type: object
       description: Standard error response
@@ -285,11 +229,67 @@ components:
             - code
       required:
       - code
+    DomainDnsPricingResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainDnsPricing
+        registration:
+          $ref: '#/components/schemas/DomainPriceResponse'
+        renewal:
+          $ref: '#/components/schemas/DomainPriceResponse'
+        transfer:
+          $ref: '#/components/schemas/DomainPriceResponse'
+        restoration:
+          $ref: '#/components/schemas/DomainPriceResponse'
+        constraints:
+          $ref: '#/components/schemas/DomainAvailabilityConstraintsResponse'
+      required:
+      - '@type'
+    DomainPriceResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - STANDARD
+          - PREMIUM
+          - DEFERRED
+        listPrice:
+          $ref: '#/components/schemas/PriceItemResponse'
+        adjustments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainPriceAdjustmentResponse'
+        subTotal:
+          $ref: '#/components/schemas/PriceItemResponse'
+        validUntilTimestamp:
+          type: number
+      required:
+      - type
+      - listPrice
+      - subTotal
+    PriceItemResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+      required:
+      - usdCents
     DomainAvailabilityConstraintsResponse:
       type: object
       properties:
         registration:
           $ref: '#/components/schemas/DomainAvailabilityRegistrationConstraintsResponse'
+    DomainAvailabilityRegistrationConstraintsResponse:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/IcannDomainRenewalInfoPeriodResponse'
+      required:
+      - period
     DomainPriceAdjustmentResponse:
       type: object
       properties:

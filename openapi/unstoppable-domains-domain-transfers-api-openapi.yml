@@ -134,35 +134,18 @@ paths:
       description: Check whether a domain is eligible for inbound transfer to your account. Provide the authorization code to validate the transfer.
 components:
   schemas:
-    DomainDnsTransferInboundEligibilityResponse:
+    DomainTransferAuthorizationCodeResponse:
       type: object
       properties:
-        isEligible:
-          type: boolean
-        reasons:
-          type: array
-          items:
-            type: string
-            enum:
-            - REGISTRAR_LOCKED
-            - NOT_REGISTERED
-            - TRANSFER_DATE_NOT_REACHED
-            - INVALID_AUTHORIZATION
-            - ALREADY_TRANSFERRED
-            - INVALID_TLD_FOR_TRANSFER
-            - REGISTRY_LOCKED
-            - REGISTRY_UPDATE_PROHIBITED
-            - UNVERIFIED_OWNER_FOR_DNS
-            - DOMAIN_EXPIRING_SOON
-        expirationDate:
+        '@type':
           type: string
-        projectedExpirationDate:
+          enum:
+          - unstoppabledomains.com/partner.v3.ICannDomainTransferAuthorizationCode
+        code:
           type: string
-        projectedExtensionPeriod:
-          type: number
       required:
-      - isEligible
-      - reasons
+      - '@type'
+      - code
     DomainDnsTransferInboundEligibilityRequestBody:
       type: object
       properties:
@@ -197,18 +180,35 @@ components:
             - code
       required:
       - code
-    DomainTransferAuthorizationCodeResponse:
+    DomainDnsTransferInboundEligibilityResponse:
       type: object
       properties:
-        '@type':
+        isEligible:
+          type: boolean
+        reasons:
+          type: array
+          items:
+            type: string
+            enum:
+            - REGISTRAR_LOCKED
+            - NOT_REGISTERED
+            - TRANSFER_DATE_NOT_REACHED
+            - INVALID_AUTHORIZATION
+            - ALREADY_TRANSFERRED
+            - INVALID_TLD_FOR_TRANSFER
+            - REGISTRY_LOCKED
+            - REGISTRY_UPDATE_PROHIBITED
+            - UNVERIFIED_OWNER_FOR_DNS
+            - DOMAIN_EXPIRING_SOON
+        expirationDate:
           type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.ICannDomainTransferAuthorizationCode
-        code:
+        projectedExpirationDate:
           type: string
+        projectedExtensionPeriod:
+          type: number
       required:
-      - '@type'
-      - code
+      - isEligible
+      - reasons
   securitySchemes:
     bearer:
       scheme: bearer

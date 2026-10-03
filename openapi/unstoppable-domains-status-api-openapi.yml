@@ -46,6 +46,13 @@ paths:
       - {}
 components:
   schemas:
+    StatusResponse:
+      properties:
+        blockchain:
+          $ref: '#/components/schemas/Blockchains'
+      type: object
+      required:
+      - blockchain
     Blockchains:
       properties:
         ETH:
@@ -81,13 +88,6 @@ components:
       - latestMirroredBlock
       - networkId
       - acceptableDelayInBlocks
-    StatusResponse:
-      properties:
-        blockchain:
-          $ref: '#/components/schemas/Blockchains'
-      type: object
-      required:
-      - blockchain
   securitySchemes:
     apiKeyAuth:
       type: http

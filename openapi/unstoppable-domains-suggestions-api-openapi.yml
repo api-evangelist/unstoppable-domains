@@ -77,13 +77,58 @@ paths:
       description: Sandbox
 components:
   schemas:
-    DomainPriceType:
+    ErrorResponseMulti:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - MULTIPLE_ERRORS
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseSingle'
+      required:
+      - code
+      - errors
+    DomainName:
       type: string
-      enum:
-      - STANDARD
-      - PREMIUM
-      - DEFERRED
-      description: "- `STANDARD`: Domain is priced using the default, standard pricing algorithm\n- `PREMIUM`: Domain is considered premium by the registry and pricing may differ from the standard pricing\n- `DEFERRED`: Domain pricing is not available and an additional request is needed to determine pricing. \n  - This can be a limitation of the bulk domain searches due to constraints with checking prices for some registries\n  - When requesting a single domain the price will always be included (if available) and this status will not be returned\n"
+      example: matt.crypto
+    ErrorResponseContextEntityMulti:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MULTI_VALUE
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      required:
+      - type
+      - values
+    ErrorResponseSingle:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
+    ErrorResponseContextEntity:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
+    ErrorResponse:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseSingle'
+      - $ref: '#/components/schemas/ErrorResponseMulti'
     SuggestionsResponse:
       type: object
       properties:
@@ -98,16 +143,13 @@ components:
       required:
       - items
       - '@type'
-    ErrorResponseContextEntitySingle:
-      type: object
-      properties:
-        type:
-          type: string
-        value:
-          type: string
-      required:
-      - type
-      - value
+    DomainPriceType:
+      type: string
+      enum:
+      - STANDARD
+      - PREMIUM
+      - DEFERRED
+      description: "- `STANDARD`: Domain is priced using the default, standard pricing algorithm\n- `PREMIUM`: Domain is considered premium by the registry and pricing may differ from the standard pricing\n- `DEFERRED`: Domain pricing is not available and an additional request is needed to determine pricing. \n  - This can be a limitation of the bulk domain searches due to constraints with checking prices for some registries\n  - When requesting a single domain the price will always be included (if available) and this status will not be returned\n"
     SuggestionsResponseItem:
       type: object
       properties:
@@ -136,15 +178,16 @@ components:
       - type
       - listPrice
       - subTotal
-    ErrorResponseSingle:
+    ErrorResponseContextEntitySingle:
       type: object
       properties:
-        code:
+        type:
           type: string
-        message:
+        value:
           type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponseContext'
+      required:
+      - type
+      - value
     DomainPriceItemResponse:
       type: object
       properties:
@@ -153,27 +196,6 @@ components:
           example: 1000
       required:
       - usdCents
-    ErrorResponseMulti:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - MULTIPLE_ERRORS
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponseContext'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponseSingle'
-      required:
-      - code
-      - errors
-    DomainName:
-      type: string
-      example: matt.crypto
     ErrorResponseContext:
       type: object
       properties:
@@ -183,28 +205,31 @@ components:
             $ref: '#/components/schemas/ErrorResponseContextEntity'
       required:
       - entities
-    ErrorResponseContextEntityMulti:
+    ErrorResponse_2:
       type: object
+      description: Standard error response
       properties:
-        type:
+        code:
           type: string
-          enum:
-          - MULTI_VALUE
-        values:
+          description: Machine-readable error code
+          example: VALIDATION
+        message:
+          type: string
+          description: Human-readable error description
+        errors:
           type: array
+          description: Individual errors when code is MULTIPLE_ERRORS
           items:
-            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+            required:
+            - code
       required:
-      - type
-      - values
-    ErrorResponse:
-      oneOf:
-      - $ref: '#/components/schemas/ErrorResponseSingle'
-      - $ref: '#/components/schemas/ErrorResponseMulti'
-    ErrorResponseContextEntity:
-      oneOf:
-      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
-      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
+      - code
     SuggestionsResponse_2:
       type: object
       properties:
@@ -219,13 +244,6 @@ components:
       required:
       - '@type'
       - items
-    PriceItemResponse:
-      type: object
-      properties:
-        usdCents:
-          type: number
-      required:
-      - usdCents
     SuggestionsResponseItem_2:
       type: object
       properties:
@@ -264,31 +282,13 @@ components:
       - type
       - listPrice
       - subTotal
-    ErrorResponse_2:
+    PriceItemResponse:
       type: object
-      description: Standard error response
       properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: VALIDATION
-        message:
-          type: string
-          description: Human-readable error description
-        errors:
-          type: array
-          description: Individual errors when code is MULTIPLE_ERRORS
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-              message:
-                type: string
-            required:
-            - code
+        usdCents:
+          type: number
       required:
-      - code
+      - usdCents
     DomainPriceAdjustmentResponse:
       type: object
       properties:

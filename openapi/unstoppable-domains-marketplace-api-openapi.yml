@@ -400,51 +400,6 @@ paths:
       description: Production server
 components:
   schemas:
-    PaginatedListResponseNext:
-      type: object
-      properties:
-        page:
-          type: integer
-        limit:
-          type: integer
-    MarketplaceDomainsListingItemResponse:
-      type: object
-      properties:
-        domain:
-          type: string
-          description: The domain name listed for sale
-        status:
-          type: string
-          description: Current listing status
-        listPrice:
-          $ref: '#/components/schemas/MarketplaceDomainsListingListPriceResponse'
-        payout:
-          $ref: '#/components/schemas/MarketplaceDomainsListingPayoutResponse'
-        owner:
-          $ref: '#/components/schemas/MarketplaceDomainsListingOwnerResponse'
-        expiresAt:
-          type: number
-          description: Unix timestamp when the listing expires (if applicable)
-      required:
-      - domain
-      - status
-      - listPrice
-      - payout
-      - owner
-    MarketplaceDomainsListingsResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/MarketplaceDomainsListingItemResponse'
-        next:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/PaginatedListResponseNext'
-      required:
-      - items
-      - next
     MarketplaceDomainsListingPayoutResponse:
       type: object
       properties:
@@ -453,22 +408,6 @@ components:
           description: Wallet address designated to receive the payout
       required:
       - address
-    MarketplaceDomainsListingOwnerResponse:
-      type: object
-      properties:
-        address:
-          type: string
-          description: Wallet address of the domain owner
-      required:
-      - address
-    MarketplaceDomainsListingListPriceResponse:
-      type: object
-      properties:
-        usdCents:
-          type: number
-          description: Listing price in USD cents
-      required:
-      - usdCents
     ErrorResponse:
       type: object
       description: Standard error response
@@ -494,122 +433,67 @@ components:
             - code
       required:
       - code
-    CreateListingResponse:
+    MarketplaceDomainsListingsResponse:
       type: object
       properties:
-        results:
+        items:
           type: array
           items:
-            type: object
-            properties:
-              domainName:
-                type: string
-              success:
-                type: boolean
-              listingId:
-                type: number
-              status:
-                type: string
-              isLazy:
-                type: boolean
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        message:
-          type: string
-        signatureRequired:
-          type: boolean
-        signatureNote:
-          type: string
-    CancelListingResponse:
+            $ref: '#/components/schemas/MarketplaceDomainsListingItemResponse'
+        next:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/PaginatedListResponseNext'
+      required:
+      - items
+      - next
+    MarketplaceDomainsListingListPriceResponse:
       type: object
       properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              listingId:
-                type: number
-              domainName:
-                type: string
-              success:
-                type: boolean
-              error:
-                type: string
-        successCount:
+        usdCents:
           type: number
-        failureCount:
-          type: number
-        message:
-          type: string
-    UpdateListingResponse:
+          description: Listing price in USD cents
+      required:
+      - usdCents
+    MarketplaceDomainsListingItemResponse:
       type: object
       properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              listingId:
-                type: number
-              domainName:
-                type: string
-              success:
-                type: boolean
-              status:
-                type: string
-              isLazy:
-                type: boolean
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        message:
+        domain:
           type: string
-        signatureRequired:
-          type: boolean
-        signatureNote:
+          description: The domain name listed for sale
+        status:
           type: string
-    RespondToOfferResponse:
+          description: Current listing status
+        listPrice:
+          $ref: '#/components/schemas/MarketplaceDomainsListingListPriceResponse'
+        payout:
+          $ref: '#/components/schemas/MarketplaceDomainsListingPayoutResponse'
+        owner:
+          $ref: '#/components/schemas/MarketplaceDomainsListingOwnerResponse'
+        expiresAt:
+          type: number
+          description: Unix timestamp when the listing expires (if applicable)
+      required:
+      - domain
+      - status
+      - listPrice
+      - payout
+      - owner
+    PaginatedListResponseNext:
       type: object
       properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              offerId:
-                type: number
-              domainName:
-                type: string
-              action:
-                type: string
-              success:
-                type: boolean
-              priceInCents:
-                type: number
-              priceFormatted:
-                type: string
-              newStatus:
-                type: string
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        message:
+        page:
+          type: integer
+        limit:
+          type: integer
+    MarketplaceDomainsListingOwnerResponse:
+      type: object
+      properties:
+        address:
           type: string
-        signatureRequired:
-          type: boolean
-        signatureNote:
-          type: string
+          description: Wallet address of the domain owner
+      required:
+      - address
     ListOffersResponse:
       type: object
       properties:
@@ -658,6 +542,122 @@ components:
         truncationMessage:
           type: string
           description: Optional message providing details about the truncation
+    CancelListingResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              listingId:
+                type: number
+              domainName:
+                type: string
+              success:
+                type: boolean
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        message:
+          type: string
+    RespondToOfferResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              offerId:
+                type: number
+              domainName:
+                type: string
+              action:
+                type: string
+              success:
+                type: boolean
+              priceInCents:
+                type: number
+              priceFormatted:
+                type: string
+              newStatus:
+                type: string
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        message:
+          type: string
+        signatureRequired:
+          type: boolean
+        signatureNote:
+          type: string
+    UpdateListingResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              listingId:
+                type: number
+              domainName:
+                type: string
+              success:
+                type: boolean
+              status:
+                type: string
+              isLazy:
+                type: boolean
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        message:
+          type: string
+        signatureRequired:
+          type: boolean
+        signatureNote:
+          type: string
+    CreateListingResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              domainName:
+                type: string
+              success:
+                type: boolean
+              listingId:
+                type: number
+              status:
+                type: string
+              isLazy:
+                type: boolean
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        message:
+          type: string
+        signatureRequired:
+          type: boolean
+        signatureNote:
+          type: string
   securitySchemes:
     bearer:
       scheme: bearer
