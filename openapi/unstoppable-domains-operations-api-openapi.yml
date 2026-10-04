@@ -332,44 +332,79 @@ webhooks:
     - url: https://api.ud-sandbox.com/partner/v3
       description: Sandbox
 components:
-  examples:
-    OperationNotFound:
-      description: No operation found with the provided Operation ID.
-      value:
-        code: NOT_FOUND
-    InvalidSignature:
-      description: Wallet signature is not valid
-      value:
-        code: SIGNATURE_INVALID
-    ValidationError:
-      description: Validation error due to incorrect parameters.
-      value:
-        code: VALIDATION
   schemas:
-    WebhookDeleteSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/PlatformSubOperationResponse'
-      - type: object
-        properties:
-          parameters:
-            $ref: '#/components/schemas/WebhookDeleteParametersResponse'
-          type:
-            type: string
-            enum:
-            - WEBHOOK_DELETE
-        required:
-        - parameters
-        - type
-    ErrorResponseSingle:
+    WebhookType:
+      type: string
+      enum:
+      - OPERATION_FINISHED
+      - OPERATION_ACTION_REQUIRED
+    ErrorResponseContextEntity:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
+    WebhookDeleteParametersResponse:
       type: object
       properties:
-        code:
+        id:
           type: string
-        message:
+      required:
+      - id
+    BlockchainType:
+      type: string
+      enum:
+      - MATIC
+      - ETH
+      - BASE
+    DomainPendingOperationsListResponse:
+      type: object
+      properties:
+        '@type':
           type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponseContext'
-    PlatformSubOperationResponse:
+          enum:
+          - unstoppabledomains.com/partner.v3.List
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainPendingOperationResponse'
+      required:
+      - '@type'
+      - items
+    WebhookCreateResultResponse:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+      - id
+    OperationListResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.CursorList
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OperationMinimalResponse'
+        next:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/CursorListResponseNext'
+      required:
+      - '@type'
+      - items
+      - next
+    CursorListResponseNext:
+      type: object
+      properties:
+        $cursor:
+          oneOf:
+          - type: string
+          - type: 'null'
+      required:
+      - $cursor
+    BlockchainSubOperationResponse:
       allOf:
       - $ref: '#/components/schemas/SubOperationResponse'
       - type: object
@@ -377,26 +412,125 @@ components:
           '@type':
             type: string
             enum:
-            - unstoppabledomains.com/partner.v3.PlatformOperation
+            - unstoppabledomains.com/partner.v3.BlockchainOperation
+          transaction:
+            $ref: '#/components/schemas/SubOperationTransactionResponse'
         required:
         - '@type'
-    EvmOwnerAddress:
-      type: string
-      example: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
-      pattern: ^0x[a-fA-F0-9]{40}$
-    WalletSetDefaultParametersResponse:
+    ErrorResponseContext:
       type: object
       properties:
-        address:
+        entities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntity'
+      required:
+      - entities
+    OperationDependencyTransactionUpdateRequestBody:
+      type: object
+      properties:
+        signature:
+          type: string
+          maxLength: 2000
+      required:
+      - signature
+    OperationMinimalResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: op-4abb409c-9283-4589-bd36-d27a757a2165
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.OperationMinimal
+        status:
+          $ref: '#/components/schemas/OperationStatus'
+        type:
+          $ref: '#/components/schemas/OperationType'
+        domain:
+          $ref: '#/components/schemas/DomainName'
+        lastUpdatedTimestamp:
+          type: number
+          example: 1684356429790
+      required:
+      - '@type'
+      - id
+      - status
+      - type
+      - lastUpdatedTimestamp
+    MintParametersResponse:
+      type: object
+      properties:
+        initialRecords:
+          $ref: '#/components/schemas/DomainRecords'
+        toAddress:
           $ref: '#/components/schemas/OwnerAddress'
       required:
-      - address
-    BlockchainType:
+      - toAddress
+    WalletSetDefaultSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WalletSetDefaultParametersResponse'
+          type:
+            type: string
+            enum:
+            - WALLET_SET_DEFAULT
+        required:
+        - parameters
+        - type
+    ErrorResponseMulti:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - MULTIPLE_ERRORS
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseSingle'
+      required:
+      - code
+      - errors
+    UpdateRecordsSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - UPDATE_RECORDS
+          parameters:
+            $ref: '#/components/schemas/UpdateRecordsParametersResponse'
+        required:
+        - type
+        - parameters
+    MintSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - MINT
+          parameters:
+            $ref: '#/components/schemas/MintParametersResponse'
+        required:
+        - type
+        - parameters
+    DomainName:
       type: string
-      enum:
-      - MATIC
-      - ETH
-      - BASE
+      example: matt.crypto
     TransferSubOperationResponse:
       allOf:
       - $ref: '#/components/schemas/BlockchainSubOperationResponse'
@@ -411,27 +545,39 @@ components:
         required:
         - type
         - parameters
-    OperationDependencyTransactionUpdateRequestBody:
+    OperationDependencyUpdateRequestBody:
       type: object
       properties:
-        signature:
-          type: string
-          maxLength: 2000
+        transaction:
+          $ref: '#/components/schemas/OperationDependencyTransactionUpdateRequestBody'
       required:
-      - signature
-    BlockchainSubOperationResponse:
+      - transaction
+    DomainRecords:
+      type: object
+      additionalProperties:
+        type: string
+      example:
+        crypto.ETH.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+        crypto.MATIC.version.MATIC.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e5678'
+        crypto.MATIC.version.ERC20.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e0921'
+    ErrorResponse:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseSingle'
+      - $ref: '#/components/schemas/ErrorResponseMulti'
+    OwnerAddress:
+      oneOf:
+      - $ref: '#/components/schemas/EvmOwnerAddress'
+    ReturnSubOperationResponse:
       allOf:
-      - $ref: '#/components/schemas/SubOperationResponse'
+      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
       - type: object
         properties:
-          '@type':
+          type:
             type: string
             enum:
-            - unstoppabledomains.com/partner.v3.BlockchainOperation
-          transaction:
-            $ref: '#/components/schemas/SubOperationTransactionResponse'
+            - RETURN
         required:
-        - '@type'
+        - type
     OperationCheckResponse:
       type: object
       properties:
@@ -470,207 +616,6 @@ components:
       - dependencies
       - '@type'
       - lastUpdatedTimestamp
-    OperationType:
-      type: string
-      enum:
-      - DOMAIN_CLAIM
-      - DOMAIN_UPDATE
-      - DOMAIN_RETURN
-      - WALLET_CREATE
-      - WALLET_UPDATE
-      - WALLET_VERIFY
-      - ACCOUNT_UPDATE
-    TransferParametersResponse:
-      type: object
-      properties:
-        fromAddress:
-          $ref: '#/components/schemas/OwnerAddress'
-        toAddress:
-          $ref: '#/components/schemas/OwnerAddress'
-        resetRecords:
-          type: boolean
-      required:
-      - fromAddress
-      - toAddress
-      - resetRecords
-    WalletCreateSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/PlatformSubOperationResponse'
-      - type: object
-        properties:
-          result:
-            $ref: '#/components/schemas/WalletCreateResultResponse'
-          type:
-            type: string
-            enum:
-            - WALLET_CREATE
-        required:
-        - type
-    WebhookType:
-      type: string
-      enum:
-      - OPERATION_FINISHED
-      - OPERATION_ACTION_REQUIRED
-    ErrorResponseContextEntity:
-      oneOf:
-      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
-      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
-    ErrorResponse:
-      oneOf:
-      - $ref: '#/components/schemas/ErrorResponseSingle'
-      - $ref: '#/components/schemas/ErrorResponseMulti'
-    WalletCreateResultResponse:
-      type: object
-      properties:
-        address:
-          $ref: '#/components/schemas/OwnerAddress'
-      required:
-      - address
-    DomainRecords:
-      type: object
-      additionalProperties:
-        type: string
-      example:
-        crypto.ETH.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
-        crypto.MATIC.version.MATIC.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e5678'
-        crypto.MATIC.version.ERC20.address: '0xb4783AeF93923a2d4eEA29C84f347F26E62e0921'
-    OwnerAddress:
-      oneOf:
-      - $ref: '#/components/schemas/EvmOwnerAddress'
-    WebhookCreateParametersResponse:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/WebhookType'
-        url:
-          type: string
-          format: uri
-      required:
-      - type
-      - url
-    UpdateRecordsSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - UPDATE_RECORDS
-          parameters:
-            $ref: '#/components/schemas/UpdateRecordsParametersResponse'
-        required:
-        - type
-        - parameters
-    WebhookDeleteParametersResponse:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-      - id
-    ErrorResponseContextEntitySingle:
-      type: object
-      properties:
-        type:
-          type: string
-        value:
-          type: string
-      required:
-      - type
-      - value
-    CursorListResponseNext:
-      type: object
-      properties:
-        $cursor:
-          oneOf:
-          - type: string
-          - type: 'null'
-      required:
-      - $cursor
-    ReturnSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - RETURN
-        required:
-        - type
-    ErrorResponseMulti:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - MULTIPLE_ERRORS
-        message:
-          type: string
-        context:
-          $ref: '#/components/schemas/ErrorResponseContext'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponseSingle'
-      required:
-      - code
-      - errors
-    OperationListResponse:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.CursorList
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/OperationMinimalResponse'
-        next:
-          oneOf:
-          - type: 'null'
-          - $ref: '#/components/schemas/CursorListResponseNext'
-      required:
-      - '@type'
-      - items
-      - next
-    WalletSetDefaultSubOperationResponse:
-      allOf:
-      - $ref: '#/components/schemas/PlatformSubOperationResponse'
-      - type: object
-        properties:
-          parameters:
-            $ref: '#/components/schemas/WalletSetDefaultParametersResponse'
-          type:
-            type: string
-            enum:
-            - WALLET_SET_DEFAULT
-        required:
-        - parameters
-        - type
-    ErrorResponseContextEntityMulti:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - MULTI_VALUE
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
-      required:
-      - type
-      - values
-    WebhookCreateResultResponse:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-      - id
     WebhookCreateSubOperationResponse:
       allOf:
       - $ref: '#/components/schemas/PlatformSubOperationResponse'
@@ -687,56 +632,30 @@ components:
         required:
         - parameters
         - type
-    OperationDependencyUpdateRequestBody:
+    TransferParametersResponse:
       type: object
       properties:
-        transaction:
-          $ref: '#/components/schemas/OperationDependencyTransactionUpdateRequestBody'
+        fromAddress:
+          $ref: '#/components/schemas/OwnerAddress'
+        toAddress:
+          $ref: '#/components/schemas/OwnerAddress'
+        resetRecords:
+          type: boolean
       required:
-      - transaction
-    WebhookDeliveryRequestBody:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.WebhookDelivery
-        type:
-          $ref: '#/components/schemas/WebhookType'
-        data:
-          $ref: '#/components/schemas/OperationCheckResponse'
-      required:
-      - '@type'
-      - type
-      - data
-    OperationMinimalResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          example: op-4abb409c-9283-4589-bd36-d27a757a2165
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.OperationMinimal
-        status:
-          $ref: '#/components/schemas/OperationStatus'
-        type:
-          $ref: '#/components/schemas/OperationType'
-        domain:
-          $ref: '#/components/schemas/DomainName'
-        lastUpdatedTimestamp:
-          type: number
-          example: 1684356429790
-      required:
-      - '@type'
-      - id
-      - status
-      - type
-      - lastUpdatedTimestamp
-    DomainName:
-      type: string
-      example: matt.crypto
+      - fromAddress
+      - toAddress
+      - resetRecords
+    PlatformSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/SubOperationResponse'
+      - type: object
+        properties:
+          '@type':
+            type: string
+            enum:
+            - unstoppabledomains.com/partner.v3.PlatformOperation
+        required:
+        - '@type'
     DomainPendingOperationResponse:
       type: object
       properties:
@@ -761,47 +680,87 @@ components:
       required:
       - '@type'
       - type
-    MintParametersResponse:
-      type: object
-      properties:
-        initialRecords:
-          $ref: '#/components/schemas/DomainRecords'
-        toAddress:
-          $ref: '#/components/schemas/OwnerAddress'
-      required:
-      - toAddress
-    OperationStatus:
-      type: string
-      enum:
-      - QUEUED
-      - SIGNATURE_REQUIRED
-      - PROCESSING
-      - COMPLETED
-      - FAILED
-      - CANCELLED
-    SubOperationTransactionResponse:
-      type: object
-      properties:
-        hash:
-          type: string
-        blockchain:
-          $ref: '#/components/schemas/BlockchainType'
-      required:
-      - blockchain
-    MintSubOperationResponse:
+    WalletCreateSubOperationResponse:
       allOf:
-      - $ref: '#/components/schemas/BlockchainSubOperationResponse'
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
       - type: object
         properties:
+          result:
+            $ref: '#/components/schemas/WalletCreateResultResponse'
           type:
             type: string
             enum:
-            - MINT
-          parameters:
-            $ref: '#/components/schemas/MintParametersResponse'
+            - WALLET_CREATE
         required:
         - type
-        - parameters
+    ErrorResponseContextEntitySingle:
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+      required:
+      - type
+      - value
+    WalletCreateResultResponse:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - address
+    ErrorResponseSingle:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        context:
+          $ref: '#/components/schemas/ErrorResponseContext'
+    OperationType:
+      type: string
+      enum:
+      - DOMAIN_CLAIM
+      - DOMAIN_UPDATE
+      - DOMAIN_RETURN
+      - WALLET_CREATE
+      - WALLET_UPDATE
+      - WALLET_VERIFY
+      - ACCOUNT_UPDATE
+    WebhookCreateParametersResponse:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        url:
+          type: string
+          format: uri
+      required:
+      - type
+      - url
+    WalletSetDefaultParametersResponse:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/OwnerAddress'
+      required:
+      - address
+    ErrorResponseContextEntityMulti:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MULTI_VALUE
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      required:
+      - type
+      - values
     SubOperationResponse:
       type: object
       properties:
@@ -813,6 +772,10 @@ components:
       required:
       - status
       - id
+    EvmOwnerAddress:
+      type: string
+      example: '0xb4783AeF93923a2d4eEA29C84f347F26E62e4321'
+      pattern: ^0x[a-fA-F0-9]{40}$
     UpdateRecordsParametersResponse:
       type: object
       properties:
@@ -823,63 +786,139 @@ components:
       required:
       - recordUpdates
       - resetRecords
-    DomainPendingOperationsListResponse:
+    WebhookDeliveryRequestBody:
       type: object
       properties:
         '@type':
           type: string
           enum:
-          - unstoppabledomains.com/partner.v3.List
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainPendingOperationResponse'
+          - unstoppabledomains.com/partner.v3.WebhookDelivery
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        data:
+          $ref: '#/components/schemas/OperationCheckResponse'
       required:
       - '@type'
-      - items
-    ErrorResponseContext:
+      - type
+      - data
+    WebhookDeleteSubOperationResponse:
+      allOf:
+      - $ref: '#/components/schemas/PlatformSubOperationResponse'
+      - type: object
+        properties:
+          parameters:
+            $ref: '#/components/schemas/WebhookDeleteParametersResponse'
+          type:
+            type: string
+            enum:
+            - WEBHOOK_DELETE
+        required:
+        - parameters
+        - type
+    SubOperationTransactionResponse:
       type: object
       properties:
-        entities:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponseContextEntity'
+        hash:
+          type: string
+        blockchain:
+          $ref: '#/components/schemas/BlockchainType'
       required:
-      - entities
-    PlatformOperationDependency:
-      description: A platform operation dependency. Discriminated by the `type` field — each type has its own `parameters` and `result` shape.
-      oneOf:
-      - $ref: '#/components/schemas/PlatformOperationDomainRegister'
-      - $ref: '#/components/schemas/PlatformOperationDomainDnsRenew'
-      - $ref: '#/components/schemas/PlatformOperationDnsRecordCreate'
-      - $ref: '#/components/schemas/PlatformOperationDnsRecordUpdate'
-      - $ref: '#/components/schemas/PlatformOperationDnsRecordDelete'
-      - $ref: '#/components/schemas/PlatformOperationDomainSetNameServers'
-      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecuritySetDnssec'
-      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecurityDeleteDnssec'
-      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecurityUpdateZone'
-      - $ref: '#/components/schemas/PlatformOperationDomainFlagLockUpdate'
-      - $ref: '#/components/schemas/PlatformOperationDomainDnsContactSet'
-      - $ref: '#/components/schemas/PlatformOperationContactCreate'
-      - $ref: '#/components/schemas/PlatformOperationWebhookCreate'
-      - $ref: '#/components/schemas/PlatformOperationWebhookDelete'
-      discriminator:
-        propertyName: type
-        mapping:
-          DOMAIN_REGISTER: '#/components/schemas/PlatformOperationDomainRegister'
-          DOMAIN_DNS_RENEW: '#/components/schemas/PlatformOperationDomainDnsRenew'
-          DNS_RECORD_CREATE: '#/components/schemas/PlatformOperationDnsRecordCreate'
-          DNS_RECORD_UPDATE: '#/components/schemas/PlatformOperationDnsRecordUpdate'
-          DNS_RECORD_DELETE: '#/components/schemas/PlatformOperationDnsRecordDelete'
-          DOMAIN_SET_NAMESERVERS: '#/components/schemas/PlatformOperationDomainSetNameServers'
-          DOMAIN_DNS_SECURITY_SET_DNSSEC: '#/components/schemas/PlatformOperationDomainDnsSecuritySetDnssec'
-          DOMAIN_DNS_SECURITY_DELETE_DNSSEC: '#/components/schemas/PlatformOperationDomainDnsSecurityDeleteDnssec'
-          DOMAIN_DNS_SECURITY_UPDATE_ZONE: '#/components/schemas/PlatformOperationDomainDnsSecurityUpdateZone'
-          DOMAIN_FLAG_LOCK_UPDATE: '#/components/schemas/PlatformOperationDomainFlagLockUpdate'
-          DOMAIN_DNS_CONTACT_SET: '#/components/schemas/PlatformOperationDomainDnsContactSet'
-          CONTACT_CREATE: '#/components/schemas/PlatformOperationContactCreate'
-          WEBHOOK_CREATE: '#/components/schemas/PlatformOperationWebhookCreate'
-          WEBHOOK_DELETE: '#/components/schemas/PlatformOperationWebhookDelete'
+      - blockchain
+    OperationStatus:
+      type: string
+      enum:
+      - QUEUED
+      - SIGNATURE_REQUIRED
+      - PROCESSING
+      - COMPLETED
+      - FAILED
+      - CANCELLED
+    WebhookType_2:
+      type: string
+      enum:
+      - OPERATION_FINISHED
+      - OPERATION_ACTION_REQUIRED
+      - OPERATION_CREATED
+    PlatformOperationStatus:
+      type: string
+      enum:
+      - PREVIEW
+      - QUEUED
+      - PROCESSING
+      - FAILED
+      - COMPLETED
+      - CANCELLED
+      - AWAITING_UPDATES
+      description: Status of a platform operation dependency
+    PlatformOperationDnsRecordDelete:
+      type: object
+      description: Deletes a DNS record
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DNS_RECORD_DELETE
+        parameters:
+          type: object
+          properties:
+            id:
+              type: string
+              description: DNS record ID to delete
+          required:
+          - id
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    PlatformOperationDomainDnsContactSet:
+      type: object
+      description: Updates contact role assignments for the domain
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_DNS_CONTACT_SET
+        parameters:
+          type: object
+          properties:
+            owner:
+              $ref: '#/components/schemas/ContactAssignment'
+            admin:
+              $ref: '#/components/schemas/ContactAssignment'
+            billing:
+              $ref: '#/components/schemas/ContactAssignment'
+            tech:
+              $ref: '#/components/schemas/ContactAssignment'
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
     PlatformOperationDomainRegister:
       type: object
       description: Registers a new domain with the specified owner contact and optional role contacts
@@ -918,51 +957,30 @@ components:
       - status
       - type
       - parameters
-    PlatformOperationWebhookCreate:
+    OperationListResponse_2:
       type: object
-      description: Creates a webhook subscription
       properties:
-        id:
-          type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
         '@type':
           type: string
           enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - WEBHOOK_CREATE
-        parameters:
-          type: object
-          properties:
-            url:
-              type: string
-              description: Webhook callback URL
-              example: https://example.com/webhooks
-            type:
-              $ref: '#/components/schemas/WebhookType_2'
-          required:
-          - url
-          - type
-        result:
-          type: object
-          properties:
-            id:
-              type: string
-              description: ID of the created webhook
-          required:
-          - id
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
+          - unstoppabledomains.com/partner.v3.CursorList
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OperationMinimalResponse_2'
+        next:
+          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/CursorListResponseNext_2'
       required:
-      - id
       - '@type'
-      - status
-      - type
-      - parameters
+      - items
+      - next
+    CursorListResponseNext_2:
+      type: object
+      properties:
+        $cursor:
+          type: string
     DomainFlagLocks:
       type: object
       description: Map of domain flag names to boolean lock values. Keys are DomainFlagType values.
@@ -971,22 +989,50 @@ components:
       example:
         DNS_TRANSFER_OUT: true
         DNS_DELETE: false
-    OperationDependencyError:
+    OperationMinimalResponse_2:
       type: object
-      description: Error details for a failed operation dependency
       properties:
-        code:
+        '@type':
           type: string
-          description: Error code identifying the failure type
-        message:
+          enum:
+          - unstoppabledomains.com/partner.v3.OperationMinimal
+        id:
           type: string
-          description: Human-readable error description
+          description: Operation ID
+          pattern: ^op-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
+          example: op-a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        status:
+          type: string
+          enum:
+          - PREVIEW
+          - QUEUED
+          - PROCESSING
+          - SIGNATURE_REQUIRED
+          - TRANSMISSION_REQUIRED
+          - FAILED
+          - COMPLETED
+          - CANCELLED
+          - AWAITING_UPDATES
+        type:
+          type: object
+        domain:
+          type: string
+        suggestionJobId:
+          type: string
+        createdAtTimestamp:
+          type: number
+        lastUpdatedTimestamp:
+          type: number
       required:
-      - code
-      - message
-    PlatformOperationContactCreate:
+      - '@type'
+      - id
+      - status
+      - type
+      - createdAtTimestamp
+      - lastUpdatedTimestamp
+    PlatformOperationDnsRecordUpdate:
       type: object
-      description: Creates a new contact for use in domain registration or management
+      description: Updates an existing DNS record
       properties:
         id:
           type: string
@@ -1000,27 +1046,20 @@ components:
         type:
           type: string
           enum:
-          - CONTACT_CREATE
+          - DNS_RECORD_UPDATE
         parameters:
-          type: object
-          properties:
-            purposes:
-              type: array
-              items:
-                $ref: '#/components/schemas/ContactPurpose'
-              description: Intended roles for this contact
-              example:
-              - OWNER
-              - ADMIN
-          required:
-          - purposes
-        result:
           type: object
           properties:
             id:
               type: string
-              description: ID of the created contact
-              example: ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890
+              description: DNS record ID to update
+            values:
+              type: array
+              items:
+                type: string
+            ttl:
+              type: integer
+              description: Time-to-live in seconds
           required:
           - id
         error:
@@ -1031,6 +1070,287 @@ components:
       - status
       - type
       - parameters
+    PlatformOperationDomainDnsSecurityDeleteDnssec:
+      type: object
+      description: Removes DNSSEC DS records from the registry for a domain
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_DNS_SECURITY_DELETE_DNSSEC
+        parameters:
+          type: object
+          properties:
+            domain:
+              type: string
+              description: Domain name
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    PlatformOperationDomainFlagLockUpdate:
+      type: object
+      description: Updates domain flag lock settings (e.g., transfer lock, delete lock)
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_FLAG_LOCK_UPDATE
+        parameters:
+          type: object
+          properties:
+            locks:
+              $ref: '#/components/schemas/DomainFlagLocks'
+            policyLocks:
+              $ref: '#/components/schemas/DomainFlagLocks'
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    DnsRecordType:
+      type: string
+      enum:
+      - A
+      - AAAA
+      - ALIAS
+      - CAA
+      - CNAME
+      - DNSKEY
+      - DS
+      - HTTPS
+      - IPSECKEY
+      - MX
+      - NAPTR
+      - NS
+      - PTR
+      - SOA
+      - SPF
+      - SRV
+      - SSHFP
+      - SVCB
+      - TLSA
+      - TXT
+    PlatformOperationWebhookDelete:
+      type: object
+      description: Deletes a webhook subscription
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - WEBHOOK_DELETE
+        parameters:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Webhook ID to delete
+          required:
+          - id
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    PlatformOperationDnsRecordCreate:
+      type: object
+      description: Creates a new DNS record for the domain
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DNS_RECORD_CREATE
+        parameters:
+          type: object
+          properties:
+            subName:
+              type: string
+              description: Subdomain name (empty for apex domain)
+              example: www
+            type:
+              $ref: '#/components/schemas/DnsRecordType'
+            values:
+              type: array
+              items:
+                type: string
+              example:
+              - 192.0.2.1
+            ttl:
+              type: integer
+              description: Time-to-live in seconds
+              example: 300
+          required:
+          - type
+          - values
+          - ttl
+        result:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the created DNS record
+          required:
+          - id
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    ContactAssignment:
+      type: object
+      description: Reference to an existing or newly created contact
+      properties:
+        new:
+          type: boolean
+          description: Whether this contact is being newly created as part of this operation
+        id:
+          type: string
+          description: Contact ID (present when new is false)
+          example: con_abc12345-1234-1234-1234-abc123456789
+      required:
+      - new
+    PlatformOperationDependency:
+      description: A platform operation dependency. Discriminated by the `type` field — each type has its own `parameters` and `result` shape.
+      oneOf:
+      - $ref: '#/components/schemas/PlatformOperationDomainRegister'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsRenew'
+      - $ref: '#/components/schemas/PlatformOperationDnsRecordCreate'
+      - $ref: '#/components/schemas/PlatformOperationDnsRecordUpdate'
+      - $ref: '#/components/schemas/PlatformOperationDnsRecordDelete'
+      - $ref: '#/components/schemas/PlatformOperationDomainSetNameServers'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecuritySetDnssec'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecurityDeleteDnssec'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsSecurityUpdateZone'
+      - $ref: '#/components/schemas/PlatformOperationDomainFlagLockUpdate'
+      - $ref: '#/components/schemas/PlatformOperationDomainDnsContactSet'
+      - $ref: '#/components/schemas/PlatformOperationContactCreate'
+      - $ref: '#/components/schemas/PlatformOperationWebhookCreate'
+      - $ref: '#/components/schemas/PlatformOperationWebhookDelete'
+      discriminator:
+        propertyName: type
+        mapping:
+          DOMAIN_REGISTER: '#/components/schemas/PlatformOperationDomainRegister'
+          DOMAIN_DNS_RENEW: '#/components/schemas/PlatformOperationDomainDnsRenew'
+          DNS_RECORD_CREATE: '#/components/schemas/PlatformOperationDnsRecordCreate'
+          DNS_RECORD_UPDATE: '#/components/schemas/PlatformOperationDnsRecordUpdate'
+          DNS_RECORD_DELETE: '#/components/schemas/PlatformOperationDnsRecordDelete'
+          DOMAIN_SET_NAMESERVERS: '#/components/schemas/PlatformOperationDomainSetNameServers'
+          DOMAIN_DNS_SECURITY_SET_DNSSEC: '#/components/schemas/PlatformOperationDomainDnsSecuritySetDnssec'
+          DOMAIN_DNS_SECURITY_DELETE_DNSSEC: '#/components/schemas/PlatformOperationDomainDnsSecurityDeleteDnssec'
+          DOMAIN_DNS_SECURITY_UPDATE_ZONE: '#/components/schemas/PlatformOperationDomainDnsSecurityUpdateZone'
+          DOMAIN_FLAG_LOCK_UPDATE: '#/components/schemas/PlatformOperationDomainFlagLockUpdate'
+          DOMAIN_DNS_CONTACT_SET: '#/components/schemas/PlatformOperationDomainDnsContactSet'
+          CONTACT_CREATE: '#/components/schemas/PlatformOperationContactCreate'
+          WEBHOOK_CREATE: '#/components/schemas/PlatformOperationWebhookCreate'
+          WEBHOOK_DELETE: '#/components/schemas/PlatformOperationWebhookDelete'
+    PlatformOperationDomainDnsRenew:
+      type: object
+      description: Renews a domain for the specified period
+      properties:
+        id:
+          type: string
+          example: plop_abc12345-1234-1234-1234-abc123456789
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.PlatformOperation
+        status:
+          $ref: '#/components/schemas/PlatformOperationStatus'
+        type:
+          type: string
+          enum:
+          - DOMAIN_DNS_RENEW
+        parameters:
+          type: object
+          properties:
+            period:
+              type: integer
+              description: Renewal period in years
+              example: 1
+          required:
+          - period
+        error:
+          $ref: '#/components/schemas/OperationDependencyError'
+      required:
+      - id
+      - '@type'
+      - status
+      - type
+      - parameters
+    ErrorResponse_2:
+      type: object
+      description: Standard error response
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+          example: VALIDATION
+        message:
+          type: string
+          description: Human-readable error description
+        errors:
+          type: array
+          description: Individual errors when code is MULTIPLE_ERRORS
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+            required:
+            - code
+      required:
+      - code
     OperationCheckResponse_2:
       type: object
       properties:
@@ -1098,15 +1418,9 @@ components:
       - createdAtTimestamp
       - lastUpdatedTimestamp
       - dependencies
-    WebhookType_2:
-      type: string
-      enum:
-      - OPERATION_FINISHED
-      - OPERATION_ACTION_REQUIRED
-      - OPERATION_CREATED
-    PlatformOperationDomainFlagLockUpdate:
+    PlatformOperationDomainDnsSecuritySetDnssec:
       type: object
-      description: Updates domain flag lock settings (e.g., transfer lock, delete lock)
+      description: Configures DNSSEC DS records at the registry for a domain
       properties:
         id:
           type: string
@@ -1120,14 +1434,13 @@ components:
         type:
           type: string
           enum:
-          - DOMAIN_FLAG_LOCK_UPDATE
+          - DOMAIN_DNS_SECURITY_SET_DNSSEC
         parameters:
           type: object
           properties:
-            locks:
-              $ref: '#/components/schemas/DomainFlagLocks'
-            policyLocks:
-              $ref: '#/components/schemas/DomainFlagLocks'
+            domain:
+              type: string
+              description: Domain name
         error:
           $ref: '#/components/schemas/OperationDependencyError'
       required:
@@ -1136,135 +1449,6 @@ components:
       - status
       - type
       - parameters
-    ErrorResponse_2:
-      type: object
-      description: Standard error response
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code
-          example: VALIDATION
-        message:
-          type: string
-          description: Human-readable error description
-        errors:
-          type: array
-          description: Individual errors when code is MULTIPLE_ERRORS
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-              message:
-                type: string
-            required:
-            - code
-      required:
-      - code
-    NonRegistrantContacts:
-      type: object
-      description: Non-registrant contact role assignments (admin, billing, tech)
-      properties:
-        admin:
-          $ref: '#/components/schemas/ContactAssignment'
-        billing:
-          $ref: '#/components/schemas/ContactAssignment'
-        tech:
-          $ref: '#/components/schemas/ContactAssignment'
-    PlatformOperationDomainDnsRenew:
-      type: object
-      description: Renews a domain for the specified period
-      properties:
-        id:
-          type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - DOMAIN_DNS_RENEW
-        parameters:
-          type: object
-          properties:
-            period:
-              type: integer
-              description: Renewal period in years
-              example: 1
-          required:
-          - period
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
-      required:
-      - id
-      - '@type'
-      - status
-      - type
-      - parameters
-    CursorListResponseNext_2:
-      type: object
-      properties:
-        $cursor:
-          type: string
-    PlatformOperationDomainDnsContactSet:
-      type: object
-      description: Updates contact role assignments for the domain
-      properties:
-        id:
-          type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - DOMAIN_DNS_CONTACT_SET
-        parameters:
-          type: object
-          properties:
-            owner:
-              $ref: '#/components/schemas/ContactAssignment'
-            admin:
-              $ref: '#/components/schemas/ContactAssignment'
-            billing:
-              $ref: '#/components/schemas/ContactAssignment'
-            tech:
-              $ref: '#/components/schemas/ContactAssignment'
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
-      required:
-      - id
-      - '@type'
-      - status
-      - type
-      - parameters
-    OperationListResponse_2:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.CursorList
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/OperationMinimalResponse_2'
-        next:
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/CursorListResponseNext_2'
-      required:
-      - '@type'
-      - items
-      - next
     PlatformOperationDomainSetNameServers:
       type: object
       description: Sets the nameservers for a domain (external nameservers or revert to UD-managed)
@@ -1301,220 +1485,26 @@ components:
       - status
       - type
       - parameters
-    PlatformOperationDomainDnsSecurityDeleteDnssec:
+    OperationDependencyError:
       type: object
-      description: Removes DNSSEC DS records from the registry for a domain
+      description: Error details for a failed operation dependency
       properties:
-        id:
+        code:
           type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
-        '@type':
+          description: Error code identifying the failure type
+        message:
           type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - DOMAIN_DNS_SECURITY_DELETE_DNSSEC
-        parameters:
-          type: object
-          properties:
-            domain:
-              type: string
-              description: Domain name
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
+          description: Human-readable error description
       required:
-      - id
-      - '@type'
-      - status
-      - type
-      - parameters
-    DnsRecordType:
+      - code
+      - message
+    ContactPurpose:
       type: string
       enum:
-      - A
-      - AAAA
-      - ALIAS
-      - CAA
-      - CNAME
-      - DNSKEY
-      - DS
-      - HTTPS
-      - IPSECKEY
-      - MX
-      - NAPTR
-      - NS
-      - PTR
-      - SOA
-      - SPF
-      - SRV
-      - SSHFP
-      - SVCB
-      - TLSA
-      - TXT
-    PlatformOperationDomainDnsSecurityUpdateZone:
-      type: object
-      description: Updates the DNS zone configuration for DNSSEC signing
-      properties:
-        id:
-          type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - DOMAIN_DNS_SECURITY_UPDATE_ZONE
-        parameters:
-          type: object
-          properties:
-            domain:
-              type: string
-              description: Domain name
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
-      required:
-      - id
-      - '@type'
-      - status
-      - type
-      - parameters
-    OperationMinimalResponse_2:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.OperationMinimal
-        id:
-          type: string
-          description: Operation ID
-          pattern: ^op-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
-          example: op-a1b2c3d4-e5f6-7890-abcd-ef1234567890
-        status:
-          type: string
-          enum:
-          - PREVIEW
-          - QUEUED
-          - PROCESSING
-          - SIGNATURE_REQUIRED
-          - TRANSMISSION_REQUIRED
-          - FAILED
-          - COMPLETED
-          - CANCELLED
-          - AWAITING_UPDATES
-        type:
-          type: object
-        domain:
-          type: string
-        suggestionJobId:
-          type: string
-        createdAtTimestamp:
-          type: number
-        lastUpdatedTimestamp:
-          type: number
-      required:
-      - '@type'
-      - id
-      - status
-      - type
-      - createdAtTimestamp
-      - lastUpdatedTimestamp
-    PlatformOperationStatus:
-      type: string
-      enum:
-      - PREVIEW
-      - QUEUED
-      - PROCESSING
-      - FAILED
-      - COMPLETED
-      - CANCELLED
-      - AWAITING_UPDATES
-      description: Status of a platform operation dependency
-    PlatformOperationDomainDnsSecuritySetDnssec:
-      type: object
-      description: Configures DNSSEC DS records at the registry for a domain
-      properties:
-        id:
-          type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - DOMAIN_DNS_SECURITY_SET_DNSSEC
-        parameters:
-          type: object
-          properties:
-            domain:
-              type: string
-              description: Domain name
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
-      required:
-      - id
-      - '@type'
-      - status
-      - type
-      - parameters
-    PlatformOperationDnsRecordDelete:
-      type: object
-      description: Deletes a DNS record
-      properties:
-        id:
-          type: string
-          example: plop_abc12345-1234-1234-1234-abc123456789
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.PlatformOperation
-        status:
-          $ref: '#/components/schemas/PlatformOperationStatus'
-        type:
-          type: string
-          enum:
-          - DNS_RECORD_DELETE
-        parameters:
-          type: object
-          properties:
-            id:
-              type: string
-              description: DNS record ID to delete
-          required:
-          - id
-        error:
-          $ref: '#/components/schemas/OperationDependencyError'
-      required:
-      - id
-      - '@type'
-      - status
-      - type
-      - parameters
-    ContactAssignment:
-      type: object
-      description: Reference to an existing or newly created contact
-      properties:
-        new:
-          type: boolean
-          description: Whether this contact is being newly created as part of this operation
-        id:
-          type: string
-          description: Contact ID (present when new is false)
-          example: con_abc12345-1234-1234-1234-abc123456789
-      required:
-      - new
+      - OWNER
+      - ADMIN
+      - TECH
+      - BILLING
     DomainPendingOperationResponse_2:
       type: object
       properties:
@@ -1552,16 +1542,9 @@ components:
           type: string
       required:
       - '@type'
-    ContactPurpose:
-      type: string
-      enum:
-      - OWNER
-      - ADMIN
-      - TECH
-      - BILLING
-    PlatformOperationDnsRecordCreate:
+    PlatformOperationContactCreate:
       type: object
-      description: Creates a new DNS record for the domain
+      description: Creates a new contact for use in domain registration or management
       properties:
         id:
           type: string
@@ -1575,36 +1558,27 @@ components:
         type:
           type: string
           enum:
-          - DNS_RECORD_CREATE
+          - CONTACT_CREATE
         parameters:
           type: object
           properties:
-            subName:
-              type: string
-              description: Subdomain name (empty for apex domain)
-              example: www
-            type:
-              $ref: '#/components/schemas/DnsRecordType'
-            values:
+            purposes:
               type: array
               items:
-                type: string
+                $ref: '#/components/schemas/ContactPurpose'
+              description: Intended roles for this contact
               example:
-              - 192.0.2.1
-            ttl:
-              type: integer
-              description: Time-to-live in seconds
-              example: 300
+              - OWNER
+              - ADMIN
           required:
-          - type
-          - values
-          - ttl
+          - purposes
         result:
           type: object
           properties:
             id:
               type: string
-              description: ID of the created DNS record
+              description: ID of the created contact
+              example: ct-a1b2c3d4-e5f6-7890-abcd-ef1234567890
           required:
           - id
         error:
@@ -1615,9 +1589,19 @@ components:
       - status
       - type
       - parameters
-    PlatformOperationDnsRecordUpdate:
+    NonRegistrantContacts:
       type: object
-      description: Updates an existing DNS record
+      description: Non-registrant contact role assignments (admin, billing, tech)
+      properties:
+        admin:
+          $ref: '#/components/schemas/ContactAssignment'
+        billing:
+          $ref: '#/components/schemas/ContactAssignment'
+        tech:
+          $ref: '#/components/schemas/ContactAssignment'
+    PlatformOperationDomainDnsSecurityUpdateZone:
+      type: object
+      description: Updates the DNS zone configuration for DNSSEC signing
       properties:
         id:
           type: string
@@ -1631,22 +1615,13 @@ components:
         type:
           type: string
           enum:
-          - DNS_RECORD_UPDATE
+          - DOMAIN_DNS_SECURITY_UPDATE_ZONE
         parameters:
           type: object
           properties:
-            id:
+            domain:
               type: string
-              description: DNS record ID to update
-            values:
-              type: array
-              items:
-                type: string
-            ttl:
-              type: integer
-              description: Time-to-live in seconds
-          required:
-          - id
+              description: Domain name
         error:
           $ref: '#/components/schemas/OperationDependencyError'
       required:
@@ -1655,9 +1630,9 @@ components:
       - status
       - type
       - parameters
-    PlatformOperationWebhookDelete:
+    PlatformOperationWebhookCreate:
       type: object
-      description: Deletes a webhook subscription
+      description: Creates a webhook subscription
       properties:
         id:
           type: string
@@ -1671,13 +1646,25 @@ components:
         type:
           type: string
           enum:
-          - WEBHOOK_DELETE
+          - WEBHOOK_CREATE
         parameters:
+          type: object
+          properties:
+            url:
+              type: string
+              description: Webhook callback URL
+              example: https://example.com/webhooks
+            type:
+              $ref: '#/components/schemas/WebhookType_2'
+          required:
+          - url
+          - type
+        result:
           type: object
           properties:
             id:
               type: string
-              description: Webhook ID to delete
+              description: ID of the created webhook
           required:
           - id
         error:
@@ -1688,6 +1675,19 @@ components:
       - status
       - type
       - parameters
+  examples:
+    OperationNotFound:
+      description: No operation found with the provided Operation ID.
+      value:
+        code: NOT_FOUND
+    ValidationError:
+      description: Validation error due to incorrect parameters.
+      value:
+        code: VALIDATION
+    InvalidSignature:
+      description: Wallet signature is not valid
+      value:
+        code: SIGNATURE_INVALID
   responses:
     403Forbidden:
       description: Access to the resource or the ability to perform the requested operation is not allowed for your account.

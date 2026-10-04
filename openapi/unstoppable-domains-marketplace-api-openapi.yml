@@ -400,14 +400,6 @@ paths:
       description: Production server
 components:
   schemas:
-    MarketplaceDomainsListingPayoutResponse:
-      type: object
-      properties:
-        address:
-          type: string
-          description: Wallet address designated to receive the payout
-      required:
-      - address
     ErrorResponse:
       type: object
       description: Standard error response
@@ -447,6 +439,21 @@ components:
       required:
       - items
       - next
+    PaginatedListResponseNext:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+    MarketplaceDomainsListingOwnerResponse:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Wallet address of the domain owner
+      required:
+      - address
     MarketplaceDomainsListingListPriceResponse:
       type: object
       properties:
@@ -479,21 +486,36 @@ components:
       - listPrice
       - payout
       - owner
-    PaginatedListResponseNext:
-      type: object
-      properties:
-        page:
-          type: integer
-        limit:
-          type: integer
-    MarketplaceDomainsListingOwnerResponse:
+    MarketplaceDomainsListingPayoutResponse:
       type: object
       properties:
         address:
           type: string
-          description: Wallet address of the domain owner
+          description: Wallet address designated to receive the payout
       required:
       - address
+    CancelListingResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              listingId:
+                type: number
+              domainName:
+                type: string
+              success:
+                type: boolean
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        message:
+          type: string
     ListOffersResponse:
       type: object
       properties:
@@ -542,62 +564,6 @@ components:
         truncationMessage:
           type: string
           description: Optional message providing details about the truncation
-    CancelListingResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              listingId:
-                type: number
-              domainName:
-                type: string
-              success:
-                type: boolean
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        message:
-          type: string
-    RespondToOfferResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              offerId:
-                type: number
-              domainName:
-                type: string
-              action:
-                type: string
-              success:
-                type: boolean
-              priceInCents:
-                type: number
-              priceFormatted:
-                type: string
-              newStatus:
-                type: string
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        message:
-          type: string
-        signatureRequired:
-          type: boolean
-        signatureNote:
-          type: string
     UpdateListingResponse:
       type: object
       properties:
@@ -646,6 +612,40 @@ components:
                 type: string
               isLazy:
                 type: boolean
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        message:
+          type: string
+        signatureRequired:
+          type: boolean
+        signatureNote:
+          type: string
+    RespondToOfferResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              offerId:
+                type: number
+              domainName:
+                type: string
+              action:
+                type: string
+              success:
+                type: boolean
+              priceInCents:
+                type: number
+              priceFormatted:
+                type: string
+              newStatus:
+                type: string
               error:
                 type: string
         successCount:

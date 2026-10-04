@@ -46,13 +46,6 @@ paths:
       - {}
 components:
   schemas:
-    StatusResponse:
-      properties:
-        blockchain:
-          $ref: '#/components/schemas/Blockchains'
-      type: object
-      required:
-      - blockchain
     Blockchains:
       properties:
         ETH:
@@ -69,6 +62,13 @@ components:
       - MATIC
       - ZIL
       - ETH-ENS
+    StatusResponse:
+      properties:
+        blockchain:
+          $ref: '#/components/schemas/Blockchains'
+      type: object
+      required:
+      - blockchain
     BlockchainStatus:
       properties:
         isUpToDate:

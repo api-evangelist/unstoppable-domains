@@ -429,120 +429,6 @@ paths:
           description: Authentication required
 components:
   schemas:
-    AddListedDomainToCartResponse:
-      type: object
-      description: Response for adding marketplace-listed domains to cart
-      properties:
-        addedProducts:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              success:
-                type: boolean
-              productId:
-                type: number
-              purchaseType:
-                type: string
-                enum:
-                - buy_now
-                - lease_to_own
-                description: Type of purchase
-              listingPrice:
-                type: string
-                description: Formatted listing price
-              monthlyPayment:
-                type: string
-                description: Formatted monthly payment (for LTO only)
-              termLength:
-                type: number
-                description: Number of months (for LTO only)
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        cart:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-    AddPaymentMethodUrlResponse:
-      type: object
-      properties:
-        url:
-          type: string
-          description: Authenticated magic link URL to the payment management page (single-use, valid for 60 seconds)
-        expiresIn:
-          type: number
-          description: Seconds until the magic link expires (URL is single-use)
-        instructions:
-          type: string
-          description: Guidance for the user on how to add a card
-    AddSedoDomainToCartResponse:
-      type: object
-      description: Response for adding Sedo marketplace domains to cart
-      properties:
-        addedProducts:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              success:
-                type: boolean
-              productId:
-                type: number
-              price:
-                type: string
-                description: Formatted price when available
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        cart:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-    RemoveFromCartResponse:
-      type: object
-      properties:
-        removedProductIds:
-          type: array
-          items:
-            type: number
-        removedCount:
-          type: number
-        cart:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-            items:
-              type: array
-              items:
-                $ref: '#/components/schemas/CartItem'
     PaymentMethodsResponse:
       type: object
       properties:
@@ -602,170 +488,6 @@ components:
               type: string
             canCheckout:
               type: boolean
-    AddDomainRenewalToCartResponse:
-      type: object
-      description: Response for adding domain renewals to cart
-      properties:
-        addedRenewals:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              success:
-                type: boolean
-              productId:
-                type: number
-              renewalPeriodYears:
-                type: number
-                description: Renewal period in years
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        cart:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-    CartItem:
-      type: object
-      properties:
-        productId:
-          type: number
-        productCode:
-          type: string
-        productType:
-          type: string
-        domain:
-          type:
-          - string
-          - 'null'
-        originalPrice:
-          type: number
-        originalPriceFormatted:
-          type: string
-        discountAmount:
-          type: number
-        discountAmountFormatted:
-          type: string
-        promoCreditsApplied:
-          type: number
-        accountBalanceApplied:
-          type: number
-        salesTax:
-          type: number
-        fees:
-          type: array
-          items:
-            type: object
-    AddToCartResponse:
-      type: object
-      properties:
-        addedProducts:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-              success:
-                type: boolean
-              error:
-                type: string
-              productId:
-                type: number
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        cart:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-    CheckoutResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        orderId:
-          type: number
-        paymentId:
-          type: number
-        summary:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            domains:
-              type: array
-              items:
-                type: string
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-            discounts:
-              type: number
-            discountsFormatted:
-              type: string
-            creditsUsed:
-              type: number
-            creditsUsedFormatted:
-              type: string
-            salesTax:
-              type: number
-            salesTaxFormatted:
-              type: string
-            totalCharged:
-              type: number
-            totalChargedFormatted:
-              type: string
-            paymentMethod:
-              type: string
-        note:
-          type: string
-          description: Optional note about contact selection when user has multiple contacts
-    CheckoutUrlResponse:
-      type: object
-      properties:
-        checkoutUrl:
-          type: string
-        expiresIn:
-          type: number
-          description: Seconds until the magic link expires (URL is single-use)
-        cartSummary:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-            items:
-              type: array
-              items:
-                type: object
-        discountCode:
-          type:
-          - string
-          - 'null'
-        instructions:
-          type: string
     CartResponse:
       type: object
       properties:
@@ -833,6 +555,198 @@ components:
           type: number
         totalDiscountsFormatted:
           type: string
+    CheckoutUrlResponse:
+      type: object
+      properties:
+        checkoutUrl:
+          type: string
+        expiresIn:
+          type: number
+          description: Seconds until the magic link expires (URL is single-use)
+        cartSummary:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+            items:
+              type: array
+              items:
+                type: object
+        discountCode:
+          type:
+          - string
+          - 'null'
+        instructions:
+          type: string
+    AddListedDomainToCartResponse:
+      type: object
+      description: Response for adding marketplace-listed domains to cart
+      properties:
+        addedProducts:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+              productId:
+                type: number
+              purchaseType:
+                type: string
+                enum:
+                - buy_now
+                - lease_to_own
+                description: Type of purchase
+              listingPrice:
+                type: string
+                description: Formatted listing price
+              monthlyPayment:
+                type: string
+                description: Formatted monthly payment (for LTO only)
+              termLength:
+                type: number
+                description: Number of months (for LTO only)
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        cart:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+    AddToCartResponse:
+      type: object
+      properties:
+        addedProducts:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+              success:
+                type: boolean
+              error:
+                type: string
+              productId:
+                type: number
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        cart:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+    AddSedoDomainToCartResponse:
+      type: object
+      description: Response for adding Sedo marketplace domains to cart
+      properties:
+        addedProducts:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+              productId:
+                type: number
+              price:
+                type: string
+                description: Formatted price when available
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        cart:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+    AddDomainRenewalToCartResponse:
+      type: object
+      description: Response for adding domain renewals to cart
+      properties:
+        addedRenewals:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+              productId:
+                type: number
+              renewalPeriodYears:
+                type: number
+                description: Renewal period in years
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        cart:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+    RemoveFromCartResponse:
+      type: object
+      properties:
+        removedProductIds:
+          type: array
+          items:
+            type: number
+        removedCount:
+          type: number
+        cart:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/CartItem'
     AddAfternicDomainToCartResponse:
       type: object
       description: Response for adding Afternic marketplace domains to cart
@@ -867,6 +781,92 @@ components:
               type: number
             subtotalFormatted:
               type: string
+    AddPaymentMethodUrlResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Authenticated magic link URL to the payment management page (single-use, valid for 60 seconds)
+        expiresIn:
+          type: number
+          description: Seconds until the magic link expires (URL is single-use)
+        instructions:
+          type: string
+          description: Guidance for the user on how to add a card
+    CheckoutResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        orderId:
+          type: number
+        paymentId:
+          type: number
+        summary:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            domains:
+              type: array
+              items:
+                type: string
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+            discounts:
+              type: number
+            discountsFormatted:
+              type: string
+            creditsUsed:
+              type: number
+            creditsUsedFormatted:
+              type: string
+            salesTax:
+              type: number
+            salesTaxFormatted:
+              type: string
+            totalCharged:
+              type: number
+            totalChargedFormatted:
+              type: string
+            paymentMethod:
+              type: string
+        note:
+          type: string
+          description: Optional note about contact selection when user has multiple contacts
+    CartItem:
+      type: object
+      properties:
+        productId:
+          type: number
+        productCode:
+          type: string
+        productType:
+          type: string
+        domain:
+          type:
+          - string
+          - 'null'
+        originalPrice:
+          type: number
+        originalPriceFormatted:
+          type: string
+        discountAmount:
+          type: number
+        discountAmountFormatted:
+          type: string
+        promoCreditsApplied:
+          type: number
+        accountBalanceApplied:
+          type: number
+        salesTax:
+          type: number
+        fees:
+          type: array
+          items:
+            type: object
   securitySchemes:
     bearerAuth:
       type: http

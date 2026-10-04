@@ -134,27 +134,6 @@ paths:
       description: Check whether a domain is eligible for inbound transfer to your account. Provide the authorization code to validate the transfer.
 components:
   schemas:
-    DomainTransferAuthorizationCodeResponse:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.ICannDomainTransferAuthorizationCode
-        code:
-          type: string
-      required:
-      - '@type'
-      - code
-    DomainDnsTransferInboundEligibilityRequestBody:
-      type: object
-      properties:
-        authorizationCode:
-          type: string
-          minLength: 3
-          maxLength: 250
-      required:
-      - authorizationCode
     ErrorResponse:
       type: object
       description: Standard error response
@@ -180,6 +159,15 @@ components:
             - code
       required:
       - code
+    DomainDnsTransferInboundEligibilityRequestBody:
+      type: object
+      properties:
+        authorizationCode:
+          type: string
+          minLength: 3
+          maxLength: 250
+      required:
+      - authorizationCode
     DomainDnsTransferInboundEligibilityResponse:
       type: object
       properties:
@@ -209,6 +197,18 @@ components:
       required:
       - isEligible
       - reasons
+    DomainTransferAuthorizationCodeResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.ICannDomainTransferAuthorizationCode
+        code:
+          type: string
+      required:
+      - '@type'
+      - code
   securitySchemes:
     bearer:
       scheme: bearer

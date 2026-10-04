@@ -182,6 +182,55 @@ components:
               type: string
         conversationId:
           type: number
+    LeadsListResponse:
+      type: object
+      properties:
+        leads:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                description: Conversation ID (use with ud_lead_messages_list)
+              domainName:
+                type: string
+              domainId:
+                type: number
+              createdAt:
+                type: string
+                format: date-time
+              updatedAt:
+                type: string
+                format: date-time
+              shortLatestMessageContent:
+                type: string
+                description: Preview of latest message (truncated to 100 chars)
+              unreadMessageCount:
+                type: number
+                description: Number of unread messages
+              participants:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Encoded participant ID
+                    role:
+                      type: string
+                      enum:
+                      - BUYER
+                      - SELLER
+        total:
+          type: number
+          description: Total number of conversations matching filters
+        skip:
+          type: number
+          description: Number of items skipped
+        take:
+          type: number
+          description: Number of items returned
     ContactSellerResponse:
       type: object
       properties:
@@ -239,55 +288,6 @@ components:
           - 'null'
         conversationId:
           type: number
-    LeadsListResponse:
-      type: object
-      properties:
-        leads:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: number
-                description: Conversation ID (use with ud_lead_messages_list)
-              domainName:
-                type: string
-              domainId:
-                type: number
-              createdAt:
-                type: string
-                format: date-time
-              updatedAt:
-                type: string
-                format: date-time
-              shortLatestMessageContent:
-                type: string
-                description: Preview of latest message (truncated to 100 chars)
-              unreadMessageCount:
-                type: number
-                description: Number of unread messages
-              participants:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      description: Encoded participant ID
-                    role:
-                      type: string
-                      enum:
-                      - BUYER
-                      - SELLER
-        total:
-          type: number
-          description: Total number of conversations matching filters
-        skip:
-          type: number
-          description: Number of items skipped
-        take:
-          type: number
-          description: Number of items returned
   securitySchemes:
     bearerAuth:
       type: http

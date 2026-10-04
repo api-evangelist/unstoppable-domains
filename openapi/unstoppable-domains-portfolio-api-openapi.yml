@@ -157,6 +157,164 @@ paths:
           description: Authentication required
 components:
   schemas:
+    PortfolioDomain:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Full domain name (e.g., "example.com")
+        extension:
+          type: string
+          description: TLD (e.g., "com")
+        label:
+          type: string
+          description: Domain label without TLD
+        sld:
+          type:
+          - string
+          - 'null'
+          description: Second-level domain
+        punycode:
+          type: boolean
+          description: Whether domain uses punycode
+        purchasedAt:
+          type:
+          - string
+          - 'null'
+          description: Purchase date (ISO string)
+        expiresAt:
+          type:
+          - string
+          - 'null'
+          description: Expiration date for DNS domains (ISO string)
+        transferStatus:
+          type: string
+          description: 'Domain transfer status:
+
+            • "none" - No active transfer
+
+            • "pending" - Transfer in progress'
+        isExternallyOwned:
+          type: boolean
+          description: Whether domain is externally owned
+        tags:
+          type: array
+          items:
+            type: string
+          description: User-defined tags
+        reverse:
+          type: boolean
+          description: Whether this is set as reverse resolution
+        offersCount:
+          type: number
+          description: Number of active offers on this domain
+        leadsCount:
+          type: number
+          description: Number of buyer inquiries/messages about this domain
+        watchlistCount:
+          type: number
+          description: Number of users watching this domain
+        listing:
+          type:
+          - object
+          - 'null'
+          description: Listing details if domain is for sale
+          properties:
+            id:
+              type: number
+              description: Listing ID
+            price:
+              type: number
+              description: Listing price in cents
+            status:
+              type: string
+              description: 'Listing status:
+
+                • "open" - Live on marketplace, ready for purchase (user-custodied domains)
+
+                • "open-not-signed" - Live on marketplace, ready for purchase (UD-custodied domains, no user action needed)
+
+                • "open-on-request" - Accepting offers only, no fixed price
+
+                • "draft" - Not yet published
+
+                • "waiting-for-approval" - Pending wallet signature from owner
+
+                • "pending-admin-approval" - Under review (high-value listings)
+
+                • "pending" - Sale in progress
+
+                • "canceled" - Listing was canceled
+
+                Note: Both "open" and "open-not-signed" mean the listing is active and purchasable.'
+            createdAt:
+              type: string
+              description: ISO date string
+            updatedAt:
+              type: string
+              description: ISO date string
+            views:
+              type: number
+              description: Number of page views
+        autoRenewal:
+          type:
+          - object
+          - 'null'
+          description: Auto-renewal subscription details if enabled
+          properties:
+            status:
+              type: string
+              description: 'Auto-renewal subscription status:
+
+                • "active" - Subscription active, will auto-renew
+
+                • "pending" - Payment collected, waiting for domain registration
+
+                • "update_required" - Payment method needs updating (card expired/declined)
+
+                • "expired" - Subscription expired, domain renewal overdue
+
+                • "cancelled" - Subscription cancelled, will not auto-renew'
+            expiresAt:
+              type:
+              - string
+              - 'null'
+              description: Subscription expiration date (ISO string)
+    ListDomainsResponse:
+      type: object
+      properties:
+        domains:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortfolioDomain'
+        pagination:
+          type: object
+          properties:
+            page:
+              type: number
+              description: Current page number
+            pageSize:
+              type: number
+              description: Items per page
+            totalPages:
+              type: number
+              description: Total number of pages
+            total:
+              type: number
+              description: Total number of domains
+            hasMore:
+              type: boolean
+              description: Whether more pages exist
+            nextPage:
+              type:
+              - number
+              - 'null'
+              description: Next page number if more results exist, null otherwise
+        truncated:
+          type: boolean
+          description: Whether results were truncated due to size limits
+        truncationMessage:
+          type: string
     GetPortfolioDomainsResponse:
       type: object
       properties:
@@ -423,164 +581,6 @@ components:
           items:
             type: string
           description: All tags you've created (useful for adding tags to other domains)
-    PortfolioDomain:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Full domain name (e.g., "example.com")
-        extension:
-          type: string
-          description: TLD (e.g., "com")
-        label:
-          type: string
-          description: Domain label without TLD
-        sld:
-          type:
-          - string
-          - 'null'
-          description: Second-level domain
-        punycode:
-          type: boolean
-          description: Whether domain uses punycode
-        purchasedAt:
-          type:
-          - string
-          - 'null'
-          description: Purchase date (ISO string)
-        expiresAt:
-          type:
-          - string
-          - 'null'
-          description: Expiration date for DNS domains (ISO string)
-        transferStatus:
-          type: string
-          description: 'Domain transfer status:
-
-            • "none" - No active transfer
-
-            • "pending" - Transfer in progress'
-        isExternallyOwned:
-          type: boolean
-          description: Whether domain is externally owned
-        tags:
-          type: array
-          items:
-            type: string
-          description: User-defined tags
-        reverse:
-          type: boolean
-          description: Whether this is set as reverse resolution
-        offersCount:
-          type: number
-          description: Number of active offers on this domain
-        leadsCount:
-          type: number
-          description: Number of buyer inquiries/messages about this domain
-        watchlistCount:
-          type: number
-          description: Number of users watching this domain
-        listing:
-          type:
-          - object
-          - 'null'
-          description: Listing details if domain is for sale
-          properties:
-            id:
-              type: number
-              description: Listing ID
-            price:
-              type: number
-              description: Listing price in cents
-            status:
-              type: string
-              description: 'Listing status:
-
-                • "open" - Live on marketplace, ready for purchase (user-custodied domains)
-
-                • "open-not-signed" - Live on marketplace, ready for purchase (UD-custodied domains, no user action needed)
-
-                • "open-on-request" - Accepting offers only, no fixed price
-
-                • "draft" - Not yet published
-
-                • "waiting-for-approval" - Pending wallet signature from owner
-
-                • "pending-admin-approval" - Under review (high-value listings)
-
-                • "pending" - Sale in progress
-
-                • "canceled" - Listing was canceled
-
-                Note: Both "open" and "open-not-signed" mean the listing is active and purchasable.'
-            createdAt:
-              type: string
-              description: ISO date string
-            updatedAt:
-              type: string
-              description: ISO date string
-            views:
-              type: number
-              description: Number of page views
-        autoRenewal:
-          type:
-          - object
-          - 'null'
-          description: Auto-renewal subscription details if enabled
-          properties:
-            status:
-              type: string
-              description: 'Auto-renewal subscription status:
-
-                • "active" - Subscription active, will auto-renew
-
-                • "pending" - Payment collected, waiting for domain registration
-
-                • "update_required" - Payment method needs updating (card expired/declined)
-
-                • "expired" - Subscription expired, domain renewal overdue
-
-                • "cancelled" - Subscription cancelled, will not auto-renew'
-            expiresAt:
-              type:
-              - string
-              - 'null'
-              description: Subscription expiration date (ISO string)
-    ListDomainsResponse:
-      type: object
-      properties:
-        domains:
-          type: array
-          items:
-            $ref: '#/components/schemas/PortfolioDomain'
-        pagination:
-          type: object
-          properties:
-            page:
-              type: number
-              description: Current page number
-            pageSize:
-              type: number
-              description: Items per page
-            totalPages:
-              type: number
-              description: Total number of pages
-            total:
-              type: number
-              description: Total number of domains
-            hasMore:
-              type: boolean
-              description: Whether more pages exist
-            nextPage:
-              type:
-              - number
-              - 'null'
-              description: Next page number if more results exist, null otherwise
-        truncated:
-          type: boolean
-          description: Whether results were truncated due to size limits
-        truncationMessage:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

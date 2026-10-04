@@ -156,16 +156,6 @@ paths:
       description: Retrieve details for a specific top-level domain (TLD) including its naming system and registration availability.
 components:
   schemas:
-    DnssecDigestType:
-      type: integer
-      enum:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      description: DNSSEC digest type identifier (RFC 8624)
     ErrorResponse:
       type: object
       description: Standard error response
@@ -191,45 +181,16 @@ components:
             - code
       required:
       - code
-    TldResponse:
+    TldDnsSecurityConfigurationDnssecDigestTypeResponse:
       type: object
       properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.Tld
+        id:
+          $ref: '#/components/schemas/DnssecDigestType'
         name:
           type: string
-        namingSystem:
-          enum:
-          - UNS
-          - ICANN
-          - ENS
-          type: string
-        canRegister:
-          type: boolean
       required:
-      - '@type'
+      - id
       - name
-      - namingSystem
-      - canRegister
-    TldDnsSecurityConfigurationDnssecResponse:
-      type: object
-      properties:
-        supported:
-          type: boolean
-        algorithms:
-          type: array
-          items:
-            $ref: '#/components/schemas/TldDnsSecurityConfigurationDnssecAlgorithmResponse'
-        digestTypes:
-          type: array
-          items:
-            $ref: '#/components/schemas/TldDnsSecurityConfigurationDnssecDigestTypeResponse'
-      required:
-      - supported
-      - algorithms
-      - digestTypes
     DnssecAlgorithm:
       type: integer
       enum:
@@ -253,26 +214,28 @@ components:
       - 253
       - 254
       description: DNSSEC algorithm identifier (RFC 8624)
-    TldDnsSecurityConfigurationDnssecDigestTypeResponse:
+    TldResponse:
       type: object
       properties:
-        id:
-          $ref: '#/components/schemas/DnssecDigestType'
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.Tld
         name:
           type: string
-      required:
-      - id
-      - name
-    TldDnsSecurityConfigurationDnssecAlgorithmResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/DnssecAlgorithm'
-        name:
+        namingSystem:
+          enum:
+          - UNS
+          - ICANN
+          - ENS
           type: string
+        canRegister:
+          type: boolean
       required:
-      - id
+      - '@type'
       - name
+      - namingSystem
+      - canRegister
     TldDnsSecurityConfigurationResponse:
       type: object
       properties:
@@ -285,6 +248,33 @@ components:
       required:
       - '@type'
       - dnssec
+    TldDnsSecurityConfigurationDnssecResponse:
+      type: object
+      properties:
+        supported:
+          type: boolean
+        algorithms:
+          type: array
+          items:
+            $ref: '#/components/schemas/TldDnsSecurityConfigurationDnssecAlgorithmResponse'
+        digestTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/TldDnsSecurityConfigurationDnssecDigestTypeResponse'
+      required:
+      - supported
+      - algorithms
+      - digestTypes
+    DnssecDigestType:
+      type: integer
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      description: DNSSEC digest type identifier (RFC 8624)
     TldListResponse:
       type: object
       properties:
@@ -299,6 +289,16 @@ components:
       required:
       - '@type'
       - items
+    TldDnsSecurityConfigurationDnssecAlgorithmResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/DnssecAlgorithm'
+        name:
+          type: string
+      required:
+      - id
+      - name
   securitySchemes:
     bearer:
       scheme: bearer
