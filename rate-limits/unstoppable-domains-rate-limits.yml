@@ -1,3 +1,7 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
 name: Unstoppable Domains API Rate Limits
 description: Unstoppable Domains enforces rate limits on its Resolution API and Partner API to ensure platform stability. The Resolution API is free for open-source integrations with a general guideline of 20 calls per second. Partner and User API limits are defined per application key and enforced on production endpoints. A sandbox environment is provided for unlimited development testing without rate limit concerns.
 specificationVersion: '0.1'

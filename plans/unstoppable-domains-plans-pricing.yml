@@ -1,3 +1,7 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
 name: Unstoppable Domains Plans and Pricing
 description: Unstoppable Domains API access is free to acquire for open-source and partner integrations. Domain purchases carry one-time registration fees tiered by TLD prestige and domain character length. The Partner API uses usage-based billing with periodic invoicing. The User API has no API access fees; costs arise solely from domain registrations, renewals, and marketplace transactions.
 specificationVersion: '0.1'
@@ -69,3 +73,34 @@ plans:
       - 150+ supported TLDs
       - NFT ownership on blockchain
       - Cryptocurrency address records included
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  units: []
+  plans:
+  - name: Resolution API (Free)
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Partner API (Usage-Based)
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: User API (Free Access)
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Web3 Domain Pricing (by Tier and TLD)
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
