@@ -66,16 +66,6 @@ paths:
         **Note:** The API should be used in a backend system. If you need the data in client apps, please build a proxy backend to hide the API key.'
 components:
   schemas:
-    OwnerDomainResponse:
-      properties:
-        meta:
-          $ref: '#/components/schemas/OwnerDomainMetadata'
-        records:
-          type: object
-      type: object
-      required:
-      - meta
-      - records
     OwnerDomainMetadata:
       properties:
         domain:
@@ -118,6 +108,16 @@ components:
       required:
       - domain
       - type
+    OwnerDomainResponse:
+      properties:
+        meta:
+          $ref: '#/components/schemas/OwnerDomainMetadata'
+        records:
+          type: object
+      type: object
+      required:
+      - meta
+      - records
   securitySchemes:
     apiKeyAuth:
       type: http

@@ -77,23 +77,21 @@ paths:
       description: Sandbox
 components:
   schemas:
-    ErrorResponse:
-      oneOf:
-      - $ref: '#/components/schemas/ErrorResponseSingle'
-      - $ref: '#/components/schemas/ErrorResponseMulti'
-    ErrorResponseContextEntity:
-      oneOf:
-      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
-      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
-    ErrorResponseContext:
+    SuggestionsResponseItem:
       type: object
       properties:
-        entities:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponseContextEntity'
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainSuggestion
+        name:
+          $ref: '#/components/schemas/DomainName'
+        price:
+          $ref: '#/components/schemas/DomainPriceResponse'
       required:
-      - entities
+      - name
+      - price
+      - '@type'
     ErrorResponseSingle:
       type: object
       properties:
@@ -103,6 +101,66 @@ components:
           type: string
         context:
           $ref: '#/components/schemas/ErrorResponseContext'
+    SuggestionsResponse:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.List
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SuggestionsResponseItem'
+      required:
+      - items
+      - '@type'
+    DomainPriceResponse:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/DomainPriceType'
+        listPrice:
+          $ref: '#/components/schemas/DomainPriceItemResponse'
+        subTotal:
+          $ref: '#/components/schemas/DomainPriceItemResponse'
+      required:
+      - type
+      - listPrice
+      - subTotal
+    ErrorResponseContext:
+      type: object
+      properties:
+        entities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntity'
+      required:
+      - entities
+    DomainPriceType:
+      type: string
+      enum:
+      - STANDARD
+      - PREMIUM
+      - DEFERRED
+      description: "- `STANDARD`: Domain is priced using the default, standard pricing algorithm\n- `PREMIUM`: Domain is considered premium by the registry and pricing may differ from the standard pricing\n- `DEFERRED`: Domain pricing is not available and an additional request is needed to determine pricing. \n  - This can be a limitation of the bulk domain searches due to constraints with checking prices for some registries\n  - When requesting a single domain the price will always be included (if available) and this status will not be returned\n"
+    ErrorResponseContextEntityMulti:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MULTI_VALUE
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      required:
+      - type
+      - values
+    DomainName:
+      type: string
+      example: matt.crypto
     ErrorResponseMulti:
       type: object
       properties:
@@ -121,67 +179,6 @@ components:
       required:
       - code
       - errors
-    ErrorResponseContextEntityMulti:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - MULTI_VALUE
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
-      required:
-      - type
-      - values
-    SuggestionsResponse:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.List
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/SuggestionsResponseItem'
-      required:
-      - items
-      - '@type'
-    SuggestionsResponseItem:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.DomainSuggestion
-        name:
-          $ref: '#/components/schemas/DomainName'
-        price:
-          $ref: '#/components/schemas/DomainPriceResponse'
-      required:
-      - name
-      - price
-      - '@type'
-    DomainName:
-      type: string
-      example: matt.crypto
-    DomainPriceType:
-      type: string
-      enum:
-      - STANDARD
-      - PREMIUM
-      - DEFERRED
-      description: "- `STANDARD`: Domain is priced using the default, standard pricing algorithm\n- `PREMIUM`: Domain is considered premium by the registry and pricing may differ from the standard pricing\n- `DEFERRED`: Domain pricing is not available and an additional request is needed to determine pricing. \n  - This can be a limitation of the bulk domain searches due to constraints with checking prices for some registries\n  - When requesting a single domain the price will always be included (if available) and this status will not be returned\n"
-    DomainPriceItemResponse:
-      type: object
-      properties:
-        usdCents:
-          type: number
-          example: 1000
-      required:
-      - usdCents
     ErrorResponseContextEntitySingle:
       type: object
       properties:
@@ -192,19 +189,81 @@ components:
       required:
       - type
       - value
-    DomainPriceResponse:
+    DomainPriceItemResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+          example: 1000
+      required:
+      - usdCents
+    ErrorResponseContextEntity:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseContextEntitySingle'
+      - $ref: '#/components/schemas/ErrorResponseContextEntityMulti'
+    ErrorResponse:
+      oneOf:
+      - $ref: '#/components/schemas/ErrorResponseSingle'
+      - $ref: '#/components/schemas/ErrorResponseMulti'
+    SuggestionsResponseItem_2:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.DomainSuggestion
+        name:
+          type: string
+        price:
+          $ref: '#/components/schemas/DomainPriceResponse_2'
+      required:
+      - '@type'
+      - name
+      - price
+    SuggestionsResponse_2:
+      type: object
+      properties:
+        '@type':
+          type: string
+          enum:
+          - unstoppabledomains.com/partner.v3.List
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SuggestionsResponseItem_2'
+      required:
+      - '@type'
+      - items
+    DomainPriceResponse_2:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/DomainPriceType'
+          type: string
+          enum:
+          - STANDARD
+          - PREMIUM
+          - DEFERRED
         listPrice:
-          $ref: '#/components/schemas/DomainPriceItemResponse'
+          $ref: '#/components/schemas/PriceItemResponse'
+        adjustments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainPriceAdjustmentResponse'
         subTotal:
-          $ref: '#/components/schemas/DomainPriceItemResponse'
+          $ref: '#/components/schemas/PriceItemResponse'
+        validUntilTimestamp:
+          type: number
       required:
       - type
       - listPrice
       - subTotal
+    PriceItemResponse:
+      type: object
+      properties:
+        usdCents:
+          type: number
+      required:
+      - usdCents
     ErrorResponse_2:
       type: object
       description: Standard error response
@@ -241,65 +300,6 @@ components:
       required:
       - usdCents
       - type
-    SuggestionsResponse_2:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.List
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/SuggestionsResponseItem_2'
-      required:
-      - '@type'
-      - items
-    SuggestionsResponseItem_2:
-      type: object
-      properties:
-        '@type':
-          type: string
-          enum:
-          - unstoppabledomains.com/partner.v3.DomainSuggestion
-        name:
-          type: string
-        price:
-          $ref: '#/components/schemas/DomainPriceResponse_2'
-      required:
-      - '@type'
-      - name
-      - price
-    PriceItemResponse:
-      type: object
-      properties:
-        usdCents:
-          type: number
-      required:
-      - usdCents
-    DomainPriceResponse_2:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - STANDARD
-          - PREMIUM
-          - DEFERRED
-        listPrice:
-          $ref: '#/components/schemas/PriceItemResponse'
-        adjustments:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainPriceAdjustmentResponse'
-        subTotal:
-          $ref: '#/components/schemas/PriceItemResponse'
-        validUntilTimestamp:
-          type: number
-      required:
-      - type
-      - listPrice
-      - subTotal
   examples:
     ValidationError:
       description: Validation error due to incorrect parameters.

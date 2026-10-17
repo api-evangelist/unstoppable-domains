@@ -577,61 +577,6 @@ paths:
           description: Authentication required
 components:
   schemas:
-    BulkDnsOperationResponse:
-      type: object
-      description: Response for bulk DNS operations (nameservers, hosting). Contains results per domain with success/failure tracking.
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              success:
-                type: boolean
-                description: Whether the operation succeeded
-              operationId:
-                type: string
-                description: Track with ud_domain_pending_operations (if successful)
-              nameservers:
-                type: array
-                items:
-                  type: string
-                description: Configured nameservers (for nameserver operations)
-              hasDnssec:
-                type: boolean
-                description: Whether DNSSEC is configured (for nameserver operations)
-              config:
-                type: object
-                description: Hosting config (for hosting operations)
-                properties:
-                  type:
-                    type: string
-                  subName:
-                    type:
-                    - string
-                    - 'null'
-                  targetUrl:
-                    type:
-                    - string
-                    - 'null'
-              subName:
-                type: string
-                description: Subdomain removed (for hosting remove operations)
-              deletedAll:
-                type: boolean
-                description: Whether all configs were removed (for hosting remove)
-              error:
-                type: string
-                description: Error message (if failed)
-        successCount:
-          type: number
-          description: Number of successful operations
-        failureCount:
-          type: number
-          description: Number of failed operations
     DnsHostingListResponse:
       type: object
       properties:
@@ -777,6 +722,61 @@ components:
                     type: number
                   digest:
                     type: string
+    BulkDnsOperationResponse:
+      type: object
+      description: Response for bulk DNS operations (nameservers, hosting). Contains results per domain with success/failure tracking.
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+                description: Whether the operation succeeded
+              operationId:
+                type: string
+                description: Track with ud_domain_pending_operations (if successful)
+              nameservers:
+                type: array
+                items:
+                  type: string
+                description: Configured nameservers (for nameserver operations)
+              hasDnssec:
+                type: boolean
+                description: Whether DNSSEC is configured (for nameserver operations)
+              config:
+                type: object
+                description: Hosting config (for hosting operations)
+                properties:
+                  type:
+                    type: string
+                  subName:
+                    type:
+                    - string
+                    - 'null'
+                  targetUrl:
+                    type:
+                    - string
+                    - 'null'
+              subName:
+                type: string
+                description: Subdomain removed (for hosting remove operations)
+              deletedAll:
+                type: boolean
+                description: Whether all configs were removed (for hosting remove)
+              error:
+                type: string
+                description: Error message (if failed)
+        successCount:
+          type: number
+          description: Number of successful operations
+        failureCount:
+          type: number
+          description: Number of failed operations
     DnsRecordsListResponse:
       type: object
       properties:

@@ -46,22 +46,6 @@ paths:
       - {}
 components:
   schemas:
-    Blockchains:
-      properties:
-        ETH:
-          $ref: '#/components/schemas/BlockchainStatus'
-        MATIC:
-          $ref: '#/components/schemas/BlockchainStatus'
-        ZIL:
-          $ref: '#/components/schemas/BlockchainStatus'
-        ETH-ENS:
-          $ref: '#/components/schemas/BlockchainStatus'
-      type: object
-      required:
-      - ETH
-      - MATIC
-      - ZIL
-      - ETH-ENS
     StatusResponse:
       properties:
         blockchain:
@@ -88,6 +72,22 @@ components:
       - latestMirroredBlock
       - networkId
       - acceptableDelayInBlocks
+    Blockchains:
+      properties:
+        ETH:
+          $ref: '#/components/schemas/BlockchainStatus'
+        MATIC:
+          $ref: '#/components/schemas/BlockchainStatus'
+        ZIL:
+          $ref: '#/components/schemas/BlockchainStatus'
+        ETH-ENS:
+          $ref: '#/components/schemas/BlockchainStatus'
+      type: object
+      required:
+      - ETH
+      - MATIC
+      - ZIL
+      - ETH-ENS
   securitySchemes:
     apiKeyAuth:
       type: http

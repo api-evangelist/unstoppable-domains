@@ -488,6 +488,37 @@ components:
               type: string
             canCheckout:
               type: boolean
+    CartItem:
+      type: object
+      properties:
+        productId:
+          type: number
+        productCode:
+          type: string
+        productType:
+          type: string
+        domain:
+          type:
+          - string
+          - 'null'
+        originalPrice:
+          type: number
+        originalPriceFormatted:
+          type: string
+        discountAmount:
+          type: number
+        discountAmountFormatted:
+          type: string
+        promoCreditsApplied:
+          type: number
+        accountBalanceApplied:
+          type: number
+        salesTax:
+          type: number
+        fees:
+          type: array
+          items:
+            type: object
     CartResponse:
       type: object
       properties:
@@ -555,6 +586,146 @@ components:
           type: number
         totalDiscountsFormatted:
           type: string
+    AddSedoDomainToCartResponse:
+      type: object
+      description: Response for adding Sedo marketplace domains to cart
+      properties:
+        addedProducts:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                description: Domain name
+              success:
+                type: boolean
+              productId:
+                type: number
+              price:
+                type: string
+                description: Formatted price when available
+              error:
+                type: string
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        cart:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+    AddPaymentMethodUrlResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Authenticated magic link URL to the payment management page (single-use, valid for 60 seconds)
+        expiresIn:
+          type: number
+          description: Seconds until the magic link expires (URL is single-use)
+        instructions:
+          type: string
+          description: Guidance for the user on how to add a card
+    RemoveFromCartResponse:
+      type: object
+      properties:
+        removedProductIds:
+          type: array
+          items:
+            type: number
+        removedCount:
+          type: number
+        cart:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/CartItem'
+    CheckoutResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        orderId:
+          type: number
+        paymentId:
+          type: number
+        summary:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            domains:
+              type: array
+              items:
+                type: string
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
+            discounts:
+              type: number
+            discountsFormatted:
+              type: string
+            creditsUsed:
+              type: number
+            creditsUsedFormatted:
+              type: string
+            salesTax:
+              type: number
+            salesTaxFormatted:
+              type: string
+            totalCharged:
+              type: number
+            totalChargedFormatted:
+              type: string
+            paymentMethod:
+              type: string
+        note:
+          type: string
+          description: Optional note about contact selection when user has multiple contacts
+    AddToCartResponse:
+      type: object
+      properties:
+        addedProducts:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+              success:
+                type: boolean
+              error:
+                type: string
+              productId:
+                type: number
+        successCount:
+          type: number
+        failureCount:
+          type: number
+        cart:
+          type: object
+          properties:
+            itemCount:
+              type: number
+            subtotal:
+              type: number
+            subtotalFormatted:
+              type: string
     CheckoutUrlResponse:
       type: object
       properties:
@@ -628,38 +799,9 @@ components:
               type: number
             subtotalFormatted:
               type: string
-    AddToCartResponse:
+    AddAfternicDomainToCartResponse:
       type: object
-      properties:
-        addedProducts:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-              success:
-                type: boolean
-              error:
-                type: string
-              productId:
-                type: number
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        cart:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-    AddSedoDomainToCartResponse:
-      type: object
-      description: Response for adding Sedo marketplace domains to cart
+      description: Response for adding Afternic marketplace domains to cart
       properties:
         addedProducts:
           type: array
@@ -725,148 +867,6 @@ components:
               type: number
             subtotalFormatted:
               type: string
-    RemoveFromCartResponse:
-      type: object
-      properties:
-        removedProductIds:
-          type: array
-          items:
-            type: number
-        removedCount:
-          type: number
-        cart:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-            items:
-              type: array
-              items:
-                $ref: '#/components/schemas/CartItem'
-    AddAfternicDomainToCartResponse:
-      type: object
-      description: Response for adding Afternic marketplace domains to cart
-      properties:
-        addedProducts:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                description: Domain name
-              success:
-                type: boolean
-              productId:
-                type: number
-              price:
-                type: string
-                description: Formatted price when available
-              error:
-                type: string
-        successCount:
-          type: number
-        failureCount:
-          type: number
-        cart:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-    AddPaymentMethodUrlResponse:
-      type: object
-      properties:
-        url:
-          type: string
-          description: Authenticated magic link URL to the payment management page (single-use, valid for 60 seconds)
-        expiresIn:
-          type: number
-          description: Seconds until the magic link expires (URL is single-use)
-        instructions:
-          type: string
-          description: Guidance for the user on how to add a card
-    CheckoutResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        orderId:
-          type: number
-        paymentId:
-          type: number
-        summary:
-          type: object
-          properties:
-            itemCount:
-              type: number
-            domains:
-              type: array
-              items:
-                type: string
-            subtotal:
-              type: number
-            subtotalFormatted:
-              type: string
-            discounts:
-              type: number
-            discountsFormatted:
-              type: string
-            creditsUsed:
-              type: number
-            creditsUsedFormatted:
-              type: string
-            salesTax:
-              type: number
-            salesTaxFormatted:
-              type: string
-            totalCharged:
-              type: number
-            totalChargedFormatted:
-              type: string
-            paymentMethod:
-              type: string
-        note:
-          type: string
-          description: Optional note about contact selection when user has multiple contacts
-    CartItem:
-      type: object
-      properties:
-        productId:
-          type: number
-        productCode:
-          type: string
-        productType:
-          type: string
-        domain:
-          type:
-          - string
-          - 'null'
-        originalPrice:
-          type: number
-        originalPriceFormatted:
-          type: string
-        discountAmount:
-          type: number
-        discountAmountFormatted:
-          type: string
-        promoCreditsApplied:
-          type: number
-        accountBalanceApplied:
-          type: number
-        salesTax:
-          type: number
-        fees:
-          type: array
-          items:
-            type: object
   securitySchemes:
     bearerAuth:
       type: http
